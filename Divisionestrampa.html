@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Divisiones — 1º ESO</title>
+  <style>
+    :root {
+      --bg: #0f172a; /* slate-900 */
+      --panel: #111827ee; /* gray-900 */
+      --text: #e5e7eb; /* gray-200 */
+      --muted: #94a3b8; /* slate-400 */
+      --accent: #38bdf8; /* sky-400 */
+      --ok: #22c55e; /* green-500 */
+      --bad: #ef4444; /* red-500 */
+      --warn: #f59e0b; /* amber-500 */
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% 0%, #1f2937, var(--bg));
+      color: var(--text);
+      display: grid;
+      place-items: center;
+    }
+
+    /* Header */
+    .score {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background: #0b1220cc;
+      border: 1px solid #1f2937;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 30px rgba(0,0,0,.35);
+    }
+    .score small { color: var(--muted); font-weight: 500; }
+
+    /* Main card */
+    .card {
+      width: min(720px, 92vw);
+      background: #0b1220cc;
+      border: 1px solid #1f2937;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      backdrop-filter: saturate(1.1) blur(4px);
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(20px, 2.4vw, 28px);
+      line-height: 1.2;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .label { color: var(--muted); font-size: 14px; }
+    .number {
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 800;
+      letter-spacing: .5px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: #0a0f1acc;
+      border: 1px solid #1e293b;
+      text-align: center;
+    }
+    .inputs { margin-top: 18px; }
+    .input {
+      display: grid;
+      gap: 6px;
+    }
+    input[type="number"]{
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      background: #0a0f1a;
+      color: var(--text);
+      font-size: 18px;
+      outline: none;
+    }
+    input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #38bdf833; }
+
+    .actions { display:flex; gap:12px; margin-top:20px; }
+    button {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      background: #0b1220;
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.primary { background: linear-gradient(135deg, #0ea5e9, #22d3ee); color: #06121e; border: none; }
+    button.secondary { background:#0b1220; }
+    button:disabled{ opacity:.6; cursor:not-allowed; }
+
+    .msg { margin-top:16px; padding: 10px 12px; border-radius: 12px; display:none; }
+    .msg.ok { background:#052e1a; border:1px solid #14532d; color:#86efac; }
+    .msg.err { background:#3a0d0d; border:1px solid #7f1d1d; color:#fecaca; }
+    .msg.warn { background:#2b1a03; border:1px solid #78350f; color:#fde68a; }
+    .msg.show { display:block; }
+
+    /* Name modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, rgba(0,0,0,.8), rgba(0,0,0,.6));
+      z-index: 30;
+    }
+    .modal .panel {
+      width: min(640px, 92vw);
+      background: #0b1220;
+      border: 1px solid #1f2937;
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
+    .row { display:flex; gap:12px; align-items:center; flex-wrap: wrap; }
+    .grow { flex: 1 1 auto; }
+    .muted { color: var(--muted); font-size: 14px; }
+
+    .radio-group { display:flex; gap: 10px; flex-wrap:wrap; }
+    .chip {
+      border:1px solid #1f2937; padding:8px 12px; border-radius:999px; cursor:pointer; user-select:none;
+      background:#0a0f1a; color:var(--text);
+    }
+    input[type="radio"]{ display:none; }
+    input[type="radio"]:checked + .chip{ outline: 3px solid #38bdf833; border-color:#38bdf8; }
+
+    /* Trap overlay */
+    .trap {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.9);
+      display: none;
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .trap.show { display: flex; }
+    .trap h2 { color: var(--bad); font-size: clamp(24px, 6vw, 56px); margin: 0 0 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .trap p { color: #fca5a5; margin: 0 0 20px; }
+
+    .fade { animation: fade .28s ease-out; }
+    @keyframes fade{ from{ opacity:0; transform: translateY(4px);} to{ opacity:1; transform:none; }}
+  </style>
+</head>
+<body>
+  <div class="score" id="score" aria-live="polite">Aciertos (0)</div>
+
+  <main class="card" aria-labelledby="app-title">
+    <h1 id="app-title">Práctica de divisiones</h1>
+
+    <section class="grid" aria-label="Datos de la división">
+      <div>
+        <div class="label">Dividendo</div>
+        <div class="number" id="dividendo">—</div>
+      </div>
+      <div>
+        <div class="label">Divisor</div>
+        <div class="number" id="divisor">—</div>
+      </div>
+    </section>
+
+    <section class="grid inputs" aria-label="Respuestas del alumno">
+      <div class="input">
+        <label class="label" for="cociente">Cociente</label>
+        <input id="cociente" type="number" inputmode="numeric" min="1" step="1" placeholder="Escribe aquí el cociente" />
+      </div>
+      <div class="input">
+        <label class="label" for="resto">Resto</label>
+        <input id="resto" type="number" inputmode="numeric" min="0" step="1" placeholder="Escribe aquí el resto" />
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="secondary" id="btnSiguiente" title="Nuevo ejercicio" style="display:none">Siguiente</button>
+      <button class="primary" id="btnComprobar" title="Comprobar respuesta">Comprobar</button>
+      <button class="secondary" id="btnReiniciar" title="Reiniciar aplicación">Reiniciar</button>
+    </div>
+
+    <div class="msg ok" id="msgOk" role="status">¡Correcto! ¡Buen trabajo!</div>
+    <div class="msg err" id="msgErr" role="alert">Resultado incorrecto. Vuelve a intentarlo.</div>
+    <div class="msg warn" id="msgWarn" role="alert">Introduce números enteros válidos (el resto puede ser 0).</div>
+  </main>
+
+  <!-- Name & options modal -->
+  <div class="modal" id="nameModal" aria-modal="true" role="dialog">
+    <div class="panel">
+      <h2 style="margin-top:0">Antes de empezar…</h2>
+      <div class="row" style="margin: 10px 0 14px">
+        <label class="label" for="nombre">Escribe tu nombre</label>
+        <input id="nombre" class="grow" type="text" placeholder="Tu nombre" maxlength="30" style="padding:12px 14px; border-radius:12px; border:1px solid #1f2937; background:#0a0f1a; color:var(--text)" />
+      </div>
+      <div class="row" style="margin: 8px 0 6px">
+        <div class="label">Elige el tamaño del divisor</div>
+      </div>
+      <div class="radio-group" role="radiogroup" aria-label="Tamaño del divisor">
+        <label>
+          <input type="radio" name="tamDivisor" id="opt1" value="1" checked>
+          <span class="chip">1 cifra (1–9)</span>
+        </label>
+        <label>
+          <input type="radio" name="tamDivisor" id="opt2" value="2">
+          <span class="chip">2 cifras (11–99)</span>
+        </label>
+      </div>
+      <p class="muted" style="margin: 12px 0 18px">Al iniciar, la aplicación usará el modo pantalla completa.</p>
+      <div class="row" style="justify-content: flex-end; gap:10px">
+        <button id="btnEmpezar" class="primary">Empezar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trap overlay -->
+  <div class="trap" id="trap">
+    <div class="fade">
+      <h2>Trampa detectada</h2>
+      <p>Has salido de pantalla completa o has cambiado de pestaña. El contador se ha reiniciado.</p>
+      <button id="btnTrapReset" class="primary">Reiniciar</button>
+    </div>
+  </div>
+
+  <script>
+    // ======= State =======
+    let userName = '';
+    let aciertos = 0;
+    let divisorMode = '1'; // '1' => 1 cifra (1-9), '2' => 2 cifras (11-99)
+    let current = { dividendo: null, divisor: null };
+    let gameActive = false; // para no disparar trampas antes de tiempo
+
+    // ======= Elements =======
+    const el = (id) => document.getElementById(id);
+    const $score = el('score');
+    const $dividendo = el('dividendo');
+    const $divisor = el('divisor');
+    const $cociente = el('cociente');
+    const $resto = el('resto');
+
+    const $btnComprobar = el('btnComprobar');
+    const $btnSiguiente = el('btnSiguiente');
+    const $btnReiniciar = el('btnReiniciar');
+
+    const $msgOk = el('msgOk');
+    const $msgErr = el('msgErr');
+    const $msgWarn = el('msgWarn');
+
+    const $modal = el('nameModal');
+    const $nombre = el('nombre');
+    const $btnEmpezar = el('btnEmpezar');
+
+    const $trap = el('trap');
+    const $btnTrapReset = el('btnTrapReset');
+
+    // ======= Helpers =======
+    const rnd = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+    function pickDivisor() {
+      if (divisorMode === '1') return rnd(1, 9);
+      // modo 2 cifras: 11-99 (excluye 10 explícitamente)
+      return rnd(11, 99);
+    }
+
+    function pickDividend(divisor) {
+      // Debe tener 2 o 3 cifras (>=10) y ser > divisor
+      const min = Math.max(10, divisor + 1);
+      if (min > 999) return 999; // fallback imposible, pero por seguridad
+      return rnd(min, 999);
+    }
+
+    function nuevaOperacion() {
+      const divisor = pickDivisor();
+      const dividendo = pickDividend(divisor);
+      current = { dividendo, divisor };
+
+      $dividendo.textContent = dividendo;
+      $divisor.textContent = divisor;
+      $cociente.value = '';
+      $resto.value = '';
+      $cociente.focus();
+      hideMsgs();
+      $btnSiguiente.style.display = 'none';
+      $btnComprobar.disabled = false;
+    }
+
+    function hideMsgs(){
+      $msgOk.classList.remove('show');
+      $msgErr.classList.remove('show');
+      $msgWarn.classList.remove('show');
+    }
+
+    function actualizarScore(){
+      $score.textContent = `Aciertos de ${userName} (${aciertos})`;
+    }
+
+    function validarEnterosPositivos() {
+      const c = $cociente.value.trim();
+      const r = $resto.value.trim();
+      if (c === '' || r === '') return { ok:false, reason:'empty' };
+      // Solo dígitos
+      if (!/^\d+$/.test(c) || !/^\d+$/.test(r)) return { ok:false, reason:'nan' };
+      const ci = parseInt(c, 10);
+      const ri = parseInt(r, 10);
+      if (ci < 1) return { ok:false, reason:'cocienteMin' };
+      if (ri < 0) return { ok:false, reason:'restoMin' };
+      return { ok:true, ci, ri };
+    }
+
+    function comprobar(){
+      hideMsgs();
+      const val = validarEnterosPositivos();
+      if (!val.ok){
+        aciertos = 0; actualizarScore();
+        $msgWarn.classList.add('show');
+        return;
+      }
+      const { ci, ri } = val;
+      const { dividendo, divisor } = current;
+      const correctoC = Math.floor(dividendo / divisor);
+      const correctoR = dividendo % divisor;
+
+      if (ci === correctoC && ri === correctoR){
+        aciertos++; actualizarScore();
+        $msgOk.classList.add('show');
+        $btnComprobar.disabled = true;
+        // Mostrar siguiente tras 2s o permitir botón
+        setTimeout(() => {
+          $msgOk.classList.remove('show');
+          nuevaOperacion();
+        }, 2000);
+      } else {
+        aciertos = 0; actualizarScore();
+        $msgErr.classList.add('show');
+        // No cambiamos la operación: debe reintentar
+      }
+    }
+
+    function resetApp(){
+      gameActive = false;
+      // Intentar salir de pantalla completa si procede
+      if (document.fullscreenElement) {
+        document.exitFullscreen?.().catch(() => {});
+      }
+      aciertos = 0; userName = '';
+      $dividendo.textContent = '—';
+      $divisor.textContent = '—';
+      $cociente.value = '';
+      $resto.value = '';
+      hideMsgs();
+      $btnSiguiente.style.display = 'none';
+      actualizarScore();
+      $modal.style.display = 'grid';
+      $nombre.value = '';
+      $nombre.focus();
+      $trap.classList.remove('show');
+    }
+
+    function startGame(){
+      const name = $nombre.value.trim();
+      if (name.length === 0){
+        $nombre.focus();
+        return;
+      }
+      userName = name.replace(/\s+/g, ' ').slice(0, 30);
+      const sel = document.querySelector('input[name="tamDivisor"]:checked');
+      divisorMode = sel ? sel.value : '1';
+      aciertos = 0; actualizarScore();
+
+      // Pantalla completa
+      const root = document.documentElement;
+      const enterFs = () => {
+        if (root.requestFullscreen) return root.requestFullscreen();
+        if (root.webkitRequestFullscreen) return root.webkitRequestFullscreen();
+        return Promise.resolve();
+      };
+
+      enterFs().finally(() => {
+        // Empieza el juego incluso si FS falla (por permisos)
+        $modal.style.display = 'none';
+        gameActive = true;
+        nuevaOperacion();
+      });
+    }
+
+    function triggerTrap(){
+      if (!gameActive) return; // ignora si aún no ha empezado
+      aciertos = 0; actualizarScore();
+      $trap.classList.add('show');
+      // Deshabilitar interacción del ejercicio hasta reinicio
+      $btnComprobar.disabled = true;
+    }
+
+    // ======= Events =======
+    $btnComprobar.addEventListener('click', comprobar);
+    $btnSiguiente.addEventListener('click', nuevaOperacion);
+    $btnReiniciar.addEventListener('click', resetApp);
+    $btnEmpezar.addEventListener('click', startGame);
+    $btnTrapReset.addEventListener('click', resetApp);
+
+    // Enter para comprobar
+    [$cociente, $resto].forEach(inp => {
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') comprobar();
+      });
+      // Evitar signos y no dígitos
+      inp.addEventListener('input', () => {
+        inp.value = inp.value.replace(/[^0-9]/g, '');
+      });
+    });
+
+    // Detección de trampas: salir de FS o cambiar de pestaña/ventana
+    document.addEventListener('fullscreenchange', () => {
+      if (gameActive && !document.fullscreenElement) {
+        triggerTrap();
+      }
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (gameActive && document.hidden) {
+        triggerTrap();
+      }
+    });
+    // Como refuerzo, cuando la ventana pierda foco (ALT+TAB en algunos navegadores)
+    window.addEventListener('blur', () => {
+      if (gameActive) triggerTrap();
+    });
+
+    // Estado inicial
+    resetApp();
+  </script>
+</body>
+</html>
