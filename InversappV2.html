@@ -61,24 +61,42 @@
       border:1px solid rgba(255,255,255,0.3);
     }
     main{max-width:1100px;margin:0 auto 80px;padding:0 20px;display:grid;gap:20px}
-    section{
+
+    /* --- Paneles colapsables (sustituyen a <section>) --- */
+    details.section{
       background:var(--card-bg);
       border:1px solid var(--border);
       border-radius:16px;
-      padding:24px;
       box-shadow:0 1px 3px var(--shadow);
-      transition:box-shadow 0.2s;
+      transition:box-shadow 0.2s, border-color 0.2s;
+      overflow:hidden;
     }
-    section:hover{box-shadow:0 4px 6px -1px var(--shadow), 0 2px 4px -1px var(--shadow)}
-    h2{
-      margin:0 0 16px;
-      font-size:1.4rem;
-      font-weight:700;
-      color:#0f172a;
-      border-bottom:3px solid #0ea5e9;
-      padding-bottom:8px;
-      display:inline-block;
+    details.section:hover{box-shadow:0 4px 6px -1px var(--shadow), 0 2px 4px -1px var(--shadow)}
+    details.section summary{
+      list-style:none;
+      cursor:pointer;
+      padding:18px 24px;
+      display:flex; align-items:center; gap:12px;
+      background:linear-gradient(180deg,#ffffff,#f9fafb);
+      user-select:none;
     }
+    details.section summary::-webkit-details-marker{display:none}
+    .chev{
+      width:12px;height:12px; flex:0 0 12px; border-right:2px solid #0ea5e9; border-bottom:2px solid #0ea5e9;
+      transform:rotate(-45deg); transition:transform .2s;
+      margin-left:2px;
+    }
+    details.section[open] .chev{ transform:rotate(45deg) }
+    .summary-title{
+      margin:0; font-size:1.25rem; font-weight:800; color:#0f172a; letter-spacing:-.2px;
+    }
+    .summary-badge{
+      margin-left:auto; font-size:.8rem; font-weight:700; color:#0369a1; background:var(--accent-light);
+      border:1px solid #7dd3fc; padding:4px 10px; border-radius:999px;
+    }
+    .content{ padding:0 24px 20px }
+    .content h2{ display:none } /* el h2 está visualmente en el summary */
+
     h3{margin:20px 0 12px;font-size:1.15rem;font-weight:700;color:#334155}
     .grid{display:grid;gap:16px}
     .cols-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
@@ -170,21 +188,22 @@
       border-radius:0 8px 8px 0;
     }
     @keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
-    details{
+    details:not(.section){
       background:var(--accent-light);
       border:1px solid #7dd3fc;
       border-radius:10px;
       padding:14px;
       margin:12px 0;
     }
-    summary{
+    details:not(.section) summary{
       cursor:pointer;
       font-weight:700;
       user-select:none;
       color:#0c4a6e;
       font-size:1.05rem;
     }
-    summary:hover{color:var(--accent)}
+    details:not(.section) summary:hover{color:var(--accent)}
+
     .foot{color:var(--muted);font-size:.9rem;margin-top:14px;font-style:italic}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
     .small{font-size:.92rem}
@@ -193,18 +212,23 @@
     li{margin-bottom:8px}
     strong{color:#0f172a}
     em{color:var(--accent);font-style:normal;font-weight:600}
+
     @media (max-width: 768px){
       header{margin:20px 16px;padding:20px 24px;border-radius:16px}
       h1{font-size:1.5rem}
-      section{padding:18px}
       .cols-2{grid-template-columns:1fr}
       .matrix-input{grid-template-columns:repeat(3,70px);gap:8px}
       input[type="number"]{width:70px;padding:8px;font-size:15px}
       button{padding:9px 14px;font-size:0.9rem}
+      .content{padding:0 16px 18px}
+      details.section summary{padding:16px 18px}
     }
     @media print{
       body{background:#fff}
       button{display:none}
+      details.section{border:1px solid #999}
+      details.section[open] summary + .content{display:block}
+      details.section .content{display:block !important} /* imprime todo expandido */
     }
   </style>
 </head>
@@ -216,161 +240,191 @@
   </header>
 
   <main>
-    <!-- 1. Concepto -->
-    <section id="concepto">
-      <h2>1) ¿Qué es la <em>matriz inversa</em>?</h2>
-      <p>
-        Sea \(A\) una matriz <strong>cuadrada</strong> de orden \(n\). Decimos que \(A\) es <strong>invertible</strong> (o <em>regular</em>) si existe una matriz \(A^{-1}\) del mismo orden tal que
-      </p>
-      <p class="center">\[ A\,A^{-1} = A^{-1}\,A = I_n \]</p>
-      <p>
-        donde \(I_n\) es la matriz identidad de orden \(n\). Si existe, la inversa es <em>única</em>. Para matrices cuadradas, \(A\) es invertible si y sólo si \(\det(A)\neq 0\), o equivalentemente, si su rango es \(n\).
-      </p>
-      <div class="foot">💡 Idea clave: la inversa "deshace" el efecto de multiplicar por \(A\).</div>
-    </section>
-
-    <!-- 2. Propiedades -->
-    <section id="propiedades">
-      <h2>2) Propiedades básicas de la inversa</h2>
-      <div class="grid cols-2">
-        <ul>
-          <li>\(A\) invertible \(\Rightarrow\) existe \(A^{-1}\) tal que \(A\,A^{-1}=A^{-1}\,A=I\).</li>
-          <li>Unicidad: si \(B\) verifica \(A\,B=B\,A=I\), entonces \(B=A^{-1}\).</li>
-          <li>\( (A^{-1})^{-1} = A \).</li>
-          <li>\( (AB)^{-1} = B^{-1}A^{-1} \) (¡ojo al orden!).</li>
-        </ul>
-        <ul>
-          <li>\( (A^\mathsf{T})^{-1} = (A^{-1})^\mathsf{T} \).</li>
-          <li>Si una fila/columna de \(A\) es nula \(\Rightarrow\) \(A\) no es invertible.</li>
-          <li>\(A\) invertible \(\Leftrightarrow\) \(\det(A)\neq 0\) \(\Leftrightarrow\) \(\operatorname{rg}(A)=n\).</li>
-          <li>Si \(A\) y \(B\) son invertibles, también \(AB\) lo es y \( (AB)^{-1}=B^{-1}A^{-1} \).</li>
-        </ul>
+    <!-- 1) Concepto (colapsable, abierto por defecto) -->
+    <details class="section" id="concepto" open>
+      <summary>
+        <span class="chev"></span>
+        <h2 class="summary-title">1) ¿Qué es la <em>matriz inversa</em>?</h2>
+        <span class="summary-badge">teoría</span>
+      </summary>
+      <div class="content">
+        <h2>1) ¿Qué es la matriz inversa?</h2>
+        <p>
+          Sea \(A\) una matriz <strong>cuadrada</strong> de orden \(n\). Decimos que \(A\) es <strong>invertible</strong> (o <em>regular</em>) si existe una matriz \(A^{-1}\) del mismo orden tal que
+        </p>
+        <p class="center">\[ A\,A^{-1} = A^{-1}\,A = I_n \]</p>
+        <p>
+          donde \(I_n\) es la matriz identidad de orden \(n\). Si existe, la inversa es <em>única</em>. Para matrices cuadradas, \(A\) es invertible si y sólo si \(\det(A)\neq 0\), o equivalentemente, si su rango es \(n\).
+        </p>
+        <div class="foot">💡 Idea clave: la inversa "deshace" el efecto de multiplicar por \(A\).</div>
       </div>
-      <p class="muted small">💡 Consejo: en ecuaciones matriciales, "multiplicar por la inversa" sustituye a la división.</p>
-    </section>
+    </details>
 
-    <!-- 3. Gauss–Jordan -->
-    <section id="gauss-jordan">
-      <h2>3) Método de cálculo: Gauss–Jordan (con ejemplo guiado)</h2>
-      <p>
-        El método consiste en construir la matriz aumentada \( [\,A\,|\,I\,] \) y aplicar <em>transformaciones elementales de filas</em> (intercambiar filas, multiplicar una fila por un número no nulo, o sumar a una fila un múltiplo de otra) hasta obtener \([\,I\,|\,A^{-1}\,]\).
-      </p>
-      <details open>
-        <summary>📋 Pasos resumidos del algoritmo</summary>
-        <ol>
-          <li>Forma la matriz aumentada \([A|I]\).</li>
-          <li>Para cada columna, localiza un <em>pivote</em> no nulo (permite intercambiar filas si es necesario).</li>
-          <li>Haz ceros por encima y por debajo del pivote usando la operación: \(F_i \leftarrow F_i \cdot \text{pivote} - F_{\text{pivote}} \cdot a_{ij}\).</li>
-          <li>Repite para todas las columnas (trabajando con números enteros).</li>
-          <li>Al final, normaliza cada fila dividiendo por su elemento diagonal para obtener \([I|A^{-1}]\).</li>
-        </ol>
-        <p class="muted small">💡 <strong>Ventaja:</strong> Este orden evita trabajar con fracciones hasta el último paso, manteniendo números enteros durante el proceso.</p>
-      </details>
+    <!-- 2) Propiedades (colapsable) -->
+    <details class="section" id="propiedades">
+      <summary>
+        <span class="chev"></span>
+        <h2 class="summary-title">2) Propiedades básicas de la inversa</h2>
+        <span class="summary-badge">propiedades</span>
+      </summary>
+      <div class="content">
+        <h2>2) Propiedades básicas de la inversa</h2>
+        <div class="grid cols-2">
+          <ul>
+            <li>\(A\) invertible \(\Rightarrow\) existe \(A^{-1}\) tal que \(A\,A^{-1}=A^{-1}\,A=I\).</li>
+            <li>Unicidad: si \(B\) verifica \(A\,B=B\,A=I\), entonces \(B=A^{-1}\).</li>
+            <li>\( (A^{-1})^{-1} = A \).</li>
+            <li>\( (AB)^{-1} = B^{-1}A^{-1} \) (¡ojo al orden!).</li>
+          </ul>
+          <ul>
+            <li>\( (A^\mathsf{T})^{-1} = (A^{-1})^\mathsf{T} \).</li>
+            <li>Si una fila/columna de \(A\) es nula \(\Rightarrow\) \(A\) no es invertible.</li>
+            <li>\(A\) invertible \(\Leftrightarrow\) \(\det(A)\neq 0\) \(\Leftrightarrow\) \(\operatorname{rg}(A)=n\).</li>
+            <li>Si \(A\) y \(B\) son invertibles, también \(AB\) lo es y \( (AB)^{-1}=B^{-1}A^{-1} \).</li>
+          </ul>
+        </div>
+        <p class="muted small">💡 Consejo: en ecuaciones matriciales, "multiplicar por la inversa" sustituye a la división.</p>
+      </div>
+    </details>
 
-      <h3>🧮 Asistente interactivo (3×3)</h3>
-      <div class="grid cols-2">
-        <div class="card">
-          <div class="row" style="justify-content:space-between;align-items:flex-end">
-            <div>
-              <div class="tag">Entrada de la matriz A (3×3)</div>
+    <!-- 3) Gauss–Jordan (colapsable) -->
+    <details class="section" id="gauss-jordan">
+      <summary>
+        <span class="chev"></span>
+        <h2 class="summary-title">3) Método de cálculo: Gauss–Jordan (con ejemplo guiado)</h2>
+        <span class="summary-badge">interactivo</span>
+      </summary>
+      <div class="content">
+        <h2>3) Método de cálculo: Gauss–Jordan (con ejemplo guiado)</h2>
+        <p>
+          El método consiste en construir la matriz aumentada \( [\,A\,|\,I\,] \) y aplicar <em>transformaciones elementales de filas</em> (intercambiar filas, multiplicar una fila por un número no nulo, o sumar a una fila un múltiplo de otra) hasta obtener \([\,I\,|\,A^{-1}\,]\).
+        </p>
+        <details open>
+          <summary>📋 Pasos resumidos del algoritmo</summary>
+          <ol>
+            <li>Forma la matriz aumentada \([A|I]\).</li>
+            <li>Para cada columna, localiza un <em>pivote</em> no nulo (permite intercambiar filas si es necesario).</li>
+            <li>Haz ceros por encima y por debajo del pivote usando la operación: \(F_i \leftarrow F_i \cdot \text{pivote} - F_{\text{pivote}} \cdot a_{ij}\).</li>
+            <li>Repite para todas las columnas (trabajando con números enteros).</li>
+            <li>Al final, normaliza cada fila dividiendo por su elemento diagonal para obtener \([I|A^{-1}]\).</li>
+          </ol>
+          <p class="muted small">💡 <strong>Ventaja:</strong> Este orden evita trabajar con fracciones hasta el último paso, manteniendo números enteros durante el proceso.</p>
+        </details>
+
+        <h3>🧮 Asistente interactivo (3×3)</h3>
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="row" style="justify-content:space-between;align-items:flex-end">
+              <div>
+                <div class="tag">Entrada de la matriz A (3×3)</div>
+              </div>
             </div>
-          </div>
-          <div class="matrix-input" id="matrixA">
-            <input type="number" step="any" value="2" />
-            <input type="number" step="any" value="-1" />
-            <input type="number" step="any" value="0" />
-            <input type="number" step="any" value="1" />
-            <input type="number" step="any" value="1" />
-            <input type="number" step="any" value="1" />
-            <input type="number" step="any" value="0" />
-            <input type="number" step="any" value="2" />
-            <input type="number" step="any" value="3" />
-          </div>
-          <div class="row" style="margin-top:10px;gap:8px">
-            <button id="btnEjemplo">📝 Cargar ejemplo</button>
-            <button id="btnCalcular">▶️ Calcular inversa</button>
-            <button id="btnLimpiar" title="Vaciar entradas">🗑️ Limpiar</button>
-          </div>
-          <p class="muted small">💡 Sugerencia: introduce enteros para ver pasos con fracciones exactas.</p>
-        </div>
-        <div class="card">
-          <div class="tag">Resultado</div>
-          <div id="status" class="small" style="margin:6px 0 10px"></div>
-          <div class="output" id="latexOut">Introduce una matriz y pulsa <span class="kbd">Calcular inversa</span>.</div>
-          <div class="foot">✓ Comprobación: también mostramos \(A\cdot A^{-1}\).</div>
-        </div>
-      </div>
-
-      <h3>📊 Pasos del algoritmo</h3>
-      <div id="steps"></div>
-      <p class="muted small">⚠️ Nota: si algún pivote es cero y no hay otra fila con valor no nulo en esa columna, la matriz no es invertible.</p>
-    </section>
-
-    <!-- 4. Cofactores -->
-    <section id="cofactores">
-      <h2>4) Método de cálculo: determinantes y matriz de cofactores</h2>
-      <p>
-        Este método utiliza la fórmula: \(A^{-1} = \dfrac{1}{\det(A)} \cdot \text{Adj}(A)\), donde \(\text{Adj}(A)\) es la matriz adjunta (traspuesta de la matriz de cofactores).
-      </p>
-      <details open>
-        <summary>📋 Pasos resumidos del método</summary>
-        <ol>
-          <li>Calcula el determinante de \(A\) usando la regla de Sarrus.</li>
-          <li>Si \(\det(A) = 0\), la matriz no es invertible.</li>
-          <li>Calcula los 9 cofactores \(C_{ij} = (-1)^{i+j} \cdot M_{ij}\), donde \(M_{ij}\) es el menor correspondiente.</li>
-          <li>Forma la matriz de cofactores y transpónla para obtener la matriz adjunta.</li>
-          <li>Multiplica: \(A^{-1} = \dfrac{1}{\det(A)} \cdot \text{Adj}(A)\).</li>
-        </ol>
-      </details>
-
-      <h3>🧮 Asistente interactivo (3×3)</h3>
-      <div class="grid cols-2">
-        <div class="card">
-          <div class="row" style="justify-content:space-between;align-items:flex-end">
-            <div>
-              <div class="tag">Entrada de la matriz A (3×3)</div>
+            <div class="matrix-input" id="matrixA">
+              <input type="number" step="any" value="2" />
+              <input type="number" step="any" value="-1" />
+              <input type="number" step="any" value="0" />
+              <input type="number" step="any" value="1" />
+              <input type="number" step="any" value="1" />
+              <input type="number" step="any" value="1" />
+              <input type="number" step="any" value="0" />
+              <input type="number" step="any" value="2" />
+              <input type="number" step="any" value="3" />
             </div>
+            <div class="row" style="margin-top:10px;gap:8px">
+              <button id="btnEjemplo">📝 Cargar ejemplo</button>
+              <button id="btnCalcular">▶️ Calcular inversa</button>
+              <button id="btnLimpiar" title="Vaciar entradas">🗑️ Limpiar</button>
+            </div>
+            <p class="muted small">💡 Sugerencia: introduce enteros para ver pasos con fracciones exactas.</p>
           </div>
-          <div class="matrix-input" id="matrixB">
-            <input type="number" step="any" value="2" />
-            <input type="number" step="any" value="-1" />
-            <input type="number" step="any" value="0" />
-            <input type="number" step="any" value="1" />
-            <input type="number" step="any" value="1" />
-            <input type="number" step="any" value="1" />
-            <input type="number" step="any" value="0" />
-            <input type="number" step="any" value="2" />
-            <input type="number" step="any" value="3" />
+          <div class="card">
+            <div class="tag">Resultado</div>
+            <div id="status" class="small" style="margin:6px 0 10px"></div>
+            <div class="output" id="latexOut">Introduce una matriz y pulsa <span class="kbd">Calcular inversa</span>.</div>
+            <div class="foot">✓ Comprobación: también mostramos \(A\cdot A^{-1}\).</div>
           </div>
-          <div class="row" style="margin-top:10px;gap:8px">
-            <button id="btnEjemplo2">📝 Cargar ejemplo</button>
-            <button id="btnCalcular2">▶️ Calcular inversa</button>
-            <button id="btnLimpiar2" title="Vaciar entradas">🗑️ Limpiar</button>
-          </div>
-          <p class="muted small">💡 Usa la misma matriz que en el método de Gauss-Jordan para comparar resultados.</p>
         </div>
-        <div class="card">
-          <div class="tag">Resultado</div>
-          <div id="status2" class="small" style="margin:6px 0 10px"></div>
-          <div class="output" id="latexOut2">Introduce una matriz y pulsa <span class="kbd">Calcular inversa</span>.</div>
-          <div class="foot">✓ Comprobación: también mostramos \(A\cdot A^{-1}\).</div>
-        </div>
+
+        <h3>📊 Pasos del algoritmo</h3>
+        <div id="steps"></div>
+        <p class="muted small">⚠️ Nota: si algún pivote es cero y no hay otra fila con valor no nulo en esa columna, la matriz no es invertible.</p>
       </div>
+    </details>
 
-      <h3>📊 Pasos del cálculo</h3>
-      <div id="steps2"></div>
-      <p class="muted small">⚠️ Nota: este método es más directo para matrices 3×3, pero requiere calcular 9 determinantes 2×2.</p>
-    </section>
+    <!-- 4) Cofactores (colapsable) -->
+    <details class="section" id="cofactores">
+      <summary>
+        <span class="chev"></span>
+        <h2 class="summary-title">4) Método de cálculo: determinantes y matriz de cofactores</h2>
+        <span class="summary-badge">interactivo</span>
+      </summary>
+      <div class="content">
+        <h2>4) Método de cálculo: determinantes y matriz de cofactores</h2>
+        <p>
+          Este método utiliza la fórmula: \(A^{-1} = \dfrac{1}{\det(A)} \cdot \text{Adj}(A)\), donde \(\text{Adj}(A)\) es la matriz adjunta (traspuesta de la matriz de cofactores).
+        </p>
+        <details open>
+          <summary>📋 Pasos resumidos del método</summary>
+          <ol>
+            <li>Calcula el determinante de \(A\) usando la regla de Sarrus.</li>
+            <li>Si \(\det(A) = 0\), la matriz no es invertible.</li>
+            <li>Calcula los 9 cofactores \(C_{ij} = (-1)^{i+j} \cdot M_{ij}\), donde \(M_{ij}\) es el menor correspondiente.</li>
+            <li>Forma la matriz de cofactores y transpónla para obtener la matriz adjunta.</li>
+            <li>Multiplica: \(A^{-1} = \dfrac{1}{\det(A)} \cdot \text{Adj}(A)\).</li>
+          </ol>
+        </details>
 
-    <section class="card">
-      <h3>📚 Consejos de estudio</h3>
-      <ul class="small">
-        <li>Practica a mano con matrices 2×2 y 3×3. El asistente te ayuda a verificar pasos.</li>
-        <li>Recuerda: el orden importa en los productos (\(AB\neq BA\) en general).</li>
-        <li>Si \(\det(A)=0\), no existe \(A^{-1}\); revisa el rango o intenta con otra matriz.</li>
-        <li>Las operaciones elementales de fila no cambian el rango ni la invertibilidad.</li>
-      </ul>
-    </section>
+        <h3>🧮 Asistente interactivo (3×3)</h3>
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="row" style="justify-content:space-between;align-items:flex-end">
+              <div>
+                <div class="tag">Entrada de la matriz A (3×3)</div>
+              </div>
+            </div>
+            <div class="matrix-input" id="matrixB">
+              <input type="number" step="any" value="2" />
+              <input type="number" step="any" value="-1" />
+              <input type="number" step="any" value="0" />
+              <input type="number" step="any" value="1" />
+              <input type="number" step="any" value="1" />
+              <input type="number" step="any" value="1" />
+              <input type="number" step="any" value="0" />
+              <input type="number" step="any" value="2" />
+              <input type="number" step="any" value="3" />
+            </div>
+            <div class="row" style="margin-top:10px;gap:8px">
+              <button id="btnEjemplo2">📝 Cargar ejemplo</button>
+              <button id="btnCalcular2">▶️ Calcular inversa</button>
+              <button id="btnLimpiar2" title="Vaciar entradas">🗑️ Limpiar</button>
+            </div>
+            <p class="muted small">💡 Usa la misma matriz que en el método de Gauss-Jordan para comparar resultados.</p>
+          </div>
+          <div class="card">
+            <div class="tag">Resultado</div>
+            <div id="status2" class="small" style="margin:6px 0 10px"></div>
+            <div class="output" id="latexOut2">Introduce una matriz y pulsa <span class="kbd">Calcular inversa</span>.</div>
+            <div class="foot">✓ Comprobación: también mostramos \(A\cdot A^{-1}\).</div>
+          </div>
+        </div>
+
+        <h3>📊 Pasos del cálculo</h3>
+        <div id="steps2"></div>
+        <p class="muted small">⚠️ Nota: este método es más directo para matrices 3×3, pero requiere calcular 9 determinantes 2×2.</p>
+
+        <!-- Consejos (lo dejo fuera del colapsable global para que siempre queden accesibles si quieres, 
+             pero puedes moverlo si prefieres que también sea colapsable) -->
+        <section class="card" style="margin-top:20px">
+          <h3>📚 Consejos de estudio</h3>
+          <ul class="small">
+            <li>Practica a mano con matrices 2×2 y 3×3. El asistente te ayuda a verificar pasos.</li>
+            <li>Recuerda: el orden importa en los productos (\(AB\neq BA\) en general).</li>
+            <li>Si \(\det(A)=0\), no existe \(A^{-1}\); revisa el rango o intenta con otra matriz.</li>
+            <li>Las operaciones elementales de fila no cambian el rango ni la invertibilidad.</li>
+          </ul>
+        </section>
+      </div>
+    </details>
   </main>
 
   <footer style="background:var(--card-bg);border-top:2px solid var(--border);margin-top:40px;padding:32px 20px">
@@ -557,58 +611,39 @@
 
     // ---------- Método de cofactores ----------
     function det2x2Frac(a,b,c,d){
-      // Determinante de matriz 2x2 con fracciones
       return a.mul(d).sub(b.mul(c));
     }
 
     function detSarrus(M){
-      // Determinante 3x3 por regla de Sarrus
       const a=M[0][0], b=M[0][1], c=M[0][2];
       const d=M[1][0], e=M[1][1], f=M[1][2];
       const g=M[2][0], h=M[2][1], i=M[2][2];
-      
-      // Diagonales principales: aei + bfg + cdh
       const pos1 = a.mul(e).mul(i);
       const pos2 = b.mul(f).mul(g);
       const pos3 = c.mul(d).mul(h);
-      
-      // Diagonales secundarias: ceg + afh + bdi
       const neg1 = c.mul(e).mul(g);
       const neg2 = a.mul(f).mul(h);
       const neg3 = b.mul(d).mul(i);
-      
       return pos1.add(pos2).add(pos3).sub(neg1).sub(neg2).sub(neg3);
     }
 
     function detSarrusSteps(M){
-      // Visualización de la regla de Sarrus
-      const labels = [
-        ['a_{11}','a_{12}','a_{13}'],
-        ['a_{21}','a_{22}','a_{23}'],
-        ['a_{31}','a_{32}','a_{33}']
-      ];
-      
       let matrixExt = '';
       for(let i=0; i<3; i++){
         matrixExt += M[i].map(x=>x.toLatex()).join(' & ') + ' & ' + 
                      M[i][0].toLatex() + ' & ' + M[i][1].toLatex() + ' \\\\\\\\';
       }
-      
       const latex = `\\[\\begin{array}{ccc|cc}${matrixExt}\\end{array}\\]`;
-      
       const a=M[0][0], b=M[0][1], c=M[0][2];
       const d=M[1][0], e=M[1][1], f=M[1][2];
       const g=M[2][0], h=M[2][1], i=M[2][2];
-      
       const pos1 = a.mul(e).mul(i);
       const pos2 = b.mul(f).mul(g);
       const pos3 = c.mul(d).mul(h);
       const neg1 = c.mul(e).mul(g);
       const neg2 = a.mul(f).mul(h);
       const neg3 = b.mul(d).mul(i);
-      
       const det = pos1.add(pos2).add(pos3).sub(neg1).sub(neg2).sub(neg3);
-      
       return {
         latex,
         formula: `\\[\\det(A) = ${a.toLatex()}\\cdot${e.toLatex()}\\cdot${i.toLatex()} + ${b.toLatex()}\\cdot${f.toLatex()}\\cdot${g.toLatex()} + ${c.toLatex()}\\cdot${d.toLatex()}\\cdot${h.toLatex()} - ${c.toLatex()}\\cdot${e.toLatex()}\\cdot${g.toLatex()} - ${a.toLatex()}\\cdot${f.toLatex()}\\cdot${h.toLatex()} - ${b.toLatex()}\\cdot${d.toLatex()}\\cdot${i.toLatex()}\\]`,
@@ -618,7 +653,6 @@
     }
 
     function getMinor(M, row, col){
-      // Obtiene la submatriz 2x2 eliminando fila row y columna col
       const minor = [];
       for(let i=0; i<3; i++){
         if(i===row) continue;
@@ -635,7 +669,6 @@
     function cofactorMatrix(M){
       const C = [];
       const details = [];
-      
       for(let i=0; i<3; i++){
         const row = [];
         for(let j=0; j<3; j++){
@@ -644,7 +677,6 @@
           const sign = ((i+j) % 2 === 0) ? new Frac(1) : new Frac(-1);
           const cofactor = sign.mul(detMinor);
           row.push(cofactor);
-          
           const signStr = ((i+j) % 2 === 0) ? '+' : '-';
           details.push({
             pos: `C_{${i+1}${j+1}}`,
@@ -656,7 +688,6 @@
         }
         C.push(row);
       }
-      
       return { matrix: C, details };
     }
 
@@ -679,23 +710,17 @@
     function cofactorMethod(A){
       const steps = [];
       const M = cloneMat(A);
-      
-      // Paso 1: Calcular determinante
       const detResult = detSarrusSteps(M);
       steps.push({
         type: 'det',
         title: 'Paso 1: Calcular el determinante usando la regla de Sarrus',
         content: `<p>Extendemos la matriz añadiendo las dos primeras columnas a la derecha:</p>${detResult.latex}<p>Aplicamos la fórmula (diagonales principales menos diagonales secundarias):</p>${detResult.formula}${detResult.calculation}`
       });
-      
       if(detResult.det.isZero()){
         return { ok: false, steps };
       }
-      
-      // Paso 2: Calcular cofactores
       const cofResult = cofactorMatrix(M);
       let cofHTML = '<p>Calculamos cada cofactor \\(C_{ij} = (-1)^{i+j} \\cdot M_{ij}\\), donde \\(M_{ij}\\) es el determinante del menor:</p><div class="grid cols-3" style="gap:10px;margin-top:10px">';
-      
       for(const detail of cofResult.details){
         const minorLatex = `\\begin{vmatrix}${detail.minor[0][0].toLatex()}&${detail.minor[0][1].toLatex()}\\\\\\\\${detail.minor[1][0].toLatex()}&${detail.minor[1][1].toLatex()}\\end{vmatrix}`;
         cofHTML += `<div style="background:var(--code-bg);padding:8px;border-radius:8px;font-size:0.9rem">
@@ -704,32 +729,25 @@
         </div>`;
       }
       cofHTML += '</div>';
-      
       steps.push({
         type: 'cofactors',
         title: 'Paso 2: Calcular la matriz de cofactores',
         content: cofHTML + `<p style="margin-top:12px">Matriz de cofactores:</p>${latexMat(cofResult.matrix)}`
       });
-      
-      // Paso 3: Transponer (matriz adjunta)
       const adj = transpose(cofResult.matrix);
       steps.push({
         type: 'adjoint',
         title: 'Paso 3: Calcular la matriz adjunta (traspuesta de la matriz de cofactores)',
         content: `<p>Transponemos la matriz de cofactores:</p>${latexMat(adj)}`
       });
-      
-      // Paso 4: Calcular inversa
       const invDet = new Frac(1).div(detResult.det);
       const inverse = scalarMultiply(invDet, adj);
-      
       steps.push({
         type: 'inverse',
         title: 'Paso 4: Calcular la matriz inversa',
         content: `<p>Aplicamos la fórmula \\(A^{-1} = \\dfrac{1}{\\det(A)} \\cdot \\text{Adj}(A)\\):</p>
           <p>\\(A^{-1} = ${invDet.toLatex()} \\cdot \\text{Adj}(A)\\)</p>${latexMat(inverse)}`
       });
-      
       return { ok: true, steps, inverse, det: detResult.det };
     }
 
@@ -763,10 +781,8 @@
         out2.innerHTML='<p class="muted">No se puede calcular la inversa porque la matriz es singular.</p>';
         return;
       }
-      
       const prod = multiply(cloneMat(A), result.inverse);
       const isId = isIdentity(prod);
-      
       const latex = `<div><strong>✓ Resultado final:</strong></div>` +
         `<div class="small">Determinante: \\(\\det(A) = ${result.det.toLatex()}\\)</div>` +
         `<div class="small" style="margin-top:12px"><strong>A<sup>−1</sup> =</strong></div>` +
@@ -774,10 +790,8 @@
         `<div class="small" style="margin-top:12px"><strong>Verificación:</strong> A · A<sup>−1</sup> =</div>` +
         `<div class="mono">${latexMat(prod)}</div>` +
         `<div class="small ${isId?'ok':'warn'}">${isId ? '✓ Es la matriz identidad (correcto)' : '⚠️ No es la matriz identidad (revisar)'}</div>`;
-      
       out2.innerHTML = latex;
       status2.innerHTML = `<span class="ok">✓ Éxito.</span> Determinante = ${result.det.toLatex()}.`;
-      
       if(window.MathJax && window.MathJax.typesetPromise){
         window.MathJax.typesetPromise([out2]).catch(err => console.error('MathJax error:', err));
       }
@@ -788,41 +802,25 @@
       const I=identity(n);
       let Aug=augment(cloneMat(A), I);
       const steps=[];
-      
-      steps.push({
-        type:'init',
-        desc:`Matriz aumentada inicial [A|I]`,
-        snap:cloneMat(Aug)
-      });
-
+      steps.push({ type:'init', desc:`Matriz aumentada inicial [A|I]`, snap:cloneMat(Aug) });
       let row=0;
       for(let col=0; col<n; col++){
-        // Buscar pivote
         let pivot=row;
         while(pivot<n && Aug[pivot][col].isZero()) pivot++;
-        
         if(pivot===n){
           return { ok:false, steps, Aug };
         }
-        
         if(pivot!==row){
           const tmp=Aug[row];
           Aug[row]=Aug[pivot];
           Aug[pivot]=tmp;
-          steps.push({
-            type:'swap',
-            desc:`Intercambiamos F${row+1} ↔ F${pivot+1}`,
-            snap:cloneMat(Aug)
-          });
+          steps.push({ type:'swap', desc:`Intercambiamos F${row+1} ↔ F${pivot+1}`, snap:cloneMat(Aug) });
         }
-        
-        // Hacer ceros en otras filas SIN normalizar primero
         const piv=Aug[row][col];
         for(let r=0;r<n;r++){
           if(r!==row){
             const factor=Aug[r][col];
             if(!factor.isZero()){
-              // F[r] = F[r] * piv - F[row] * factor
               for(let j=0;j<2*n;j++){
                 Aug[r][j] = Aug[r][j].mul(piv).sub(Aug[row][j].mul(factor));
               }
@@ -836,8 +834,6 @@
         }
         row++;
       }
-      
-      // Ahora normalizamos todas las filas al final
       for(let i=0; i<n; i++){
         const piv = Aug[i][i];
         if(!piv.eq1()){
@@ -849,7 +845,6 @@
           });
         }
       }
-      
       return { ok:true, steps, Aug };
     }
 
@@ -871,38 +866,19 @@
     const status2 = document.getElementById('status2');
     const stepsBox2 = document.getElementById('steps2');
 
-    function setMatrix(vals){
-      for(let i=0;i<9;i++) M[i].value = (vals[i]??'');
-    }
-
+    function setMatrix(vals){ for(let i=0;i<9;i++) M[i].value = (vals[i]??''); }
     function getMatrix(){
-      const a=[];
-      for(let i=0;i<3;i++){
-        const row=[];
-        for(let j=0;j<3;j++){
-          const v=M[i*3+j].value.trim();
-          row.push(v===''?0:Number(v));
-        }
+      const a=[]; for(let i=0;i<3;i++){ const row=[];
+        for(let j=0;j<3;j++){ const v=M[i*3+j].value.trim(); row.push(v===''?0:Number(v)); }
         a.push(row);
-      }
-      return a;
+      } return a;
     }
-
-    function setMatrix2(vals){
-      for(let i=0;i<9;i++) M2[i].value = (vals[i]??'');
-    }
-
+    function setMatrix2(vals){ for(let i=0;i<9;i++) M2[i].value = (vals[i]??''); }
     function getMatrix2(){
-      const a=[];
-      for(let i=0;i<3;i++){
-        const row=[];
-        for(let j=0;j<3;j++){
-          const v=M2[i*3+j].value.trim();
-          row.push(v===''?0:Number(v));
-        }
+      const a=[]; for(let i=0;i<3;i++){ const row=[];
+        for(let j=0;j<3;j++){ const v=M2[i*3+j].value.trim(); row.push(v===''?0:Number(v)); }
         a.push(row);
-      }
-      return a;
+      } return a;
     }
 
     function renderSteps(steps){
@@ -925,12 +901,9 @@
         out.innerHTML='<p class="muted">No se puede calcular la inversa porque la matriz es singular.</p>';
         return;
       }
-      
-      const n=3;
       const [L,R]=splitAug(gj.Aug);
       const prod = multiply(cloneMat(A), R);
       const isId = isIdentity(prod);
-      
       const latex = `<div><strong>✓ Resultado final:</strong></div>` +
         `<div class="mono">${latexAug(gj.Aug)}</div>` +
         `<div class="small" style="margin-top:12px">Por tanto, <strong>A<sup>−1</sup> =</strong></div>` +
@@ -938,10 +911,8 @@
         `<div class="small" style="margin-top:12px"><strong>Verificación:</strong> A · A<sup>−1</sup> =</div>` +
         `<div class="mono">${latexMat(prod)}</div>` +
         `<div class="small ${isId?'ok':'warn'}">${isId ? '✓ Es la matriz identidad (correcto)' : '⚠️ No es la matriz identidad (revisar)'}</div>`;
-      
       out.innerHTML = latex;
       status.innerHTML = `<span class="ok">✓ Éxito.</span> Se muestran la matriz aumentada final, A<sup>−1</sup> y la comprobación.`;
-      
       if(window.MathJax && window.MathJax.typesetPromise){
         window.MathJax.typesetPromise([out]).catch(err => console.error('MathJax error:', err));
       }
@@ -950,15 +921,13 @@
     btnEjemplo.addEventListener('click',()=>{
       setMatrix([2,-1,0, 1,1,1, 0,2,3]);
       status.innerHTML='<span class="ok">✓ Ejemplo cargado.</span> Pulsa "Calcular inversa" para ver el proceso.';
-      out.innerHTML='';
-      stepsBox.innerHTML='';
+      out.innerHTML=''; stepsBox.innerHTML='';
     });
 
     btnLimpiar.addEventListener('click',()=>{
       setMatrix(Array(9).fill(''));
       out.innerHTML='Introduce una matriz y pulsa <span class="kbd">Calcular inversa</span>.';
-      stepsBox.innerHTML='';
-      status.textContent='';
+      stepsBox.innerHTML=''; status.textContent='';
     });
 
     btnCalcular.addEventListener('click',()=>{
@@ -966,7 +935,6 @@
       try{
         btnCalcular.disabled = true;
         status.innerHTML = '<span class="muted">⏳ Calculando...</span>';
-        
         setTimeout(() => {
           try {
             const g = gaussJordan(A);
@@ -984,7 +952,7 @@
       }
     });
 
-    // Inicializa con el ejemplo
+    // Demo inicial (Gauss–Jordan)
     (function autoDemo(){
       const A = getMatrix();
       try {
@@ -1001,15 +969,13 @@
     btnEjemplo2.addEventListener('click',()=>{
       setMatrix2([2,-1,0, 1,1,1, 0,2,3]);
       status2.innerHTML='<span class="ok">✓ Ejemplo cargado.</span> Pulsa "Calcular inversa" para ver el proceso.';
-      out2.innerHTML='';
-      stepsBox2.innerHTML='';
+      out2.innerHTML=''; stepsBox2.innerHTML='';
     });
 
     btnLimpiar2.addEventListener('click',()=>{
       setMatrix2(Array(9).fill(''));
       out2.innerHTML='Introduce una matriz y pulsa <span class="kbd">Calcular inversa</span>.';
-      stepsBox2.innerHTML='';
-      status2.textContent='';
+      stepsBox2.innerHTML=''; status2.textContent='';
     });
 
     btnCalcular2.addEventListener('click',()=>{
@@ -1019,18 +985,14 @@
         status2.innerHTML = '<span class="muted">⏳ Calculando...</span>';
         out2.innerHTML = '';
         stepsBox2.innerHTML = '';
-        
         setTimeout(() => {
           try {
-            console.log('Matriz A:', A);
             const result = cofactorMethod(A);
-            console.log('Resultado:', result);
             renderResult2(A, result);
             renderSteps2(result.steps);
           } catch(e) {
             status2.innerHTML = `<span class="warn">⚠️ Error: ${e.message}</span>`;
             out2.innerHTML = `<p class="warn">Error detallado: ${e.stack}</p>`;
-            console.error('Error completo:', e);
           } finally {
             btnCalcular2.disabled = false;
           }
@@ -1039,11 +1001,10 @@
         status2.innerHTML = `<span class="warn">⚠️ Error: ${e.message}</span>`;
         out2.innerHTML = `<p class="warn">Error: ${e.stack}</p>`;
         btnCalcular2.disabled = false;
-        console.error('Error externo:', e);
       }
     });
 
-    // Auto demo para cofactores
+    // Demo inicial (cofactores)
     (function autoDemo2(){
       const A = getMatrix2();
       try {
