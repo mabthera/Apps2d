@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inversa de matrices · 2º Bach CCSS</title>
+  <meta name="description" content="Aplicación educativa interactiva para aprender la inversa de matrices (Gauss–Jordan) con MathJax" />
+  
+  <!-- MathJax 3 -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [["\\(","\\)"],["$","$"]], displayMath: [["\\[","\\]"]] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  
+  <style>
+    :root{
+      --bg:#f8fafc; --bg-gradient:#ffffff; --panel:#ffffff; --ink:#1e293b; --muted:#64748b; 
+      --accent:#0ea5e9; --accent-light:#e0f2fe; --ok:#10b981; --warn:#ef4444; 
+      --border:#e2e8f0; --border-strong:#cbd5e1; --shadow:rgba(15,23,42,0.08);
+      --card-bg:#ffffff; --input-bg:#f1f5f9; --code-bg:#f8fafc;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      background:linear-gradient(180deg,#f0f9ff 0%, #ffffff 50%, #fefce8 100%);
+      color:var(--ink);
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    header{
+      max-width:1100px;
+      margin:32px auto 20px;
+      padding:0 20px;
+      background:linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+      border-radius:20px;
+      padding:28px 32px;
+      box-shadow:0 4px 6px -1px var(--shadow), 0 2px 4px -1px var(--shadow);
+    }
+    h1{
+      font-size:clamp(1.6rem,3.5vw,2.4rem);
+      margin:0 0 10px;
+      font-weight:800;
+      letter-spacing:-0.5px;
+      color:#ffffff;
+      text-shadow:0 2px 4px rgba(0,0,0,0.1);
+    }
+    header p{margin:0;color:#e0f2fe;font-size:1.05rem;line-height:1.5}
+    .pill{
+      display:inline-block;
+      padding:6px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.2);
+      backdrop-filter:blur(10px);
+      color:#ffffff;
+      font-weight:600;
+      font-size:.85rem;
+      margin-bottom:8px;
+      border:1px solid rgba(255,255,255,0.3);
+    }
+    main{max-width:1100px;margin:0 auto 80px;padding:0 20px;display:grid;gap:20px}
+    section{
+      background:var(--card-bg);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:24px;
+      box-shadow:0 1px 3px var(--shadow);
+      transition:box-shadow 0.2s;
+    }
+    section:hover{box-shadow:0 4px 6px -1px var(--shadow), 0 2px 4px -1px var(--shadow)}
+    h2{
+      margin:0 0 16px;
+      font-size:1.4rem;
+      font-weight:700;
+      color:#0f172a;
+      border-bottom:3px solid #0ea5e9;
+      padding-bottom:8px;
+      display:inline-block;
+    }
+    h3{margin:20px 0 12px;font-size:1.15rem;font-weight:700;color:#334155}
+    .grid{display:grid;gap:16px}
+    .cols-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+    .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .muted{color:var(--muted)}
+    .card{
+      background:var(--input-bg);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:18px;
+      box-shadow:0 1px 2px rgba(0,0,0,0.05);
+    }
+    .kbd{
+      background:var(--code-bg);
+      border:1px solid var(--border-strong);
+      border-radius:6px;
+      padding:3px 8px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:0.9em;
+      color:#475569;
+      font-weight:600;
+    }
+    .tag{
+      background:var(--accent-light);
+      border:1px solid #7dd3fc;
+      color:#0c4a6e;
+      border-radius:999px;
+      padding:4px 12px;
+      font-size:.8rem;
+      font-weight:600;
+      margin-right:8px;
+    }
+    .ok{color:var(--ok);font-weight:600}
+    .warn{color:var(--warn);font-weight:600}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    button{
+      background:linear-gradient(180deg,#0ea5e9,#0284c7);
+      color:#ffffff;
+      padding:11px 18px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      transition:all 0.2s;
+      box-shadow:0 2px 4px rgba(14,165,233,0.3);
+      font-size:0.95rem;
+    }
+    button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 4px 8px rgba(14,165,233,0.4);
+      background:linear-gradient(180deg,#0284c7,#0369a1);
+    }
+    button:active{transform:translateY(0);box-shadow:0 1px 2px rgba(14,165,233,0.3)}
+    button:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+    input[type="number"]{
+      width:90px;
+      padding:10px;
+      border-radius:8px;
+      border:2px solid var(--border);
+      background:var(--panel);
+      color:var(--ink);
+      text-align:center;
+      font-size:16px;
+      font-weight:600;
+      transition:border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="number"]:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px rgba(14,165,233,0.1);
+    }
+    .matrix-input{display:grid;grid-template-columns:repeat(3,90px);gap:10px;margin-top:12px}
+    .output{
+      background:var(--code-bg);
+      border:2px solid var(--border);
+      border-radius:12px;
+      padding:16px;
+      min-height:80px;
+      overflow-x:auto;
+      color:var(--ink);
+    }
+    .step{
+      border-left:4px solid var(--accent);
+      padding-left:14px;
+      margin:16px 0;
+      animation:fadeIn 0.3s ease-in;
+      background:var(--input-bg);
+      padding:12px 12px 12px 14px;
+      border-radius:0 8px 8px 0;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+    details{
+      background:var(--accent-light);
+      border:1px solid #7dd3fc;
+      border-radius:10px;
+      padding:14px;
+      margin:12px 0;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:700;
+      user-select:none;
+      color:#0c4a6e;
+      font-size:1.05rem;
+    }
+    summary:hover{color:var(--accent)}
+    .foot{color:var(--muted);font-size:.9rem;margin-top:14px;font-style:italic}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .small{font-size:.92rem}
+    .center{display:flex;justify-content:center}
+    ul{line-height:1.8}
+    li{margin-bottom:8px}
+    strong{color:#0f172a}
+    em{color:var(--accent);font-style:normal;font-weight:600}
+    @media (max-width: 768px){
+      header{margin:20px 16px;padding:20px 24px;border-radius:16px}
+      h1{font-size:1.5rem}
+      section{padding:18px}
+      .cols-2{grid-template-columns:1fr}
+      .matrix-input{grid-template-columns:repeat(3,70px);gap:8px}
+      input[type="number"]{width:70px;padding:8px;font-size:15px}
+      button{padding:9px 14px;font-size:0.9rem}
+    }
+    @media print{
+      body{background:#fff}
+      button{display:none}
+    }
+
+    /* === Footer fijo de licencia CC === */
+    /* Evita que el footer tape el contenido */
+    body{ padding-bottom: 90px; }
+    .cc-footer{
+      position:fixed;
+      bottom:0; left:0; width:100%;
+      background:rgba(255,255,255,0.9);
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      text-align:center;
+      padding:10px 12px;
+      font-size:.9rem;
+      backdrop-filter:saturate(180%) blur(6px);
+      box-shadow:0 -2px 10px var(--shadow);
+      z-index:9999;
+    }
+    .cc-footer a{ color:#0ea5e9; text-decoration:none; font-weight:600; }
+    .cc-footer a:hover{ text-decoration:underline; }
+    @media print{ .cc-footer{ display:none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="pill">Matemáticas CCSS</div>
+    <h1>Inversa de matrices</h1>
+    <p>Web para 2º de Bachillerato (Matemáticas aplicadas a CCSS). Incluye teoría, propiedades y un asistente interactivo para el método de Gauss–Jordan.</p>
+  </header>
+  
+  <main>
+    <!-- 1. Concepto -->
+    <section id="concepto">
+      <h2>1) ¿Qué es la <em>matriz inversa</em>?</h2>
+      <p>
+        Sea \(A\) una matriz <strong>cuadrada</strong> de orden \(n\). Decimos que \(A\) es <strong>invertible</strong> (o <em>regular</em>) si existe una matriz \(A^{-1}\) del mismo orden tal que
+      </p>
+      <p class="center">\[ A\,A^{-1} = A^{-1}\,A = I_n \]</p>
+      <p>
+        donde \(I_n\) es la matriz identidad de orden \(n\). Si existe, la inversa es <em>única</em>. Para matrices cuadradas, \(A\) es invertible si y sólo si \(\det(A)\neq 0\), o equivalentemente, si su rango es \(n\).
+      </p>
+      <div class="foot">💡 Idea clave: la inversa "deshace" el efecto de multiplicar por \(A\).</div>
+    </section>
+  
+    <!-- 2. Propiedades -->
+    <section id="propiedades">
+      <h2>2) Propiedades básicas de la inversa</h2>
+      <div class="grid cols-2">
+        <ul>
+          <li>\(A\) invertible \(\Rightarrow\) existe \(A^{-1}\) tal que \(A\,A^{-1}=A^{-1}\,A=I\).</li>
+          <li>Unicidad: si \(B\) verifica \(A\,B=B\,A=I\), entonces \(B=A^{-1}\).</li>
+          <li>\( (A^{-1})^{-1} = A \).</li>
+          <li>\( (AB)^{-1} = B^{-1}A^{-1} \) (¡ojo al orden!).</li>
+        </ul>
+        <ul>
+          <li>\( (A^\mathsf{T})^{-1} = (A^{-1})^\mathsf{T} \).</li>
+          <li>Si una fila/columna de \(A\) es nula \(\Rightarrow\) \(A\) no es invertible.</li>
+          <li>\(A\) invertible \(\Leftrightarrow\) \(\det(A)\neq 0\) \(\Leftrightarrow\) \(\operatorname{rg}(A)=n\).</li>
+          <li>Si \(A\) y \(B\) son invertibles, también \(AB\) lo es y \( (AB)^{-1}=B^{-1}A^{-1} \).</li>
+        </ul>
+      </div>
+      <p class="muted small">💡 Consejo: en ecuaciones matriciales, "multiplicar por la inversa" sustituye a la división.</p>
+    </section>
+  
+    <!-- 3. Gauss–Jordan -->
+    <section id="gauss-jordan">
+      <h2>3) Método de cálculo: Gauss–Jordan (con ejemplo guiado)</h2>
+      <p>
+        El método consiste en construir la matriz aumentada \( [\,A\,|\,I\,] \) y aplicar <em>transformaciones elementales de filas</em> (intercambiar filas, multiplicar una fila por un número no nulo, o sumar a una fila un múltiplo de otra) hasta obtener \([\,I\,|\,A^{-1}\,]\).
+      </p>
+      <details open>
+        <summary>📋 Pasos resumidos del algoritmo</summary>
+        <ol>
+          <li>Forma la matriz aumentada \([A|I]\).</li>
+          <li>Para cada columna, localiza un <em>pivote</em> no nulo (permite intercambiar filas si es necesario).</li>
+          <li>Haz ceros por encima y por debajo del pivote usando la operación: \(F_i \leftarrow F_i \cdot \text{pivote} - F_{\text{pivote}} \cdot a_{ij}\).</li>
+          <li>Repite para todas las columnas (trabajando con números enteros).</li>
+          <li>Al final, normaliza cada fila dividiendo por su elemento diagonal para obtener \([I|A^{-1}]\).</li>
+        </ol>
+        <p class="muted small">💡 <strong>Ventaja:</strong> Este orden evita trabajar con fracciones hasta el último paso, manteniendo números enteros durante el proceso.</p>
+      </details>
+  
+      <h3>🧮 Asistente interactivo (3×3)</h3>
+      <div class="grid cols-2">
+        <div class="card">
+          <div class="row" style="justify-content:space-between;align-items:flex-end">
+            <div>
+              <div class="tag">Entrada de la matriz A (3×3)</div>
+            </div>
+          </div>
+          <div class="matrix-input" id="matrixA">
+            <input type="number" step="any" value="2" />
+            <input type="number" step="any" value="-1" />
+            <input type="number" step="any" value="0" />
+            <input type="number" step="any" value="1" />
+            <input type="number" step="any" value="1" />
+            <input type="number" step="any" value="1" />
+            <input type="number" step="any" value="0" />
+            <input type="number" step="any" value="2" />
+            <input type="number" step="any" value="3" />
+          </div>
+          <div class="row" style="margin-top:10px;gap:8px">
+            <button id="btnEjemplo">📝 Cargar ejemplo</button>
+            <button id="btnCalcular">▶️ Calcular inversa</button>
+            <button id="btnLimpiar" title="Vaciar entradas">🗑️ Limpiar</button>
+          </div>
+          <p class="muted small">💡 Sugerencia: introduce enteros para ver pasos con fracciones exactas.</p>
+        </div>
+        <div class="card">
+          <div class="tag">Resultado</div>
+          <div id="status" class="small" style="margin:6px 0 10px"></div>
+          <div class="output" id="latexOut">Introduce una matriz y pulsa <span class="kbd">Calcular inversa</span>.</div>
+          <div class="foot">✓ Comprobación: también mostramos \(A\cdot A^{-1}\).</div>
+        </div>
+      </div>
+  
+      <h3>📊 Pasos del algoritmo</h3>
+      <div id="steps"></div>
+      <p class="muted small">⚠️ Nota: si algún pivote es cero y no hay otra fila con valor no nulo en esa columna, la matriz no es invertible.</p>
+    </section>
+  
+    <!-- 4. Cofactores (placeholder) -->
+    <section id="cofactores">
+      <h2>4) Método de cálculo: determinantes y matriz de cofactores</h2>
+      <p><em>Próximamente: cálculo de la inversa mediante la matriz adjunta.</em></p>
+      <p class="muted small">La fórmula es: \(A^{-1} = \dfrac{1}{\det(A)} \cdot \text{Adj}(A)^\mathsf{T}\)</p>
+    </section>
+  
+    <section class="card">
+      <h3>📚 Consejos de estudio</h3>
+      <ul class="small">
+        <li>Practica a mano con matrices 2×2 y 3×3. El asistente te ayuda a verificar pasos.</li>
+        <li>Recuerda: el orden importa en los productos (\(AB\neq BA\) en general).</li>
+        <li>Si \(\det(A)=0\), no existe \(A^{-1}\); revisa el rango o intenta con otra matriz.</li>
+        <li>Las operaciones elementales de fila no cambian el rango ni la invertibilidad.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- ===== Footer fijo de licencia Creative Commons ===== -->
+  <footer class="cc-footer" role="contentinfo" aria-label="Licencia del sitio">
+    <p style="margin:4px 0">
+      Esta obra está bajo una
+      <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="license noopener">
+        Licencia Creative Commons Atribución–NoComercial–SinDerivadas 4.0 Internacional
+      </a>.
+    </p>
+    <p style="margin:4px 0">
+      <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="license noopener" aria-label="Ver detalles de la licencia Creative Commons BY-NC-ND 4.0">
+        <img alt="Licencia Creative Commons BY-NC-ND 4.0" style="border-width:0; vertical-align:middle"
+             src="https://licensebuttons.net/l/by-nc-nd/4.0/88x31.png" />
+      </a>
+    </p>
+  </footer>
+  <!-- ==================================================== -->
+  
+  <script>
+    // ---------- Utilidades de fracciones para exactitud en 3x3 ----------
+    function gcd(a,b){
+      a=BigInt(a);b=BigInt(b);
+      if(a<0n)a=-a;if(b<0n)b=-b;
+      while(b){[a,b]=[b,a%b]}
+      return a;
+    }
+  
+    class Frac{
+      constructor(n,d=1){
+        if(d===0) throw new Error('Denominador cero');
+        n=BigInt(n); d=BigInt(d);
+        if(d<0n){ n=-n; d=-d; }
+        const g=gcd(n,d);
+        this.n=n/g;
+        this.d=d/g;
+      }
+  
+      static from(x){
+        if(x instanceof Frac) return x;
+        if(typeof x==='string' && x.includes('/')){
+          const [a,b]=x.split('/');
+          return new Frac(BigInt(a),BigInt(b));
+        }
+        if(Number.isInteger(Number(x))){
+          return new Frac(BigInt(Math.trunc(Number(x))),1n);
+        }
+        let s=String(x);
+        if(!s.includes('.')) return new Frac(BigInt(s),1n);
+        const neg = s.startsWith('-');
+        if(neg) s=s.slice(1);
+        const [intp,fracp]=s.split('.');
+        const k=BigInt(fracp.length);
+        const num = BigInt(intp||'0')* (10n**k) + BigInt(fracp);
+        const n = neg? -num : num;
+        const d = 10n**k;
+        return new Frac(n,d);
+      }
+  
+      add(o){o=Frac.from(o); return new Frac(this.n*o.d + o.n*this.d, this.d*o.d)}
+      sub(o){o=Frac.from(o); return new Frac(this.n*o.d - o.n*this.d, this.d*o.d)}
+      mul(o){o=Frac.from(o); return new Frac(this.n*o.n, this.d*o.d)}
+      div(o){
+        o=Frac.from(o);
+        if(o.n===0n) throw new Error('División por cero');
+        return new Frac(this.n*o.d, this.d*o.n);
+      }
+      neg(){ return new Frac(-this.n,this.d) }
+      isZero(){ return this.n===0n }
+      eq1(){ return this.n===this.d }
+      toNumber(){ return Number(this.n)/Number(this.d) }
+      toLatex(){
+        if(this.d===1n) return this.n.toString();
+        if(this.n<0n) return `-\\frac{${-this.n}}{${this.d}}`;
+        return `\\frac{${this.n}}{${this.d}}`;
+      }
+      toString(){
+        if(this.d===1n) return this.n.toString();
+        return `${this.n}/${this.d}`;
+      }
+    }
+  
+    // ---------- Operaciones de filas sobre [A|I] ----------
+    function cloneMat(mat){ return mat.map(row=>row.map(x=>Frac.from(x))) }
+    function identity(n){
+      const I=[];
+      for(let i=0;i<n;i++){
+        const r=Array(n).fill(null).map(()=>new Frac(0));
+        r[i]=new Frac(1);
+        I.push(r);
+      }
+      return I;
+    }
+    function augment(A,B){ return A.map((row,i)=>row.concat(B[i])) }
+    function splitAug(M){
+      const n=M.length;
+      const left=[];
+      const right=[];
+      const m=M[0].length;
+      const mid = m/2;
+      for(let i=0;i<n;i++){
+        left.push(M[i].slice(0,mid));
+        right.push(M[i].slice(mid));
+      }
+      return [left,right];
+    }
+  
+    function latexAug(M){
+      const n=M.length, m=M[0].length, mid=m/2;
+      let body='';
+      for(let i=0;i<n;i++){
+        let rowL=[], rowR=[];
+        for(let j=0;j<mid;j++) rowL.push(M[i][j].toLatex());
+        for(let j=mid;j<m;j++) rowR.push(M[i][j].toLatex());
+        body += rowL.join(' & ') + ' & ' + rowR.join(' & ') + ' \\\\\\';
+      }
+      return `\\[\\left[\\begin{array}{${'c'.repeat(mid)}|${'c'.repeat(mid)}}${body}\\end{array}\\right]\\]`;
+    }
+  
+    function latexMat(M){
+      let body='';
+      for(const row of M){
+        body+= row.map(x=>x.toLatex()).join(' & ') + ' \\\\\\';
+      }
+      return `\\[\\begin{bmatrix}${body}\\end{bmatrix}\\]`;
+    }
+  
+    function multiply(A,B){
+      const n=A.length;
+      const C=[...Array(n)].map(()=>Array(n).fill(null).map(()=>new Frac(0)));
+      for(let i=0;i<n;i++){
+        for(let j=0;j<n;j++){
+          let s=new Frac(0);
+          for(let k=0;k<n;k++) s = s.add(A[i][k].mul(B[k][j]));
+          C[i][j]=s;
+        }
+      }
+      return C;
+    }
+  
+    function isIdentity(M){
+      const n=M.length;
+      for(let i=0;i<n;i++){
+        for(let j=0;j<n;j++){
+          const target = (i===j?1:0);
+          if(M[i][j].toString()!==new Frac(target).toString()) return false;
+        }
+      }
+      return true;
+    }
+  
+    function gaussJordan(A){
+      const n=A.length;
+      const I=identity(n);
+      let Aug=augment(cloneMat(A), I);
+      const steps=[];
+        
+      steps.push({
+        type:'init',
+        desc:`Matriz aumentada inicial [A|I]`,
+        snap:cloneMat(Aug)
+      });
+  
+      let row=0;
+      for(let col=0; col<n; col++){
+        // Buscar pivote
+        let pivot=row;
+        while(pivot<n && Aug[pivot][col].isZero()) pivot++;
+          
+        if(pivot===n){
+          return { ok:false, steps, Aug };
+        }
+          
+        if(pivot!==row){
+          const tmp=Aug[row];
+          Aug[row]=Aug[pivot];
+          Aug[pivot]=tmp;
+          steps.push({
+            type:'swap',
+            desc:`Intercambiamos F${row+1} ↔ F${pivot+1}`,
+            snap:cloneMat(Aug)
+          });
+        }
+          
+        // Hacer ceros en otras filas SIN normalizar primero
+        const piv=Aug[row][col];
+        for(let r=0;r<n;r++){
+          if(r!==row){
+            const factor=Aug[r][col];
+            if(!factor.isZero()){
+              // F[r] = F[r] * piv - F[row] * factor
+              for(let j=0;j<2*n;j++){
+                Aug[r][j] = Aug[r][j].mul(piv).sub(Aug[row][j].mul(factor));
+              }
+              steps.push({
+                type:'eliminate',
+                desc:`F${r+1} ← F${r+1} · \\(${piv.toLatex()}\\) − F${row+1} · \\(${factor.toLatex()}\\)`,
+                snap:cloneMat(Aug)
+              });
+            }
+          }
+        }
+        row++;
+      }
+        
+      // Ahora normalizamos todas las filas al final
+      for(let i=0; i<n; i++){
+        const piv = Aug[i][i];
+        if(!piv.eq1()){
+          for(let j=0;j<2*n;j++) Aug[i][j] = Aug[i][j].div(piv);
+          steps.push({
+            type:'normalize',
+            desc:`F${i+1} ← F${i+1} ÷ \\(${piv.toLatex()}\\) (normalizamos para obtener 1 en la diagonal)`,
+            snap:cloneMat(Aug)
+          });
+        }
+      }
+        
+      return { ok:true, steps, Aug };
+    }
+  
+    // ---------- UI ----------
+    const M = document.getElementById('matrixA').querySelectorAll('input');
+    const btnEjemplo = document.getElementById('btnEjemplo');
+    const btnCalcular = document.getElementById('btnCalcular');
+    const btnLimpiar = document.getElementById('btnLimpiar');
+    const out = document.getElementById('latexOut');
+    const status = document.getElementById('status');
+    const stepsBox = document.getElementById('steps');
+  
+    function setMatrix(vals){
+      for(let i=0;i<9;i++) M[i].value = (vals[i]??'');
+    }
+  
+    function getMatrix(){
+      const a=[];
+      for(let i=0;i<3;i++){
+        const row=[];
+        for(let j=0;j<3;j++){
+          const v=M[i*3+j].value.trim();
+          row.push(v===''?0:Number(v));
+        }
+        a.push(row);
+      }
+      return a;
+    }
+  
+    function renderSteps(steps){
+      stepsBox.innerHTML='';
+      steps.forEach((st,idx)=>{
+        const d=document.createElement('div');
+        d.className='step';
+        d.innerHTML = `<div class="small muted">Paso ${idx}: ${st.desc}</div>` +
+          `<div class="mono">${latexAug(st.snap)}</div>`;
+        stepsBox.appendChild(d);
+      });
+      if(window.MathJax && window.MathJax.typesetPromise){
+        window.MathJax.typesetPromise([stepsBox]).catch(err => console.error('MathJax error:', err));
+      }
+    }
+  
+    function renderResult(A, gj){
+      if(!gj.ok){
+        status.innerHTML = `<span class="warn">⚠️ La matriz no es invertible (determinante = 0).</span>`;
+        out.innerHTML='<p class="muted">No se puede calcular la inversa porque la matriz es singular.</p>';
+        return;
+      }
+        
+      const n=3;
+      const [L,R]=splitAug(gj.Aug);
+      const prod = multiply(cloneMat(A), R);
+      const isId = isIdentity(prod);
+        
+      const latex = `<div><strong>✓ Resultado final:</strong></div>` +
+        `<div class="mono">${latexAug(gj.Aug)}</div>` +
+        `<div class="small" style="margin-top:12px">Por tanto, <strong>A<sup>−1</sup> =</strong></div>` +
+        `<div class="mono">${latexMat(R)}</div>` +
+        `<div class="small" style="margin-top:12px"><strong>Verificación:</strong> A · A<sup>−1</sup> =</div>` +
+        `<div class="mono">${latexMat(prod)}</div>` +
+        `<div class="small ${isId?'ok':'warn'}">${isId ? '✓ Es la matriz identidad (correcto)' : '⚠️ No es la matriz identidad (revisar)'}</div>`;
+        
+      out.innerHTML = latex;
+      status.innerHTML = `<span class="ok">✓ Éxito.</span> Se muestran la matriz aumentada final, A<sup>−1</sup> y la comprobación.`;
+        
+      if(window.MathJax && window.MathJax.typesetPromise){
+        window.MathJax.typesetPromise([out]).catch(err => console.error('MathJax error:', err));
+      }
+    }
+  
+    btnEjemplo.addEventListener('click',()=>{
+      setMatrix([2,-1,0, 1,1,1, 0,2,3]);
+      status.innerHTML='<span class="ok">✓ Ejemplo cargado.</span> Pulsa "Calcular inversa" para ver el proceso.';
+      out.innerHTML='';
+      stepsBox.innerHTML='';
+    });
+  
+    btnLimpiar.addEventListener('click',()=>{
+      setMatrix(Array(9).fill(''));
+      out.innerHTML='Introduce una matriz y pulsa <span class="kbd">Calcular inversa</span>.';
+      stepsBox.innerHTML='';
+      status.textContent='';
+    });
+  
+    btnCalcular.addEventListener('click',()=>{
+      const A = getMatrix();
+      try{
+        btnCalcular.disabled = true;
+        status.innerHTML = '<span class="muted">⏳ Calculando...</span>';
+          
+        setTimeout(() => {
+          try {
+            const g = gaussJordan(A);
+            renderResult(A, g);
+            renderSteps(g.steps);
+          } catch(e) {
+            status.innerHTML = `<span class="warn">⚠️ Error: ${e.message}</span>`;
+          } finally {
+            btnCalcular.disabled = false;
+          }
+        }, 100);
+      }catch(e){
+        status.innerHTML = `<span class="warn">⚠️ Error: ${e.message}</span>`;
+        btnCalcular.disabled = false;
+      }
+    });
+  
+    // Inicializa con el ejemplo
+    (function autoDemo(){
+      const A = getMatrix();
+      try {
+        const g=gaussJordan(A);
+        renderResult(A,g);
+        renderSteps(g.steps);
+        status.innerHTML = '<span class="ok">✓ Ejemplo inicial cargado.</span> Puedes modificar los valores o cargar otro ejemplo.';
+      } catch(e) {
+        console.error('Error en demo inicial:', e);
+      }
+    })();
+  </script>
+</body>
+</html>
