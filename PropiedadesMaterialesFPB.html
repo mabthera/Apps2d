@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Propiedades de los materiales · FPB</title>
+  <style>
+    :root {
+      --bg: #f7f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --accent: #4f46e5;
+      --ring: rgba(79,70,229,.25);
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 800px at 80% -10%, #eef2ff 0%, transparent 50%), var(--bg);
+      color: var(--ink);
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      display: grid;
+      place-items: start center;
+      padding: 20px 12px 20px; /* sin footer: menos padding inferior */
+    }
+    .app { width: min(980px, 100%); }
+    .header { margin-bottom: 10px; }
+    h1 { font-size: clamp(20px, 5.3vw, 28px); margin: 0 0 4px; letter-spacing: .2px; }
+    p.lead { color: var(--muted); margin: 0; font-size: 14px; }
+
+    .panel, .box {
+      background: var(--card);
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 25px rgba(10, 20, 60, .06);
+    }
+
+    label { display:block; font-weight: 600; margin-bottom: 8px; }
+    select, button.nav {
+      width: 100%;
+      -webkit-appearance: none; appearance: none;
+      background: var(--card);
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 16px;
+      color: var(--ink);
+      outline: none;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02) inset;
+    }
+    select:focus, button.nav:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); }
+
+    button.nav { cursor: pointer; min-width: 120px; font-weight: 600; }
+    button.nav:active { transform: translateY(1px); }
+
+    .grid { display: grid; gap: 10px; }
+    /* Cajas apiladas en móvil; opcionalmente 3 columnas en pantallas anchas si se añade la clase .wide */
+    .grid.cols { grid-template-columns: 1fr; }
+    @media (min-width: 820px) { .grid.cols.wide { grid-template-columns: 1fr 1fr 1fr; } }
+
+    /* Tamaños: solo las cajas de contenido llevan altura mínima */
+    .box.content { min-height: 120px; }
+    .box h3 { margin: 0 0 8px; font-size: 16px; letter-spacing: .2px; color: #374151; }
+    .muted { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <div class="header">
+      <h1>Propiedades de los materiales</h1>
+      <p class="lead">Selecciona una propiedad o usa Anterior/Siguiente. En móvil, las cajas se muestran apiladas. También puedes deslizar izquierda/derecha.</p>
+    </div>
+
+    <div class="grid cols" style="margin-top:10px">
+      <!-- 1. Caja de botones (compacta, sin altura mínima) -->
+      <div class="box">
+        <div class="nav-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+          <button class="nav" id="prev" aria-label="Propiedad anterior">⟵ Anterior</button>
+          <button class="nav" id="next" aria-label="Propiedad siguiente">Siguiente ⟶</button>
+        </div>
+      </div>
+
+      <!-- 2. Caja de propiedad (selector) -->
+      <div class="box content">
+        <label for="prop">Propiedad</label>
+        <select id="prop" aria-label="Selector de propiedad"></select>
+      </div>
+
+      <!-- 3. Caja de descripción -->
+      <div class="box content">
+        <h3>Descripción</h3>
+        <div id="descripcion" class="muted"></div>
+      </div>
+
+      <!-- 4. Caja de unidades/escala -->
+      <div class="box content">
+        <h3>Unidades y ejemplos / Escala</h3>
+        <div id="unidades" class="muted"></div>
+      </div>
+
+      <!-- 5. Caja de cómo se mide -->
+      <div class="box content">
+        <h3>Cómo se mide</h3>
+        <div id="medicion" class="muted"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DATA = {
+      "Dureza": {
+        descripcion: "La dureza indica lo resistente que es un material frente a ser rayado, cortado o deformado. Cuanto más duro es un material, más difícil resulta dejarle una marca o abolladura. Es una propiedad muy importante en herramientas, suelos o recubrimientos, donde interesa que las superficies se mantengan lisas y sin desgaste. Por ejemplo, el acero templado o el diamante son materiales muy duros, mientras que el plomo o el talco son blandos.",
+        unidades: "Se mide en escala Mohs (1 a 10) o mediante ensayos Brinell, Rockwell o Vickers, que dan valores numéricos de resistencia a la penetración.",
+        medicion: "Para medir la dureza, se presiona una punta o bola de acero sobre la superficie con un durómetro aplicando una fuerza determinada. Después se mide el tamaño de la huella con una lupa o microscopio. Cuanto más pequeña sea la marca, más duro es el material. En la escala Mohs, se comparan materiales conocidos (por ejemplo, el yeso se raya con la uña, pero el cuarzo raya el vidrio)."
+      },
+      "Elasticidad": {
+        descripcion: "La elasticidad es la capacidad de un material para deformarse al aplicar una fuerza y recuperar su forma original cuando la fuerza desaparece. Es lo que permite que una goma o un muelle se estiren y luego vuelvan a su tamaño normal. En la vida cotidiana, esta propiedad está presente en las bandas elásticas, los colchones, los neumáticos o los resortes.",
+        unidades: "Se mide con el módulo de elasticidad o de Young (Pa o GPa), que relaciona la fuerza aplicada con la deformación producida.",
+        medicion: "Se realiza un ensayo de tracción colocando la muestra entre dos pinzas que la estiran lentamente. Se mide cuánto se alarga con una regla o sensor digital, y al liberar la fuerza, se observa si recupera su tamaño original. Si vuelve completamente a su forma inicial, es muy elástico. Si no lo hace, tiene poca elasticidad. Los metales como el acero son menos elásticos que las gomas, pero recuperan su forma dentro de ciertos límites."
+      },
+      "Fragilidad": {
+        descripcion: "La fragilidad muestra lo fácil que es que un material se rompa o se quiebre cuando se le aplica una fuerza o recibe un golpe. Los materiales frágiles apenas se deforman antes de romperse; en cambio, los materiales resistentes al impacto se doblan o deforman antes de partirse. Ejemplos de materiales frágiles son el vidrio, la cerámica o algunos plásticos rígidos.",
+        unidades: "Se clasifica cualitativamente como muy frágil, media o poco frágil, según su comportamiento ante los impactos.",
+        medicion: "Se comprueba dejando caer una muestra desde cierta altura o aplicando un golpe con un martillo o péndulo (ensayo de impacto Charpy). Si el material se parte fácilmente sin doblarse, es muy frágil. En el laboratorio, se mide la energía absorbida antes de romperse. En clase, basta comparar el comportamiento de materiales cotidianos, como un vaso de cristal y uno de plástico."
+      },
+      "Tenacidad": {
+        descripcion: "Es la capacidad de un material para resistir los impactos o golpes sin romperse. Un material tenaz no se quiebra fácilmente: puede deformarse un poco antes de romperse. Por eso, los metales usados en herramientas o estructuras suelen ser muy tenaces. Un clavo de acero, por ejemplo, puede soportar varios golpes de martillo sin partirse.",
+        unidades: "Se mide en Joules (J), o de forma cualitativa (alta, media o baja tenacidad).",
+        medicion: "Para medirla, se utiliza un ensayo de impacto Charpy o Izod. Se golpea una muestra con un péndulo que cae desde una altura fija, y se mide la energía absorbida antes de romperse. Cuanto mayor sea la energía que el material puede absorber sin fracturarse, más tenaz es. En la práctica, basta comparar el acero (muy tenaz) con el vidrio (muy frágil) para apreciar la diferencia."
+      },
+      "Densidad": {
+        descripcion: "La densidad indica cuánta masa contiene un material en un determinado volumen. En otras palabras, nos dice si un material es “pesado” o “ligero” para su tamaño. Por ejemplo, una bola de plomo pesa mucho más que una bola de corcho del mismo tamaño. Esta propiedad es clave en materiales de construcción, transporte o flotación.",
+        unidades: "Se mide en kilogramos por metro cúbico (kg/m³) o gramos por centímetro cúbico (g/cm³).",
+        medicion: "Para medirla, primero se obtiene la masa con una balanza. Si el objeto tiene forma regular, se calcula su volumen con fórmulas geométricas. Si no, se sumerge en una probeta con agua y se observa cuánto sube el nivel (principio de Arquímedes). Después se aplica la fórmula densidad = masa / volumen. Comparar diferentes materiales (por ejemplo, madera y hierro) ayuda a comprender el concepto."
+      },
+      "Conductividad eléctrica": {
+        descripcion: "Es la facilidad con la que un material permite el paso de corriente eléctrica. Los buenos conductores, como el cobre o el aluminio, se usan en cables y aparatos eléctricos. Los malos conductores, llamados aislantes (como el plástico o la goma), se usan para proteger del paso de la corriente.",
+        unidades: "Se mide en Siemens por metro (S/m), aunque en la práctica se habla de materiales conductores, semiconductores o aislantes.",
+        medicion: "Se conecta el material a un circuito simple con una pila, una bombilla y un multímetro. Si la bombilla se enciende o la corriente fluye, el material es conductor. Si no, es aislante. En el laboratorio, se mide la resistencia con un ohmímetro: a menor resistencia, mayor conductividad."
+      },
+      "Conductividad térmica": {
+        descripcion: "Es la capacidad de un material para transmitir el calor. Los metales como el cobre y el aluminio son buenos conductores térmicos, mientras que el corcho, la madera o el plástico son malos conductores o aislantes térmicos. Esta propiedad explica por qué un mango de sartén no quema o por qué las paredes de una casa se aíslan con lana mineral.",
+        unidades: "Se mide en vatios por metro y kelvin (W/m·K).",
+        medicion: "En un laboratorio se aplica una fuente de calor en un extremo del material y se colocan termómetros o sensores de temperatura a distintas distancias. Si la temperatura aumenta rápidamente a lo largo del material, es buen conductor térmico. En actividades escolares, se puede comparar cómo se calienta una cuchara metálica y una de plástico sumergidas en agua caliente."
+      },
+      "Maleabilidad": {
+        descripcion: "Es la capacidad de un material para deformarse y convertirse en láminas delgadas cuando se golpea o aplasta sin romperse. Un material maleable puede adaptarse a diferentes formas sin perder su integridad. El aluminio, el cobre o el oro son ejemplos de materiales muy maleables.",
+        unidades: "Se clasifica cualitativamente (muy, media o poca maleabilidad).",
+        medicion: "Se golpea el material con un martillo o rodillo para ver si se aplana sin agrietarse. Si se extiende en láminas finas sin romperse, es maleable. Si se parte o se agrieta, no lo es. En el aula, puede demostrarse con una lámina de aluminio o una plastilina."
+      },
+      "Ductilidad": {
+        descripcion: "Es la capacidad de un material para estirarse y formar hilos o cables sin romperse. Cuanto más dúctil es un material, más puede alargarse antes de romperse. Esta propiedad es muy importante en los metales usados para fabricar cables eléctricos.",
+        unidades: "Se mide como porcentaje de alargamiento antes de romperse, o se clasifica (muy, media o poca ductilidad).",
+        medicion: "Se sujeta la muestra entre dos pinzas de una máquina de tracción y se estira aplicando fuerza progresiva. Se mide cuánto se alarga antes de romperse. Si puede estirarse mucho (como el cobre), es muy dúctil. Si se parte enseguida (como el vidrio), no lo es."
+      },
+      "Transparencia": {
+        descripcion: "Es la propiedad que permite a la luz pasar a través de un material. Según la cantidad de luz que pasa, los materiales se clasifican en transparentes (como el vidrio), translúcidos (como un plástico fino) u opacos (como la madera). Esta propiedad se aprovecha en ventanas, pantallas y envases.",
+        unidades: "Se mide como porcentaje de transmisión de luz (%) o mediante categorías visuales (transparente, translúcido, opaco).",
+        medicion: "Se coloca el material frente a una fuente de luz o una imagen y se observa cuánto se ve a través de él. También se puede medir con un luxómetro o fotómetro, que compara la luz incidente y la transmitida. Cuanta más luz pase, mayor transparencia tiene."
+      },
+      "Opacidad": {
+        descripcion: "Es la propiedad contraria a la transparencia: mide cuánto impide un material el paso de la luz. Los materiales opacos bloquean completamente la visión, los translúcidos la dejan pasar parcialmente y los transparentes la dejan pasar casi toda.",
+        unidades: "Se expresa como porcentaje de opacidad o con etiquetas de nivel de paso de luz.",
+        medicion: "Se observa colocando el material entre una fuente de luz y el observador. También puede medirse con un fotómetro, que calcula la luz que no atraviesa el material. Cuanta menos luz pase, más opaco es. Ejemplo: una cartulina es más opaca que una bolsa de plástico."
+      },
+      "Color y brillo": {
+        descripcion: "Son propiedades ópticas que dependen de cómo refleja o absorbe la luz una superficie. El color permite identificar materiales, y el brillo indica si reflejan la luz intensamente (brillante) o la dispersan (mate).",
+        unidades: "Se describe con palabras o escalas de color y brillo (brillante, mate, satinado).",
+        medicion: "Se observan las muestras bajo una luz uniforme o se comparan con una carta de colores. En laboratorios, se usa un colorímetro para cuantificar los valores. En el aula, basta comparar materiales como el oro (brillante) y el plomo (mate)."
+      },
+      "Textura": {
+        descripcion: "Describe la sensación que se percibe al tocar una superficie. Puede ser lisa, rugosa, blanda, dura, áspera o suave. La textura influye en el aspecto visual y en el uso del material.",
+        unidades: "Se clasifica con adjetivos o se mide su rugosidad (Ra) con un instrumento.",
+        medicion: "Se evalúa tocando la superficie o usando un perfilómetro, que mide pequeñas variaciones de altura. En clase, se pueden comparar materiales como una lija (rugosa) y un plástico (liso)."
+      },
+      "Flexibilidad": {
+        descripcion: "Es la capacidad de un material para doblarse sin romperse y volver a su forma inicial. Es esencial en materiales como plásticos, cartones finos o tejidos.",
+        unidades: "Se mide por el radio de curvatura mínimo (cm) o se clasifica (muy, media o poca flexibilidad).",
+        medicion: "Se dobla el material con cuidado hasta cierto ángulo o radio y se observa si se rompe o recupera su forma. Si recupera su posición inicial, es flexible. Se puede medir con una máquina de flexión o de forma manual."
+      },
+      "Aislamiento eléctrico": {
+        descripcion: "Es la propiedad que impide el paso de corriente eléctrica a través de un material. Se usa para proteger a las personas y los circuitos eléctricos.",
+        unidades: "Se mide en ohmios·metro (Ω·m) o se clasifica (aislante, conductor).",
+        medicion: "Se mide aplicando una tensión entre dos extremos del material con un megóhmetro o multímetro. Si no pasa corriente, el material es buen aislante. En clase, se puede probar con una pila, un cable y una bombilla."
+      },
+      "Solubilidad": {
+        descripcion: "La solubilidad es la capacidad de una sustancia para disolverse en un líquido, formando una mezcla uniforme. Por ejemplo, la sal o el azúcar se disuelven fácilmente en agua, mientras que la arena o el aceite no lo hacen. Esta propiedad ayuda a comprender por qué ciertos materiales se mezclan y otros no.",
+        unidades: "Se mide en gramos de sustancia por cada 100 mL de disolvente (g/100 mL) o se clasifica (soluble, parcialmente soluble, insoluble).",
+        medicion: "Para observarla, se agrega una pequeña cantidad del material al agua, se agita y se observa si desaparece visualmente o se deposita en el fondo. En laboratorio, se calienta el líquido y se mide la cantidad máxima que puede disolverse antes de que quede un residuo. Cuanto mayor cantidad se disuelva, más soluble es."
+      },
+      "Inflamabilidad": {
+        descripcion: "Es la facilidad con la que un material puede prender fuego cuando se expone a una llama o fuente de calor. Los materiales inflamables arden con facilidad y rapidez, mientras que los no inflamables apenas se encienden. Es una propiedad muy importante en la seguridad industrial.",
+        unidades: "Se clasifica por punto de inflamación (°C) o mediante etiquetas de seguridad (altamente inflamable, inflamable, no inflamable).",
+        medicion: "En laboratorio, se calienta el material de forma controlada hasta que aparece una llama. Se mide la temperatura a la que se enciende (punto de inflamación). En el aula, se puede observar comparando materiales como papel (fácilmente inflamable) y metal (no inflamable)."
+      },
+      "Oxidación": {
+        descripcion: "Es la reacción que ocurre cuando un material, normalmente metálico, se combina con el oxígeno del aire. Esto provoca cambios de color, pérdida de brillo o formación de óxido, como la herrumbre del hierro.",
+        unidades: "Se clasifica (muy oxidante, medianamente oxidante, poco oxidante o inerte).",
+        medicion: "Se observa exponiendo una muestra al aire y a la humedad durante varios días o semanas. Si aparece óxido o el material cambia de color, es muy propenso a oxidarse. También se puede acelerar el proceso con agua salada o ácido suave para observar el cambio más rápido."
+      },
+      "Corrosión": {
+        descripcion: "Es el deterioro de un material debido a reacciones químicas con el entorno, como el aire húmedo, el agua salada o los ácidos. Afecta especialmente a los metales, que pueden debilitarse o perforarse con el tiempo.",
+        unidades: "Se mide por pérdida de masa (% o mg/cm²) o se clasifica (alta, media o baja resistencia a la corrosión).",
+        medicion: "Se sumerge la muestra en un medio agresivo (por ejemplo, agua salada) durante un periodo determinado. Luego se seca y se pesa para ver cuánta masa ha perdido. También se observa visualmente si se forma herrumbre o manchas. Para evitarla, se aplican pinturas protectoras o recubrimientos como el zinc."
+      },
+      "Estabilidad química": {
+        descripcion: "Es la capacidad de un material para no reaccionar ante otras sustancias químicas. Un material químicamente estable se mantiene igual aunque entre en contacto con ácidos, bases o disolventes.",
+        unidades: "Se clasifica (muy estable, poco estable o inestable).",
+        medicion: "Se coloca una pequeña muestra en contacto con diferentes productos (por ejemplo, vinagre, alcohol o agua). Si no cambia de color, textura ni olor, es estable. Si reacciona, hace burbujas o se disuelve, es poco estable."
+      },
+      "Fermentación": {
+        descripcion: "Es una transformación química que realizan microorganismos (como levaduras o bacterias) sobre una sustancia, normalmente orgánica, produciendo gases o alcohol. Es un proceso natural que ocurre, por ejemplo, cuando el pan fermenta o la fruta se descompone.",
+        unidades: "Se observa mediante formación de gas, cambio de olor o producción de alcohol.",
+        medicion: "Para observarla, se deja una mezcla con levadura y azúcar a temperatura templada. Si se forman burbujas o espuma, se está produciendo gas. También puede verse en frutas que fermentan con el tiempo. Es un proceso controlado en la industria alimentaria, pero natural en los alimentos que se estropean."
+      },
+      "Combustión": {
+        descripcion: "Es una reacción química rápida entre un material y el oxígeno del aire, que libera energía en forma de calor y luz. Los combustibles (como la madera, el gas o el alcohol) son materiales que pueden arder fácilmente.",
+        unidades: "Se mide por la energía liberada (kJ/kg) o se clasifica (combustible, poco combustible, incombustible).",
+        medicion: "Se quema una muestra en un espacio controlado y se observa la intensidad de la llama, la cantidad de humo y la temperatura alcanzada. En laboratorio, se mide la energía liberada con un calorímetro de bomba. En clase, basta comparar materiales que arden (papel) y que no (metal)."
+      },
+      "Toxicidad": {
+        descripcion: "Es la capacidad de una sustancia para causar daño a los seres vivos si se inhala, se toca o se ingiere. Algunos productos químicos son muy tóxicos incluso en pequeñas cantidades.",
+        unidades: "Se expresa en mg/kg (DL50) o con pictogramas de peligro CLP: tóxico, nocivo, irritante, corrosivo, etc.",
+        medicion: "En el aula no se mide directamente, sino que se consulta en las etiquetas de seguridad o en fichas de datos de los productos. Se enseña a reconocer los símbolos y frases de peligro para evitar el contacto o la inhalación de sustancias peligrosas."
+      },
+      "Reactividad con el agua": {
+        descripcion: "Es la facilidad con la que un material reacciona al entrar en contacto con agua. Algunos materiales, como los metales alcalinos, reaccionan violentamente, mientras que otros no reaccionan en absoluto.",
+        unidades: "Se clasifica (muy reactivo, poco reactivo, inerte).",
+        medicion: "Se añade una gota de agua sobre una pequeña muestra y se observa si produce calor, gas o burbujas. En el laboratorio, estas pruebas se hacen con mucho cuidado, en pequeñas cantidades y en lugares ventilados."
+      },
+      "Descomposición": {
+        descripcion: "Es el proceso por el cual un material se degrada o se pudre con el tiempo debido al calor, la luz o la acción de microorganismos. Es muy común en materiales orgánicos como la fruta, la madera o el papel.",
+        unidades: "Se clasifica (biodegradable, no biodegradable) o por tiempo de degradación.",
+        medicion: "Se deja una muestra expuesta al aire, la luz o la humedad y se observan los cambios durante varios días. Se nota si se ablanda, cambia de color u olor, o si aparecen mohos. En cambio, los plásticos o metales apenas cambian."
+      },
+      "Neutralización": {
+        descripcion: "Es la reacción entre una sustancia ácida y una básica que se equilibran para formar una sal y agua. En este proceso, el ácido y la base pierden su fuerza.",
+        unidades: "Se mide por el pH, que se acerca a 7 (neutro) después de la reacción.",
+        medicion: "Se mezclan pequeñas cantidades de un ácido (como vinagre) y una base (como bicarbonato) y se observa la reacción: burbujas de gas y espuma. Con un papel indicador de pH se puede comprobar que el resultado es neutro."
+      },
+      "Porosidad": {
+        descripcion: "Es la cantidad de huecos o espacios vacíos que hay dentro de un material. Cuantos más poros tenga, más ligero y absorbente será. Por ejemplo, una esponja es muy porosa, mientras que un vidrio no lo es.",
+        unidades: "Porcentaje de poros (%) o clasificación (muy, media o poca porosidad).",
+        medicion: "Se pesa el material seco y luego tras sumergirlo en agua. Se mide cuánta agua ha absorbido. Cuanto mayor sea la diferencia de peso, más poroso es. También se puede observar al microscopio."
+      },
+      "Permeabilidad": {
+        descripcion: "Es la capacidad de un material para dejar pasar líquidos o gases a través de él. Los materiales permeables permiten el paso del agua o del aire, mientras que los impermeables no lo hacen.",
+        unidades: "m² (Darcy) o clasificación (permeable, semipermeable, impermeable).",
+        medicion: "Se aplica agua o aire sobre una cara del material y se observa si atraviesa al otro lado. En laboratorio se usa un permeámetro, pero en el aula se puede comprobar colocando agua sobre diferentes tejidos y observando si gotea o no."
+      },
+      "Resistencia mecánica": {
+        descripcion: "Es la capacidad de un material para soportar fuerzas o cargas sin romperse ni deformarse demasiado. Esta propiedad determina si un material es adecuado para estructuras o piezas de máquinas.",
+        unidades: "N/mm² o MPa (megapascales).",
+        medicion: "Se mide con una máquina de ensayos mecánicos que aplica fuerzas controladas (tracción, compresión o flexión). Se registra la carga máxima soportada antes de romperse. En el taller, se puede demostrar intentando doblar o romper diferentes materiales."
+      },
+      "Plasticidad": {
+        descripcion: "Es la capacidad de un material para deformarse permanentemente sin romperse. Los materiales plásticos pueden moldearse y mantener la forma una vez aplicada la fuerza. Por eso la arcilla, el barro o el plomo se consideran plásticos.",
+        unidades: "Se clasifica (alta, media o baja plasticidad).",
+        medicion: "Se aplica una fuerza (por ejemplo, con las manos o una prensa) sobre la muestra y se observa si conserva la forma sin romperse. Cuanto más se pueda deformar sin agrietarse, más plástico es."
+      },
+      "Adherencia": {
+        descripcion: "Es la capacidad de un material para unirse o pegarse a otro distinto. Esta propiedad es importante en pinturas, pegamentos y recubrimientos.",
+        unidades: "N/m² o niveles (alta, media, baja adherencia).",
+        medicion: "Se pegan dos materiales y se dejan secar. Después se mide la fuerza necesaria para separarlos con un dinamómetro o a mano. Cuanto más cueste separarlos, mayor es la adherencia."
+      },
+      "Resistencia al desgaste": {
+        descripcion: "Es la capacidad de un material para mantener su forma y superficie ante el roce o la fricción continua. Los suelos, rodamientos o herramientas necesitan materiales con alta resistencia al desgaste.",
+        unidades: "Pérdida de masa (mg) o clasificación (alta, media, baja).",
+        medicion: "Se frota el material con otro durante un tiempo fijo en una máquina de abrasión o manualmente con papel de lija. Luego se observa si ha perdido brillo o masa. Cuanto menos se desgaste, más resistente es."
+      },
+      "Resistencia al impacto": {
+        descripcion: "Mide la capacidad de un material para resistir golpes o caídas sin romperse. Los materiales con buena resistencia al impacto, como el plástico ABS, se usan en cascos o protectores.",
+        unidades: "Joules (J) o niveles (alta, media, baja).",
+        medicion: "Se deja caer una bola o un peso sobre la muestra o se usa un péndulo Charpy. Si el material se deforma sin romperse, tiene buena resistencia al impacto. Si se fractura, es débil ante golpes."
+      },
+      "Impermeabilidad": {
+        descripcion: "Es la capacidad de un material para no dejar pasar líquidos o gases. Los materiales impermeables se usan para proteger superficies del agua o la humedad.",
+        unidades: "Clasificación (impermeable, semipermeable, permeable).",
+        medicion: "Se coloca agua sobre una cara del material y se espera unos minutos. Si el agua no atraviesa, es impermeable. También se puede aplicar aire o vapor y medir con un permeámetro. Ejemplo: el plástico es impermeable, la tela no."
+      },
+      "Resistencia a la tracción": {
+        descripcion: "Es la capacidad de resistir fuerzas que intentan estirarlo. Cuanto mayor sea la resistencia a la tracción, más difícil será romperlo al tirar de él.",
+        unidades: "MPa (megapascales).",
+        medicion: "Se coloca una muestra entre dos pinzas de una máquina de tracción y se estira hasta romperla. Se mide la fuerza máxima soportada. Los metales como el acero tienen gran resistencia a la tracción; el plástico o la madera, menor."
+      },
+      "Resistencia a la compresión": {
+        descripcion: "Es la capacidad de soportar fuerzas que tienden a aplastarlo o comprimirlo. Es muy importante en materiales de construcción como el hormigón o la piedra.",
+        unidades: "MPa (megapascales).",
+        medicion: "Se coloca una muestra (cilindro o cubo) en una prensa hidráulica y se aplica presión creciente. Se mide el punto en el que se deforma o se rompe. Cuanto más tarde en romperse, mayor resistencia tiene."
+      }
+    };
+
+    const selector = document.getElementById('prop');
+    const descripcion = document.getElementById('descripcion');
+    const unidades = document.getElementById('unidades');
+    const medicion = document.getElementById('medicion');
+    const btnPrev = document.getElementById('prev');
+    const btnNext = document.getElementById('next');
+    const appEl = document.getElementById('app');
+
+    const keys = Object.keys(DATA).sort((a,b)=>a.localeCompare(b,'es'));
+    let currentIndex = 0;
+
+    // Rellenar selector y establecer valor inicial
+    keys.forEach(k => { const o = document.createElement('option'); o.value = k; o.textContent = k; selector.appendChild(o); });
+
+    function renderByIndex(i){
+      currentIndex = (i + keys.length) % keys.length; // circular
+      const name = keys[currentIndex];
+      selector.value = name;
+      render(name);
+    }
+
+    function render(name){
+      const item = DATA[name];
+      if(!item) return;
+      descripcion.textContent = item.descripcion;
+      unidades.textContent = item.unidades;
+      medicion.textContent = item.medicion;
+    }
+
+    selector.addEventListener('change', e => {
+      const name = e.target.value;
+      const i = keys.indexOf(name);
+      if (i !== -1) currentIndex = i;
+      render(name);
+    });
+
+    btnPrev.addEventListener('click', () => renderByIndex(currentIndex - 1));
+    btnNext.addEventListener('click', () => renderByIndex(currentIndex + 1));
+
+    // Navegación con flechas izquierda/derecha
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') renderByIndex(currentIndex - 1);
+      if (e.key === 'ArrowRight') renderByIndex(currentIndex + 1);
+    });
+
+    // Navegación por gesto (deslizar izquierda/derecha)
+    let touchStartX = null, touchStartY = null, touchStartTime = 0;
+    const SWIPE_DISTANCE = 40;   // px
+    const SWIPE_OFFAXIS = 60;    // px vertical permitida
+    const SWIPE_TIME = 600;      // ms
+
+    function onTouchStart(e){
+      const t = e.changedTouches[0];
+      touchStartX = t.clientX; touchStartY = t.clientY; touchStartTime = Date.now();
+    }
+    function onTouchEnd(e){
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      const dt = Date.now() - touchStartTime;
+      if (Math.abs(dx) > SWIPE_DISTANCE && Math.abs(dy) < SWIPE_OFFAXIS && dt < SWIPE_TIME){
+        if (dx < 0) { renderByIndex(currentIndex + 1); } else { renderByIndex(currentIndex - 1); }
+      }
+      touchStartX = touchStartY = 0;
+    }
+    appEl.addEventListener('touchstart', onTouchStart, {passive:true});
+    appEl.addEventListener('touchend', onTouchEnd, {passive:true});
+
+    // Selección inicial
+    renderByIndex(0);
+  </script>
+</body>
+</html>
