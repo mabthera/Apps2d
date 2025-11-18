@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Multiplicación y división de fracciones · Paso a paso</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --panel:#f8fafc;
+      --ring:#e2e8f0;
+      --slice:#e5e7eb;
+
+      --blue:#2563eb;
+      --blue-bg:#e0f2fe;
+      --blue-br:#bae6fd;
+
+      --orange:#f97316;
+      --yellow-bg:#fef9c3;
+      --yellow-br:#fde68a;
+
+      --green:#16a34a;
+      --green-bg:#dcfce7;
+      --green-br:#bbf7d0;
+
+      --danger:#dc2626;
+      --danger-bg:#fee2e2;
+      --danger-br:#fecaca;
+
+      --radius-lg:1rem;
+      --radius-xl:1.5rem;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.5;
+    }
+
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:1.5rem 1rem 3rem;
+    }
+
+    header{
+      margin-bottom:1.5rem;
+    }
+
+    header h1{
+      margin:0;
+      font-size:1.6rem;
+    }
+
+    header p{
+      margin:.25rem 0 0;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:1rem;
+    }
+
+    @media(min-width:900px){
+      .grid-2{
+        grid-template-columns:1.4fr 1.6fr;
+      }
+    }
+
+    .card{
+      background:var(--panel);
+      border-radius:var(--radius-lg);
+      padding:1rem 1.25rem 1.25rem;
+      border:1px solid var(--ring);
+    }
+
+    .card-muted{
+      background:#e5e7eb;
+    }
+
+    .card h2{
+      margin-top:0;
+      font-size:1.1rem;
+      display:flex;
+      align-items:center;
+      gap:.5rem;
+    }
+
+    .badge{
+      display:inline-flex;
+      min-width:1.6rem;
+      height:1.6rem;
+      border-radius:999px;
+      align-items:center;
+      justify-content:center;
+      background:var(--blue-bg);
+      color:var(--blue);
+      font-weight:600;
+      font-size:.85rem;
+    }
+
+    .subtle{
+      color:var(--muted);
+      font-size:.9rem;
+      margin-top:.25rem;
+    }
+
+    .fraction-input-card{
+      background:#fff;
+      border-radius:var(--radius-xl);
+      border:1px solid var(--ring);
+      padding:.75rem 1rem .9rem;
+      display:flex;
+      flex-direction:column;
+      gap:.6rem;
+    }
+
+    .fraction-input-card.blue{
+      box-shadow:0 0 0 2px var(--blue-bg);
+    }
+
+    .fraction-input-card.yellow{
+      box-shadow:0 0 0 2px var(--yellow-bg);
+    }
+
+    .fraction-input-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:.9rem;
+      color:var(--muted);
+    }
+
+    .fraction-input-row{
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      justify-content:center;
+    }
+
+    .frac-display{
+      display:inline-flex;
+      flex-direction:column;
+      align-items:stretch;
+      font-size:1.2rem;
+    }
+
+    .frac-display span{
+      text-align:center;
+      min-width:2.2rem;
+    }
+
+    .frac-bar{
+      border-top:1.6px solid var(--ink);
+      margin:.1rem 0;
+    }
+
+    input[type="number"]{
+      width:3.2rem;
+      padding:.15rem .25rem;
+      border-radius:.4rem;
+      border:1px solid var(--ring);
+      font-size:1rem;
+      text-align:center;
+    }
+
+    input[type="number"]:focus{
+      outline:2px solid var(--blue-bg);
+      border-color:var(--blue);
+    }
+
+    canvas{
+      border-radius:1rem;
+      background:#fff;
+      border:1px solid var(--ring);
+      width:100%;
+      max-height:260px;
+      display:block;
+    }
+
+    .op-selector{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:.4rem;
+      padding:.6rem .4rem;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--ring);
+      align-self:stretch;
+      max-width:3.5rem;
+    }
+
+    .op-button{
+      width:2.4rem;
+      height:2.4rem;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:var(--panel);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.25rem;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+
+    .op-button.active{
+      background:var(--blue-bg);
+      border-color:var(--blue-br);
+      color:var(--blue);
+      font-weight:600;
+      transform:translateY(-1px);
+    }
+
+    .op-button:not(.active):hover{
+      background:var(--slice);
+    }
+
+    .mini-op-button{
+      width:2.2rem;
+      height:2.2rem;
+      border-radius:999px;
+      border:1px solid var(--ring);
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.05rem;
+      cursor:default;
+      padding:0 .4rem;
+      white-space:nowrap;
+    }
+
+    .error-box{
+      margin-top:.6rem;
+      padding:.4rem .6rem;
+      border-radius:.6rem;
+      border:1px solid var(--danger-br);
+      background:var(--danger-bg);
+      color:var(--danger);
+      font-size:.85rem;
+      display:none;
+    }
+
+    .pill-op{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      padding:.1rem .55rem;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--ring);
+      font-size:.8rem;
+      color:var(--muted);
+    }
+
+    .pill-op strong{
+      font-size:.9rem;
+      color:var(--ink);
+    }
+
+    details{
+      margin-bottom:.3rem;
+    }
+
+    details summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      gap:.5rem;
+      font-weight:600;
+      padding:.4rem .6rem;
+      border-radius:.6rem;
+      background:rgba(148,163,184,.25);
+    }
+
+    details[open] summary{
+      background:rgba(37,99,235,.1);
+    }
+
+    details summary::-webkit-details-marker{
+      display:none;
+    }
+
+    .section-body{
+      margin-top:.6rem;
+      font-size:.92rem;
+      color:var(--ink);
+    }
+
+    .section-body p{
+      margin:.15rem 0 .4rem;
+    }
+
+    .muted{
+      color:var(--muted);
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      padding:.05rem .45rem;
+      border:1px solid var(--ring);
+      font-size:.75rem;
+      color:var(--muted);
+      gap:.25rem;
+    }
+
+    .tag.green{
+      background:var(--green-bg);
+      color:var(--green);
+      border-color:var(--green-br);
+    }
+
+    .math-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.75rem;
+      margin:.4rem 0;
+      flex-wrap:wrap;
+    }
+
+    .frac-big{
+      display:inline-flex;
+      flex-direction:column;
+      align-items:stretch;
+      font-size:1.3rem;
+    }
+
+    .frac-big span{
+      text-align:center;
+      min-width:2.4rem;
+    }
+
+    .frac-big .bar{
+      border-top:2px solid var(--ink);
+      margin:.12rem 0;
+    }
+
+    .op-symbol{
+      font-size:1.6rem;
+      font-weight:600;
+      min-width:1.8rem;
+      text-align:center;
+    }
+
+    .result-box{
+      margin-top:.5rem;
+      padding:.5rem .7rem;
+      border-radius:.7rem;
+      background:var(--green-bg);
+      border:1px solid var(--green-br);
+      font-size:.9rem;
+    }
+
+    .result-line{
+      margin:.1rem 0;
+    }
+
+    .highlight{
+      font-weight:600;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    .area-row{
+      display:grid;
+      grid-template-columns:1fr auto 1fr auto 1fr;
+      gap:.5rem;
+      align-items:center;
+      margin-top:.5rem;
+    }
+
+    .area-cell{
+      display:flex;
+      flex-direction:column;
+      gap:.25rem;
+    }
+
+    .area-op{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .simplify-row{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      gap:.75rem;
+      align-items:center;
+      margin-top:.5rem;
+    }
+
+    .simplify-cell{
+      display:flex;
+      flex-direction:column;
+      gap:.25rem;
+    }
+
+    .simplify-op{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    @media(max-width:700px){
+      .area-row{
+        grid-template-columns:1fr;
+      }
+      .simplify-row{
+        grid-template-columns:1fr;
+      }
+    }
+
+    footer{
+      margin-top:2rem;
+      padding-top:1rem;
+      border-top:1px solid var(--ring);
+      font-size:.8rem;
+      color:var(--muted);
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    footer a{
+      color:inherit;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Multiplicación y división de fracciones · Paso a paso</h1>
+    <p>Explora la <strong>multiplicación</strong> como “parte de una parte” y la <strong>división</strong> como “cuántas veces cabe una fracción en otra”, con modelos visuales y explicación guiada.</p>
+  </header>
+
+  <!-- 1. Escribe fracciones y operación -->
+  <section class="card">
+    <h2><span class="badge">1</span> Escribe las fracciones y elige la operación</h2>
+    <p class="subtle">Introduce dos fracciones y escoge si quieres <strong>multiplicar</strong> (×) o <strong>dividir</strong> (÷). Las representaciones se actualizan al momento.</p>
+
+    <div class="grid grid-2" style="align-items:stretch; margin-top:.75rem;">
+      <div class="grid" style="gap:.75rem;">
+        <div class="fraction-input-card blue">
+          <div class="fraction-input-header">
+            <span><strong>Fracción A</strong></span>
+          </div>
+          <div class="fraction-input-row">
+            <div class="frac-display">
+              <span><input id="numA" type="number" value="2" /></span>
+              <span class="frac-bar"></span>
+              <span><input id="denA" type="number" value="3" min="1" /></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fraction-input-card yellow">
+          <div class="fraction-input-header">
+            <span><strong>Fracción B</strong></span>
+          </div>
+          <div class="fraction-input-row">
+            <div class="frac-display">
+              <span><input id="numB" type="number" value="3" /></span>
+              <span class="frac-bar"></span>
+              <span><input id="denB" type="number" value="4" min="1" /></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid" style="gap:.75rem;">
+        <div style="display:flex; gap:.75rem; align-items:stretch;">
+          <div class="op-selector">
+            <button id="btnMul" class="op-button active" data-op="mul" type="button">×</button>
+            <button id="btnDiv" class="op-button" data-op="div" type="button">÷</button>
+          </div>
+          <div style="flex:1; font-size:.9rem; display:flex; flex-direction:column; justify-content:center; gap:.3rem;">
+            <div class="pill-op">
+              <span>Si eliges</span> <strong>×</strong>
+              <span>→ una <strong>parte de otra parte</strong>.</span>
+            </div>
+            <div class="pill-op">
+              <span>Si eliges</span> <strong>÷</strong>
+              <span>→ cuántas veces <strong>cabe</strong> una fracción en otra.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:.75rem;">
+          <canvas id="pieA" height="180"></canvas>
+          <canvas id="pieB" height="180"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="errorBox" class="error-box"></div>
+  </section>
+
+  <!-- Modelo de área (solo multiplicación) -->
+  <section class="card card-muted" style="margin-top:1rem;">
+    <details>
+      <summary>Parte de una parte: modelo de área</summary>
+      <div class="section-body" id="sectionMulModel">
+        <p class="muted">Primero vemos cada fracción por separado y, por último, la zona en la que se solapan las dos: esa es la fracción resultado.</p>
+
+        <div class="area-row">
+          <div class="area-cell">
+            <span class="tag"><span id="labelFracA">A = 2/3</span></span>
+            <canvas id="gridA" height="160"></canvas>
+          </div>
+
+          <div class="area-op">
+            <button class="mini-op-button" type="button">×</button>
+          </div>
+
+          <div class="area-cell">
+            <span class="tag"><span id="labelFracB">B = 3/4</span></span>
+            <canvas id="gridB" height="160"></canvas>
+          </div>
+
+          <div class="area-op">
+            <button class="mini-op-button" type="button">=</button>
+          </div>
+
+          <div class="area-cell">
+            <span class="tag"><span id="labelResult">—</span></span>
+            <canvas id="gridRes" height="160"></canvas>
+          </div>
+        </div>
+
+        <div style="margin-top:.6rem;">
+          <span class="tag green">Animación: cómo se combinan A y B</span>
+          <canvas id="gridMulAnim" height="180" style="margin-top:.35rem;"></canvas>
+        </div>
+
+        <p id="mulModelText" class="muted" style="margin-top:.4rem;"></p>
+      </div>
+      <div class="section-body muted hidden" id="sectionMulModelDisabled">
+        <p>Este modelo solo se usa cuando la operación es <strong>multiplicación</strong> (×). Elige × arriba para verlo en acción.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- Modelo división (solo división) -->
+  <section class="card card-muted" style="margin-top:.75rem;">
+    <details>
+      <summary>¿Cuántas veces cabe? Modelo de división</summary>
+      <div class="section-body" id="sectionDivModel">
+        <p>En una división de fracciones <strong>A ÷ B</strong> nos preguntamos:</p>
+        <p class="highlight">«¿Cuántas veces cabe la fracción B en la fracción A?»</p>
+
+        <p class="muted">Usamos una barra para representar la fracción A y otra, a la misma escala, para la fracción B.</p>
+        <canvas id="divBar" height="120"></canvas>
+
+        <p style="margin-top:.5rem;">
+          En lugar de contar a mano cuántas veces cabe, utilizamos una regla muy útil:
+        </p>
+        <p class="highlight" id="invertRuleText"></p>
+        <p class="muted" id="invertExplanation"></p>
+      </div>
+      <div class="section-body muted hidden" id="sectionDivModelDisabled">
+        <p>Este modelo solo se usa cuando la operación es <strong>división</strong> (÷). Elige ÷ arriba para verlo en acción.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2. Hacemos la operación paso a paso -->
+  <section class="card" style="margin-top:1rem;">
+    <details>
+      <summary><span class="badge">2</span> Hacemos la operación paso a paso</summary>
+      <div class="section-body">
+        <p id="formalIntro" class="muted"></p>
+
+        <div class="math-row" id="formalOpRow"></div>
+
+        <div class="result-box" id="resultBox">
+          <div class="result-line" id="resultUnsimplified"></div>
+        </div>
+
+        <div style="margin-top:.75rem;">
+          <div class="grid" style="margin-top:.35rem;">
+            <canvas id="pieResult" height="180"></canvas>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 3. Simplificamos el resultado -->
+  <section class="card" style="margin-top:.75rem;">
+    <details>
+      <summary><span class="badge">3</span> Simplificamos el resultado</summary>
+      <div class="section-body">
+        <p>Para simplificar una fracción buscamos un número mayor que 1 que divida al numerador y al denominador. Dividiendo los dos entre ese número obtenemos una fracción <strong>equivalente</strong>, más sencilla de leer.</p>
+        <p class="muted">Los dos quesitos muestran que la parte coloreada es la misma: solo cambia cómo hemos dividido la unidad.</p>
+
+        <div class="simplify-row">
+          <div class="simplify-cell">
+            <span class="tag">
+              Fracción original:
+              <span id="labelSimplOrig">—</span>
+            </span>
+            <canvas id="pieSimplOrig" height="180"></canvas>
+          </div>
+
+          <div class="simplify-op">
+            <button id="btnSimplInfo" class="mini-op-button" type="button">÷ 2</button>
+          </div>
+
+          <div class="simplify-cell" id="simplifiedCell">
+            <span class="tag">
+              Fracción simplificada:
+              <span id="labelSimplNew">—</span>
+            </span>
+            <canvas id="pieSimplNew" height="180"></canvas>
+          </div>
+        </div>
+
+        <p id="simplifyText" class="muted" style="margin-top:.5rem;"></p>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <span>© 2025 · App educativa de multiplicación y división de fracciones.</span>
+    <span>Licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a> · Autor: David Rodríguez</span>
+  </footer>
+</main>
+
+<script>
+(function(){
+  const numA = document.getElementById("numA");
+  const denA = document.getElementById("denA");
+  const numB = document.getElementById("numB");
+  const denB = document.getElementById("denB");
+
+  const btnMul = document.getElementById("btnMul");
+  const btnDiv = document.getElementById("btnDiv");
+
+  const pieA = document.getElementById("pieA");
+  const pieB = document.getElementById("pieB");
+  const pieResult = document.getElementById("pieResult");
+  const pieSimplOrig = document.getElementById("pieSimplOrig");
+  const pieSimplNew = document.getElementById("pieSimplNew");
+
+  const gridA = document.getElementById("gridA");
+  const gridB = document.getElementById("gridB");
+  const gridRes = document.getElementById("gridRes");
+  const gridMulAnim = document.getElementById("gridMulAnim");
+  const divBar = document.getElementById("divBar");
+
+  const labelFracA = document.getElementById("labelFracA");
+  const labelFracB = document.getElementById("labelFracB");
+  const labelResult = document.getElementById("labelResult");
+
+  const labelSimplOrig = document.getElementById("labelSimplOrig");
+  const labelSimplNew = document.getElementById("labelSimplNew");
+  const btnSimplInfo = document.getElementById("btnSimplInfo");
+  const simplifiedCell = document.getElementById("simplifiedCell");
+
+  const errorBox = document.getElementById("errorBox");
+
+  const sectionMulModel = document.getElementById("sectionMulModel");
+  const sectionMulModelDisabled = document.getElementById("sectionMulModelDisabled");
+  const sectionDivModel = document.getElementById("sectionDivModel");
+  const sectionDivModelDisabled = document.getElementById("sectionDivModelDisabled");
+
+  const mulModelText = document.getElementById("mulModelText");
+  const formalIntro = document.getElementById("formalIntro");
+  const formalOpRow = document.getElementById("formalOpRow");
+  const resultBox = document.getElementById("resultBox");
+  const resultUnsimplified = document.getElementById("resultUnsimplified");
+
+  const invertRuleText = document.getElementById("invertRuleText");
+  const invertExplanation = document.getElementById("invertExplanation");
+  const simplifyText = document.getElementById("simplifyText");
+
+  let currentOp = "mul";
+  let lastResult = null;
+
+  let mulAnimId = null;
+  let mulAnimStart = null;
+  let mulAnimFractions = null;
+
+  function gcd(a,b){
+    a = Math.abs(a);
+    b = Math.abs(b);
+    if(!b) return a || 1;
+    while(b){
+      const t=b;
+      b=a%b;
+      a=t;
+    }
+    return a || 1;
+  }
+
+  function lcm(a,b){
+    if(a===0 || b===0) return 0;
+    return Math.abs(a*b)/gcd(a,b);
+  }
+
+  function showError(msg){
+    errorBox.textContent = msg;
+    errorBox.style.display = "block";
+  }
+
+  function clearError(){
+    errorBox.textContent = "";
+    errorBox.style.display = "none";
+  }
+
+  function readFractions(){
+    const a = parseInt(numA.value,10);
+    const b = parseInt(denA.value,10);
+    const c = parseInt(numB.value,10);
+    const d = parseInt(denB.value,10);
+
+    if(isNaN(a) || isNaN(b) || isNaN(c) || isNaN(d)){
+      showError("Por favor, completa todos los numeradores y denominadores.");
+      return null;
+    }
+    if(b === 0 || d === 0){
+      showError("El denominador no puede ser 0.");
+      return null;
+    }
+    clearError();
+    return {a,b,c,d};
+  }
+
+  // ✨ FUNCIÓN AJUSTADA: cortes y partes pintadas alineadas
+  function drawFractionPie(canvas, num, den, colorMain, colorBg){
+    if(!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+
+    if(!den || den <= 0){
+      return;
+    }
+
+    const absNum = Math.abs(num);
+    const maxCircles = 8;
+    let fullCircles = Math.floor(absNum / den);
+    let remainder = absNum % den;
+
+    if(fullCircles > maxCircles){
+      fullCircles = maxCircles;
+      remainder = 0;
+    }
+
+    let totalCircles = fullCircles + (remainder > 0 ? 1 : 0);
+
+    if(totalCircles === 0 && absNum > 0){
+      totalCircles = 1;
+      remainder = absNum;
+    }
+
+    if(absNum === 0){
+      totalCircles = 1;
+      fullCircles = 0;
+      remainder = 0;
+    }
+
+    const margin = 10;
+    const perRow = Math.min(3, totalCircles);
+    const rows = Math.ceil(totalCircles / perRow);
+
+    const radius = Math.min(
+      (w - margin * 2) / (perRow * 2),
+      (h - margin * 2) / (rows * 2)
+    );
+
+    if(radius <= 0){
+      return;
+    }
+
+    function drawCircle(filledParts){
+      const step = 2 * Math.PI / den;
+      const offset = -Math.PI / 2; // empezamos arriba (12 en punto)
+
+      // Fondo completo
+      ctx.beginPath();
+      ctx.arc(0,0,radius,0,2*Math.PI);
+      ctx.fillStyle = colorBg;
+      ctx.fill();
+
+      // Partes pintadas, trozo a trozo, alineadas con los cortes
+      if(filledParts > 0){
+        ctx.fillStyle = colorMain;
+        for(let i=0;i<filledParts;i++){
+          const start = offset + i*step;
+          const end = start + step;
+          ctx.beginPath();
+          ctx.moveTo(0,0);
+          ctx.arc(0,0,radius,start,end);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+
+      // Líneas negras de división y contorno
+      ctx.save();
+      ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 1.4;
+
+      for(let i=0;i<den;i++){
+        const angle = offset + i*step;
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(radius*Math.cos(angle), radius*Math.sin(angle));
+        ctx.stroke();
+      }
+
+      ctx.beginPath();
+      ctx.arc(0,0,radius,0,2*Math.PI);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    ctx.save();
+    let circleIndex = 0;
+    for(let r=0; r<rows; r++){
+      for(let c=0; c<perRow; c++){
+        if(circleIndex >= totalCircles) break;
+        const centerX = margin + radius + c * 2 * radius;
+        const centerY = margin + radius + r * 2 * radius;
+        ctx.save();
+        ctx.translate(centerX, centerY);
+
+        let filled;
+        if(absNum === 0){
+          filled = 0;
+        }else if(circleIndex < fullCircles){
+          filled = den;
+        }else{
+          filled = remainder;
+        }
+        drawCircle(filled);
+
+        ctx.restore();
+        circleIndex++;
+      }
+    }
+    ctx.restore();
+
+    if(num === 0){
+      ctx.save();
+      ctx.fillStyle = "#9ca3af";
+      ctx.font = "12px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillText("0", w/2, h/2+4);
+      ctx.restore();
+    }else if(num < 0){
+      ctx.save();
+      ctx.fillStyle = "#111827";
+      ctx.font = "14px system-ui";
+      ctx.textAlign = "left";
+      ctx.fillText("−", 4, 14);
+      ctx.restore();
+    }
+  }
+
+  // Panel de área
+  function drawAreaPanel(canvas, cols, rows, usedCols, usedRows, mode){
+    if(!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+
+    if(cols <= 0 || rows <= 0) return;
+
+    const margin = 10;
+    const cellSize = Math.min(
+      (w - margin*2) / cols,
+      (h - margin*2) / rows
+    );
+    const baseX = (w - cols*cellSize)/2;
+    const baseY = (h - rows*cellSize)/2;
+
+    ctx.save();
+    ctx.translate(baseX, baseY);
+
+    if(mode === "A"){
+      ctx.fillStyle = "rgba(37,99,235,0.28)";
+      for(let c=0;c<usedCols;c++){
+        ctx.fillRect(c*cellSize, 0, cellSize, rows*cellSize);
+      }
+    }else if(mode === "B"){
+      ctx.fillStyle = "rgba(249,115,22,0.28)";
+      for(let r=0;r<usedRows;r++){
+        ctx.fillRect(0, r*cellSize, cols*cellSize, cellSize);
+      }
+    }else if(mode === "R"){
+      ctx.fillStyle = "rgba(22,163,74,0.6)";
+      for(let r=0;r<usedRows;r++){
+        for(let c=0;c<usedCols;c++){
+          ctx.fillRect(c*cellSize, r*cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 1.2;
+
+    if(mode === "A"){
+      for(let c=0;c<=cols;c++){
+        ctx.beginPath();
+        ctx.moveTo(c*cellSize, 0);
+        ctx.lineTo(c*cellSize, rows*cellSize);
+        ctx.stroke();
+      }
+      ctx.strokeRect(0,0,cols*cellSize,rows*cellSize);
+    }else if(mode === "B"){
+      for(let r=0;r<=rows;r++){
+        ctx.beginPath();
+        ctx.moveTo(0, r*cellSize);
+        ctx.lineTo(cols*cellSize, r*cellSize);
+        ctx.stroke();
+      }
+      ctx.strokeRect(0,0,cols*cellSize,rows*cellSize);
+    }else{
+      for(let r=0;r<=rows;r++){
+        ctx.beginPath();
+        ctx.moveTo(0, r*cellSize);
+        ctx.lineTo(cols*cellSize, r*cellSize);
+        ctx.stroke();
+      }
+      for(let c=0;c<=cols;c++){
+        ctx.beginPath();
+        ctx.moveTo(c*cellSize, 0);
+        ctx.lineTo(c*cellSize, rows*cellSize);
+        ctx.stroke();
+      }
+      ctx.strokeRect(0,0,cols*cellSize,rows*cellSize);
+    }
+
+    ctx.restore();
+  }
+
+  function startMulAnimation(f){
+    if(!gridMulAnim) return;
+    mulAnimFractions = {...f};
+    mulAnimStart = null;
+    if(mulAnimId) cancelAnimationFrame(mulAnimId);
+
+    const step = (timestamp)=>{
+      if(!mulAnimFractions || currentOp !== "mul"){
+        clearMulAnimCanvas();
+        return;
+      }
+      if(!mulAnimStart) mulAnimStart = timestamp;
+      const duration = 4000;
+      const t = (timestamp - mulAnimStart) % duration;
+      const phase = Math.min(t/2000, 1);
+      drawMulAnimFrame(mulAnimFractions, phase);
+      mulAnimId = requestAnimationFrame(step);
+    };
+    mulAnimId = requestAnimationFrame(step);
+  }
+
+  function clearMulAnimCanvas(){
+    if(!gridMulAnim) return;
+    const ctx = gridMulAnim.getContext("2d");
+    ctx.clearRect(0,0,gridMulAnim.width,gridMulAnim.height);
+  }
+
+  function stopMulAnimation(){
+    if(mulAnimId) cancelAnimationFrame(mulAnimId);
+    mulAnimId = null;
+    mulAnimStart = null;
+    clearMulAnimCanvas();
+  }
+
+  function drawMulAnimFrame(f, phase){
+    const canvas = gridMulAnim;
+    if(!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+
+    const cols = Math.max(1, Math.min(f.b, 12));
+    const rows = Math.max(1, Math.min(f.d, 12));
+    const usedCols = Math.round(Math.min(Math.max(f.a,0),cols));
+    const usedRows = Math.round(Math.min(Math.max(f.c,0),rows));
+
+    const margin = 20;
+    const cellSize = Math.min(
+      (w - margin*2) / cols,
+      (h - margin*2) / rows
+    );
+    const gridW = cols * cellSize;
+    const gridH = rows * cellSize;
+    const baseX = (w - gridW)/2;
+    const baseY = (h - gridH)/2;
+
+    const shift = gridW * 0.5;
+    const offsetA = -shift * (1 - phase);
+    const offsetB = shift * (1 - phase);
+
+    ctx.save();
+    ctx.translate(baseX + offsetA, baseY);
+    ctx.fillStyle = "rgba(37,99,235,0.35)";
+    for(let c=0;c<usedCols;c++){
+      ctx.fillRect(c*cellSize, 0, cellSize, rows*cellSize);
+    }
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(baseX + offsetB, baseY);
+    ctx.fillStyle = "rgba(249,115,22,0.35)";
+    for(let r=0;r<usedRows;r++){
+      ctx.fillRect(0, r*cellSize, cols*cellSize, cellSize);
+    }
+    ctx.restore();
+
+    const alphaIntersection = Math.max(0, phase - 0.3);
+    if(alphaIntersection > 0){
+      ctx.save();
+      ctx.translate(baseX, baseY);
+      ctx.globalAlpha = alphaIntersection;
+      ctx.fillStyle = "rgba(22,163,74,0.7)";
+      for(let r=0;r<usedRows;r++){
+        for(let c=0;c<usedCols;c++){
+          ctx.fillRect(c*cellSize, r*cellSize, cellSize, cellSize);
+        }
+      }
+      ctx.restore();
+    }
+
+    ctx.save();
+    ctx.translate(baseX, baseY);
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 1.2;
+    for(let r=0;r<=rows;r++){
+      ctx.beginPath();
+      ctx.moveTo(0, r*cellSize);
+      ctx.lineTo(cols*cellSize, r*cellSize);
+      ctx.stroke();
+    }
+    for(let c=0;c<=cols;c++){
+      ctx.beginPath();
+      ctx.moveTo(c*cellSize, 0);
+      ctx.lineTo(c*cellSize, rows*cellSize);
+      ctx.stroke();
+    }
+    ctx.strokeRect(0,0,cols*cellSize,rows*cellSize);
+    ctx.restore();
+  }
+
+  function setOp(op){
+    currentOp = op;
+    if(op==="mul"){
+      btnMul.classList.add("active");
+      btnDiv.classList.remove("active");
+      sectionMulModel.classList.remove("hidden");
+      sectionMulModelDisabled.classList.add("hidden");
+      sectionDivModel.classList.add("hidden");
+      sectionDivModelDisabled.classList.remove("hidden");
+    }else{
+      btnDiv.classList.add("active");
+      btnMul.classList.remove("active");
+      sectionDivModel.classList.remove("hidden");
+      sectionDivModelDisabled.classList.add("hidden");
+      sectionMulModel.classList.add("hidden");
+      sectionMulModelDisabled.classList.remove("hidden");
+    }
+    updateAll();
+  }
+
+  function updatePies(f){
+    drawFractionPie(pieA, f.a, f.b, "rgba(37,99,235,0.85)", "rgba(226,232,240,0.9)");
+    drawFractionPie(pieB, f.c, f.d, "rgba(249,115,22,0.85)", "rgba(254,243,199,0.85)");
+  }
+
+  function fracHTML(num, den){
+    return `
+      <div class="frac-big">
+        <span>${num}</span>
+        <span class="bar"></span>
+        <span>${den}</span>
+      </div>
+    `;
+  }
+
+  function updateFormalAndResult(f){
+    let numRes, denRes;
+    if(currentOp==="mul"){
+      numRes = f.a * f.c;
+      denRes = f.b * f.d;
+      formalIntro.textContent = "Para multiplicar fracciones, multiplicamos numeradores entre sí y denominadores entre sí.";
+    }else{
+      if(f.c === 0){
+        showError("No se puede dividir entre una fracción con numerador 0.");
+        resultBox.style.display = "none";
+        formalOpRow.innerHTML = "";
+        lastResult = null;
+        updateSimplifyView();
+        return;
+      }
+      numRes = f.a * f.d;
+      denRes = f.b * f.c;
+      formalIntro.textContent = "Para dividir fracciones, multiplicamos por la inversa de la segunda fracción (invertimos numerador y denominador).";
+    }
+
+    if(denRes === 0){
+      showError("El denominador del resultado es 0. Revisa los datos.");
+      resultBox.style.display = "none";
+      formalOpRow.innerHTML = "";
+      lastResult = null;
+      updateSimplifyView();
+      return;
+    }
+
+    clearError();
+    resultBox.style.display = "block";
+
+    let html = "";
+
+    if(currentOp === "mul"){
+      html += fracHTML(f.a, f.b);
+      html += `<span class="op-symbol">×</span>`;
+      html += fracHTML(f.c, f.d);
+      html += `<span class="op-symbol">=</span>`;
+      html += fracHTML(`${f.a}×${f.c}`, `${f.b}×${f.d}`);
+      html += `<span class="op-symbol">=</span>`;
+      html += fracHTML(numRes, denRes);
+    }else{
+      html += fracHTML(f.a, f.b);
+      html += `<span class="op-symbol">÷</span>`;
+      html += fracHTML(f.c, f.d);
+      html += `<span class="op-symbol">=</span>`;
+      html += fracHTML(f.a, f.b);
+      html += `<span class="op-symbol">×</span>`;
+      html += fracHTML(f.d, f.c);
+      html += `<span class="op-symbol">=</span>`;
+      html += fracHTML(`${f.a}×${f.d}`, `${f.b}×${f.c}`);
+      html += `<span class="op-symbol">=</span>`;
+      html += fracHTML(numRes, denRes);
+    }
+
+    formalOpRow.innerHTML = html;
+
+    resultUnsimplified.innerHTML =
+      `Resultado de la operación: <span class="highlight">${numRes}/${denRes}</span> (sin simplificar).`;
+
+    const g = gcd(numRes,denRes);
+    const simpNum = numRes/g;
+    const simpDen = denRes/g;
+    lastResult = {numRes, denRes, simpNum, simpDen, g};
+
+    drawFractionPie(pieResult, numRes, denRes, "rgba(22,163,74,0.9)", "rgba(220,252,231,0.95)");
+    updateSimplifyView();
+  }
+
+  function updateMulModel(f){
+    if(currentOp !== "mul"){
+      if(gridA) gridA.getContext("2d").clearRect(0,0,gridA.width,gridA.height);
+      if(gridB) gridB.getContext("2d").clearRect(0,0,gridB.width,gridB.height);
+      if(gridRes) gridRes.getContext("2d").clearRect(0,0,gridRes.width,gridRes.height);
+      if(labelResult) labelResult.textContent = "—";
+      mulModelText.textContent = "";
+      stopMulAnimation();
+      return;
+    }
+
+    const cols = Math.max(1, Math.min(f.b, 12));
+    const rows = Math.max(1, Math.min(f.d, 12));
+    const usedCols = Math.round(Math.min(Math.max(f.a,0),cols));
+    const usedRows = Math.round(Math.min(Math.max(f.c,0),rows));
+
+    if(labelFracA) labelFracA.textContent = `A = ${f.a}/${f.b}`;
+    if(labelFracB) labelFracB.textContent = `B = ${f.c}/${f.d}`;
+
+    drawAreaPanel(gridA, cols, rows, usedCols, usedRows, "A");
+    drawAreaPanel(gridB, cols, rows, usedCols, usedRows, "B");
+    drawAreaPanel(gridRes, cols, rows, usedCols, usedRows, "R");
+
+    const numRes = f.a * f.c;
+    const denRes = f.b * f.d;
+    if(labelResult) labelResult.textContent = `${numRes}/${denRes}`;
+
+    mulModelText.textContent =
+      `En el primer rectángulo vemos la fracción A (columnas coloreadas), en el segundo la fracción B (filas coloreadas) `+
+      `y en el tercero la zona que cumple las dos condiciones a la vez: ${numRes}/${denRes} del total.`;
+
+    startMulAnimation(f);
+  }
+
+  function updateDivModel(f){
+    const ctx = divBar.getContext("2d");
+    const w = divBar.width;
+    const h = divBar.height;
+    ctx.clearRect(0,0,w,h);
+
+    if(currentOp!=="div"){
+      invertRuleText.textContent = "";
+      invertExplanation.textContent = "";
+      return;
+    }
+
+    const L = lcm(f.b, f.d) || (f.b * f.d);
+    const unit = Math.max(1, L);
+    const scale = (w - 60) / unit;
+    const baseY = h/2;
+
+    const lenA = (f.a * (L / f.b));
+    const lenB = (f.c * (L / f.d));
+
+    ctx.save();
+    ctx.translate(30,0);
+
+    ctx.fillStyle = "rgba(37,99,235,0.2)";
+    ctx.strokeStyle = "rgba(37,99,235,1)";
+    ctx.lineWidth = 2;
+    ctx.fillRect(0, baseY-20, lenA*scale, 14);
+    ctx.strokeRect(0, baseY-20, lenA*scale, 14);
+    ctx.fillStyle = "#0f172a";
+    ctx.font = "11px system-ui";
+    ctx.fillText("A", -15, baseY-10);
+
+    ctx.fillStyle = "rgba(249,115,22,0.2)";
+    ctx.strokeStyle = "rgba(249,115,22,1)";
+    ctx.fillRect(0, baseY+6, lenB*scale, 14);
+    ctx.strokeRect(0, baseY+6, lenB*scale, 14);
+    ctx.fillStyle = "#0f172a";
+    ctx.font = "11px system-ui";
+    ctx.fillText("B", -15, baseY+16);
+
+    ctx.restore();
+
+    const numRes = f.a * f.d;
+    const denRes = f.b * f.c;
+    const g = gcd(numRes,denRes);
+    const simpNum = numRes/g;
+    const simpDen = denRes/g;
+
+    invertRuleText.innerHTML =
+      `<span class="tag green">Regla</span> &nbsp; `+
+      `<strong>${f.a}/${f.b} ÷ ${f.c}/${f.d} = ${f.a}/${f.b} × ${f.d}/${f.c} = ${numRes}/${denRes}</strong>`;
+
+    invertExplanation.innerHTML =
+      `La inversa de ${f.c}/${f.d} es ${f.d}/${f.c} porque al multiplicarlas obtenemos 1. `+
+      `Así, dividir entre ${f.c}/${f.d} es lo mismo que multiplicar por ${f.d}/${f.c}. `+
+      `Si simplificamos el resultado, obtenemos ${simpNum}/${simpDen}.`;
+  }
+
+  function updateSimplifyView(){
+    if(!pieSimplOrig || !pieSimplNew){
+      return;
+    }
+    const ctx1 = pieSimplOrig.getContext("2d");
+    const ctx2 = pieSimplNew.getContext("2d");
+    ctx1.clearRect(0,0,pieSimplOrig.width,pieSimplOrig.height);
+    ctx2.clearRect(0,0,pieSimplNew.width,pieSimplNew.height);
+
+    if(!lastResult){
+      if(labelSimplOrig) labelSimplOrig.textContent = "—";
+      if(labelSimplNew) labelSimplNew.textContent = "—";
+      if(btnSimplInfo) btnSimplInfo.style.display = "none";
+      if(simplifiedCell) simplifiedCell.style.display = "none";
+      simplifyText.textContent = "Primero realiza una operación con fracciones para poder simplificar su resultado.";
+      return;
+    }
+
+    const {numRes, denRes, simpNum, simpDen, g} = lastResult;
+
+    drawFractionPie(pieSimplOrig, numRes, denRes, "rgba(37,99,235,0.85)", "rgba(226,232,240,0.9)");
+    if(labelSimplOrig) labelSimplOrig.textContent = `${numRes}/${denRes}`;
+
+    if(g > 1){
+      drawFractionPie(pieSimplNew, simpNum, simpDen, "rgba(22,163,74,0.9)", "rgba(220,252,231,0.95)");
+      if(labelSimplNew) labelSimplNew.textContent = `${simpNum}/${simpDen}`;
+      if(btnSimplInfo){
+        btnSimplInfo.textContent = `÷ ${g}`;
+        btnSimplInfo.style.display = "inline-flex";
+      }
+      if(simplifiedCell) simplifiedCell.style.display = "flex";
+
+      simplifyText.textContent =
+        `Partimos de la fracción original ${numRes}/${denRes}. El máximo común divisor es ${g}, `+
+        `así que dividimos numerador y denominador entre ${g}: `+
+        `${numRes} ÷ ${g} = ${simpNum} y ${denRes} ÷ ${g} = ${simpDen}. `+
+        `La fracción simplificada es ${simpNum}/${simpDen}, que representa la misma cantidad.`;
+    }else{
+      if(labelSimplNew) labelSimplNew.textContent = "—";
+      if(btnSimplInfo) btnSimplInfo.style.display = "none";
+      if(simplifiedCell) simplifiedCell.style.display = "none";
+
+      simplifyText.textContent =
+        `La fracción ${numRes}/${denRes} es irreducible: no hay ningún número mayor que 1 `+
+        `que divida a la vez al numerador y al denominador. La forma más sencilla ya es ${numRes}/${denRes}.`;
+    }
+  }
+
+  function updateAll(){
+    const f = readFractions();
+    if(!f) return;
+
+    updatePies(f);
+    if(currentOp==="mul"){
+      updateMulModel(f);
+    }else{
+      updateMulModel(f);
+    }
+    updateFormalAndResult(f);
+    if(currentOp==="div"){
+      updateDivModel(f);
+    }else{
+      const ctx = divBar.getContext("2d");
+      ctx.clearRect(0,0,divBar.width,divBar.height);
+      invertRuleText.textContent = "";
+      invertExplanation.textContent = "";
+    }
+  }
+
+  [numA,denA,numB,denB].forEach(el=>{
+    el.addEventListener("input", ()=> updateAll());
+  });
+
+  btnMul.addEventListener("click", ()=> setOp("mul"));
+  btnDiv.addEventListener("click", ()=> setOp("div"));
+
+  function resizeCanvases(){
+    [pieA,pieB,pieResult,pieSimplOrig,pieSimplNew,
+     gridA,gridB,gridRes,gridMulAnim,divBar].forEach(cv=>{
+      if(!cv) return;
+      const rect = cv.getBoundingClientRect();
+      if(rect.width){
+        cv.width = rect.width;
+      }
+    });
+    updateAll();
+    updateSimplifyView();
+  }
+  window.addEventListener("resize", resizeCanvases);
+
+  resizeCanvases();
+})();
+</script>
+</body>
+</html>
