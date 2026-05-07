@@ -1,0 +1,2093 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Balanza Algebraica</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [["\\(", "\\)"], ["$", "$"]] },
+      svg: { fontCache: "global" },
+      startup: {
+        typeset: false,
+        pageReady: () => {
+          return MathJax.startup.defaultPageReady().then(() => {
+            window.mathJaxReady = true;
+            window.dispatchEvent(new Event("mathjax-ready"));
+          });
+        }
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    :root {
+      --ink: #151927;
+      --paper: #fffdf6;
+      --blue: #2777ff;
+      --blue-dark: #1555cf;
+      --cyan: #23d3e6;
+      --yellow: #ffd34d;
+      --orange: #ff8b3d;
+      --green: #1dbf73;
+      --pink: #ff5ca8;
+      --violet: #7457ff;
+      --danger: #ff4e5f;
+      --shadow: 0 18px 35px rgba(21, 25, 39, .18);
+      --small-shadow: 0 10px 20px rgba(21, 25, 39, .14);
+      font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 8%, rgba(255, 211, 77, .55), transparent 20rem),
+        radial-gradient(circle at 86% 12%, rgba(35, 211, 230, .38), transparent 18rem),
+        linear-gradient(135deg, #f9fbff 0%, #fff3d9 48%, #e7fbff 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .22;
+      background-image:
+        linear-gradient(90deg, rgba(21, 25, 39, .08) 1px, transparent 1px),
+        linear-gradient(rgba(21, 25, 39, .08) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+    }
+
+    .pending-math {
+      visibility: hidden;
+    }
+
+    .app {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 22px 0 34px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      border: 4px solid var(--ink);
+      border-radius: 18px;
+      background: linear-gradient(145deg, var(--yellow), #fff2a6);
+      box-shadow: var(--small-shadow);
+      transform: rotate(-4deg);
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: .92;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #3d4357;
+    }
+
+    .status {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+      font-weight: 900;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      min-width: 86px;
+      padding: 8px 12px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: white;
+      box-shadow: 4px 4px 0 var(--ink);
+      text-align: center;
+    }
+
+    .level-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .level-label {
+      padding: 8px 10px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: white;
+      box-shadow: 4px 4px 0 var(--ink);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .level-btn {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      min-height: 42px;
+      padding: 0;
+      border-width: 3px;
+      background: linear-gradient(180deg, #fff, #e8f5ff);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-size: 1rem;
+    }
+
+    .level-btn.active {
+      background: linear-gradient(180deg, var(--yellow), #ff9f43);
+      transform: translate(3px, 3px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    .panel {
+      border: 4px solid var(--ink);
+      border-radius: 8px;
+      background: rgba(255, 253, 246, .94);
+      box-shadow: var(--shadow);
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 12px;
+      align-items: end;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      font-size: .93rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #3d4357;
+    }
+
+    input {
+      width: 100%;
+      min-height: 54px;
+      padding: 12px 14px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      font: 900 1.25rem/1.2 "Trebuchet MS", system-ui, sans-serif;
+      box-shadow: inset 0 -4px 0 rgba(21, 25, 39, .08);
+    }
+
+    input:focus, button:focus-visible, select:focus-visible {
+      outline: 4px solid rgba(35, 211, 230, .55);
+      outline-offset: 2px;
+    }
+
+    button {
+      min-height: 54px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      color: var(--ink);
+      background: white;
+      box-shadow: 5px 5px 0 var(--ink);
+      font: 900 1rem/1 "Trebuchet MS", system-ui, sans-serif;
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+    }
+
+    button:hover { transform: translate(-1px, -1px); filter: saturate(1.08); }
+    button:active { transform: translate(4px, 4px); box-shadow: 1px 1px 0 var(--ink); }
+    button:disabled { cursor: not-allowed; filter: grayscale(.5); opacity: .62; }
+
+    .primary {
+      padding: 0 22px;
+      background: linear-gradient(180deg, var(--green), #8df4bb);
+    }
+
+    .secondary {
+      padding: 0 16px;
+      background: linear-gradient(180deg, #fff, #e8f5ff);
+    }
+
+    .demo {
+      padding: 0 16px;
+      background: linear-gradient(180deg, #ffe6f3, #ff9bca);
+    }
+
+    .game {
+      display: grid;
+      grid-template-columns: minmax(360px, 1fr) minmax(250px, 285px) minmax(285px, 330px);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 472px;
+      padding: 18px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.64)),
+        repeating-linear-gradient(45deg, rgba(39,119,255,.08) 0 12px, transparent 12px 24px);
+    }
+
+    .message {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 58px;
+      padding: 10px 12px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #fff, #f5fbff);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-weight: 900;
+    }
+
+    .message small {
+      color: #535b72;
+      font-size: .9rem;
+      font-weight: 800;
+    }
+
+    .balance-wrap {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 308px;
+      margin-top: 14px;
+      isolation: isolate;
+    }
+
+    .balance {
+      position: relative;
+      width: min(620px, 100%);
+      height: 318px;
+      transition: transform .42s cubic-bezier(.2, .9, .2, 1.15);
+    }
+
+    .balance.bump { animation: bump .42s ease; }
+
+    @keyframes bump {
+      0%, 100% { transform: translateY(0); }
+      30% { transform: translateY(8px); }
+      60% { transform: translateY(-4px); }
+    }
+
+    .beam {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 88px;
+      height: 18px;
+      border: 4px solid var(--ink);
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--yellow), #ffb933);
+      box-shadow: 0 8px 0 rgba(21, 25, 39, .14);
+      transform-origin: center;
+    }
+
+    .pillar {
+      position: absolute;
+      left: calc(50% - 20px);
+      top: 100px;
+      width: 40px;
+      height: 178px;
+      border: 4px solid var(--ink);
+      background: linear-gradient(90deg, #ff8b3d, #ffd34d);
+      border-radius: 12px 12px 0 0;
+      z-index: -1;
+    }
+
+    .base {
+      position: absolute;
+      left: calc(50% - 116px);
+      bottom: 0;
+      width: 232px;
+      height: 36px;
+      border: 4px solid var(--ink);
+      border-radius: 8px 8px 18px 18px;
+      background: linear-gradient(180deg, #34d3ff, #2777ff);
+    }
+
+    .needle {
+      position: absolute;
+      left: calc(50% - 32px);
+      top: 58px;
+      width: 64px;
+      height: 64px;
+      border: 4px solid var(--ink);
+      border-radius: 50%;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 3.15rem;
+      font-weight: 900;
+      line-height: .8;
+      z-index: 2;
+    }
+
+    .pan {
+      position: absolute;
+      top: 96px;
+      width: min(270px, 38%);
+      display: grid;
+      justify-items: center;
+      gap: 0;
+    }
+
+    .pan.left { left: 4%; }
+    .pan.right { right: 4%; }
+
+    .chain {
+      width: 148px;
+      height: 76px;
+      position: relative;
+      background: none;
+      margin-bottom: -2px;
+    }
+
+    .chain::before, .chain::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 92px;
+      background: var(--ink);
+      border-radius: 999px;
+      transform-origin: top center;
+    }
+
+    .chain::before { transform: rotate(35deg); }
+    .chain::after { transform: rotate(-35deg); }
+
+    .chain {
+      border-top: 8px solid var(--ink);
+      border-radius: 999px 999px 0 0;
+    }
+
+    .dish {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      min-height: 84px;
+      padding: 12px;
+      border: 4px solid var(--ink);
+      border-radius: 0 0 44px 44px;
+      background:
+        linear-gradient(180deg, #fff, #ecf8ff 50%, #9ae7ff);
+      box-shadow: inset 0 -10px 0 rgba(21, 25, 39, .12), var(--small-shadow);
+      text-align: center;
+      font-size: clamp(1.18rem, 2vw, 1.65rem);
+      font-weight: 900;
+    }
+
+    .side-label {
+      position: absolute;
+      top: -62px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      padding: 6px 10px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      background: var(--paper);
+      font-size: .82rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .drop-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .fall-card {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 92px;
+      height: 62px;
+      border: 4px solid var(--ink);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #fff7b8, var(--yellow));
+      box-shadow: 6px 6px 0 var(--ink);
+      font-weight: 900;
+      font-size: 1.25rem;
+      animation: fall 1.2s cubic-bezier(.18, .78, .22, 1) forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-170px) rotate(-7deg) scale(.96); opacity: 0; }
+      12% { opacity: 1; }
+      76% { transform: translateY(0) rotate(4deg) scale(1); opacity: 1; }
+      100% { transform: translateY(18px) rotate(0) scale(.88); opacity: 0; }
+    }
+
+    .toolbox {
+      display: grid;
+      gap: 14px;
+      padding: 14px;
+      min-width: 0;
+      min-height: 472px;
+      align-content: start;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,248,228,.94));
+    }
+
+    .mode {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    select {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      min-height: 46px;
+      padding: 8px 10px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: white;
+      font: 900 .96rem/1 "Trebuchet MS", system-ui, sans-serif;
+      color: var(--ink);
+      box-shadow: inset 0 -4px 0 rgba(21, 25, 39, .08);
+    }
+
+    .card-group {
+      display: grid;
+      gap: 8px;
+      padding: 8px;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .74);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .card-menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      min-height: 42px;
+      padding: 0 4px;
+      font-size: .86rem;
+      font-weight: 900;
+      color: #3d4357;
+      text-transform: uppercase;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+      overflow-wrap: anywhere;
+    }
+
+    .card-menu::-webkit-details-marker {
+      display: none;
+    }
+
+    .card-menu::after {
+      content: "+";
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: var(--yellow);
+      color: var(--ink);
+      box-shadow: 3px 3px 0 var(--ink);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .card-group[open] .card-menu::after {
+      content: "-";
+    }
+
+    .prep-state {
+      margin-left: auto;
+      padding: 2px 8px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      background: #edf1f7;
+      color: #535b72;
+      font-size: .68rem;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    #prepPanel.prep-needed {
+      background: #fff8d9;
+      animation: prepPulse 1.2s ease-in-out infinite alternate;
+    }
+
+    #prepPanel.prep-needed .prep-state {
+      background: #ffd34d;
+      color: var(--ink);
+    }
+
+    #prepPanel.prep-off {
+      opacity: .58;
+      filter: grayscale(.35);
+    }
+
+    #prepPanel.prep-complete {
+      background: #effff6;
+    }
+
+    #prepPanel.prep-complete .prep-state {
+      background: #8df4bb;
+      color: var(--ink);
+    }
+
+    @keyframes prepPulse {
+      from { box-shadow: 4px 4px 0 var(--ink); }
+      to { box-shadow: 4px 4px 0 var(--ink), 0 0 0 5px rgba(255, 211, 77, .48); }
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .prep-cards {
+      grid-template-columns: 1fr;
+    }
+
+    .op-card {
+      min-height: 48px;
+      padding: 0 6px;
+      border-width: 3px;
+      border-radius: 8px;
+      box-shadow: 4px 4px 0 var(--ink);
+      font-size: 1rem;
+      background: linear-gradient(180deg, #fff, #e9f4ff);
+    }
+
+    .op-card[data-kind="x"] { background: linear-gradient(180deg, #ffe6f3, #ff9bca); }
+    .op-card[data-kind="scale"] { background: linear-gradient(180deg, #e9fff4, #8df4bb); }
+    .op-card.good { animation: glow 1.1s ease-in-out infinite alternate; }
+
+    @keyframes glow {
+      from { filter: brightness(1); }
+      to { filter: brightness(1.15) saturate(1.3); }
+    }
+
+    .side-panel {
+      display: contents;
+    }
+
+    .toolbox {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .history {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .history {
+      padding: 14px;
+    }
+
+    .history h2, .tips h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
+
+    .history-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .history-head h2 {
+      margin: 0;
+    }
+
+    .steps-counter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #fff, #e8f5ff);
+      box-shadow: 3px 3px 0 var(--ink);
+      font-size: .82rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .steps {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .steps li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 8px;
+      align-items: start;
+      padding: 8px;
+      border: 2px solid rgba(21, 25, 39, .18);
+      border-radius: 8px;
+      background: #fff;
+      font-weight: 900;
+    }
+
+    .steps span {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-size: .8rem;
+    }
+
+    .step-detail {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .step-op {
+      color: #535b72;
+      font-size: .78rem;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    .step-equation {
+      font-size: .94rem;
+      line-height: 1.3;
+    }
+
+    .equation-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+      align-items: center;
+      column-gap: 8px;
+      width: 100%;
+    }
+
+    .eq-side {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .eq-left {
+      text-align: right;
+    }
+
+    .eq-sign {
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .eq-right {
+      text-align: left;
+    }
+
+    .op-highlight {
+      font-weight: 900;
+    }
+
+    .step-result {
+      font-size: .98rem;
+      line-height: 1.25;
+    }
+
+    .tips {
+      background: rgba(255, 255, 255, .74);
+    }
+
+    .tip-card {
+      padding: 12px;
+      border: 3px dashed rgba(21, 25, 39, .42);
+      border-radius: 8px;
+      background: #fff;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(120px);
+      max-width: min(560px, calc(100vw - 28px));
+      padding: 14px 18px;
+      border: 4px solid var(--ink);
+      border-radius: 8px;
+      background: white;
+      box-shadow: var(--shadow);
+      font-weight: 900;
+      z-index: 30;
+      opacity: 0;
+      transition: transform .22s ease, opacity .22s ease;
+    }
+
+    .app-footer {
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+      text-align: center;
+      margin-top: 18px;
+      padding: 4px 18px 10px;
+      color: #535b72;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .footer-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: nowrap;
+      font-size: .94rem;
+      line-height: 1.55;
+      white-space: nowrap;
+    }
+
+    .footer-separator {
+      color: rgba(88, 101, 106, .55);
+      font-weight: 700;
+    }
+
+    .footer-highlight {
+      display: inline-block;
+      font-weight: 800;
+      color: var(--ink);
+      background: rgba(28, 77, 127, .1);
+      border-radius: 999px;
+      padding: 2px 10px;
+      text-decoration: none;
+    }
+
+    a.footer-highlight:hover,
+    a.footer-highlight:focus-visible {
+      background: rgba(28, 77, 127, .16);
+      outline: none;
+    }
+
+    .license-subtitle {
+      max-width: 48ch;
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .confetti {
+      position: fixed;
+      top: -20px;
+      width: 12px;
+      height: 18px;
+      border: 2px solid rgba(21, 25, 39, .25);
+      animation: confetti 1.8s ease-in forwards;
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    @keyframes confetti {
+      to { transform: translateY(110vh) rotate(620deg); opacity: 0; }
+    }
+
+    @media (max-width: 980px) {
+      header, .entry, .game {
+        grid-template-columns: 1fr;
+      }
+
+      .status { justify-items: start; }
+      .badge-row { justify-content: flex-start; }
+      .entry { align-items: stretch; }
+      .side-panel {
+        display: grid;
+        gap: 16px;
+      }
+      .toolbox, .history, .tips {
+        grid-column: auto;
+        grid-row: auto;
+      }
+      .toolbox { min-height: 0; }
+      .stage { min-height: 520px; padding: 12px; }
+      .balance { height: 360px; }
+      .pan { width: 45%; }
+      .dish { min-height: 90px; font-size: 1.1rem; }
+      .chain { width: 140px; }
+    }
+
+    @media (max-width: 560px) {
+      .app { width: min(100vw - 18px, 1180px); padding-top: 12px; }
+      .brand { align-items: start; }
+      .logo { width: 52px; height: 52px; font-size: 28px; border-radius: 14px; }
+      h1 { font-size: 2rem; }
+      .subtitle { font-size: .9rem; }
+      .message { align-items: start; flex-direction: column; }
+      .footer-meta { flex-wrap: wrap; white-space: normal; }
+      .balance-wrap { min-height: 360px; }
+      .balance { height: 330px; }
+      .beam { left: 4%; right: 4%; top: 104px; }
+      .pillar { top: 116px; height: 174px; }
+      .needle { top: 74px; }
+      .pan { top: 112px; width: 46%; }
+      .chain { width: 106px; height: 82px; }
+      .chain::before, .chain::after { height: 96px; }
+      .side-label { top: -58px; min-width: 0; width: 120px; font-size: .68rem; }
+      .dish { padding: 8px; min-height: 82px; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">x</div>
+        <div>
+          <h1>Balanza Algebraica</h1>
+          <p class="subtitle">Arrastra el equilibrio hasta dejar sola a la x.</p>
+        </div>
+      </div>
+      <div class="status" aria-label="Marcador">
+        <div class="level-picker" aria-label="Seleccionar nivel">
+          <div class="level-label">Nivel</div>
+          <button class="level-btn active" type="button" data-level="1" aria-pressed="true">1</button>
+          <button class="level-btn" type="button" data-level="2" aria-pressed="false">2</button>
+          <button class="level-btn" type="button" data-level="3" aria-pressed="false">3</button>
+          <button class="level-btn" type="button" data-level="4" aria-pressed="false">4</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="entry panel" aria-label="Introducir ecuación">
+      <label>
+        Ecuación
+        <input id="equationInput" value="2x + 3 = 11" autocomplete="off" spellcheck="false">
+      </label>
+      <button class="primary" id="startBtn">Comenzar</button>
+      <button class="secondary" id="randomBtn">Reto nuevo</button>
+      <button class="demo" id="demoBtn">Ver ejemplo</button>
+    </section>
+
+    <section class="game">
+      <div class="stage panel">
+        <div class="message">
+          <div id="coach">Escribe una ecuación y pulsa comenzar.</div>
+          <small class="math" id="goal">Objetivo: conseguir \(x = número\)</small>
+        </div>
+
+        <div class="balance-wrap">
+          <div class="drop-layer" id="dropLayer"></div>
+          <div class="balance" id="balance">
+            <div class="pan left" id="leftPan">
+              <div class="side-label">Lado izquierdo</div>
+              <div class="chain"></div>
+              <div class="dish math" id="leftDish">\(2x+3\)</div>
+            </div>
+            <div class="pan right" id="rightPan">
+              <div class="side-label">Lado derecho</div>
+              <div class="chain"></div>
+              <div class="dish math" id="rightDish">\(11\)</div>
+            </div>
+            <div class="beam"></div>
+            <div class="needle">=</div>
+            <div class="pillar"></div>
+            <div class="base"></div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side-panel">
+        <div class="toolbox panel">
+          <details class="card-group" id="prepPanel">
+            <summary class="card-menu">Preparación <span class="prep-state" id="prepStatus">apagada</span></summary>
+            <div class="cards prep-cards" id="prepCards"></div>
+          </details>
+
+          <details class="card-group">
+            <summary class="card-menu">Suma/resta</summary>
+            <div class="cards" id="numberCards"></div>
+          </details>
+
+          <details class="card-group">
+            <summary class="card-menu">Multiplicación/división</summary>
+            <div class="cards" id="scaleCards"></div>
+          </details>
+
+          <details class="card-group">
+            <summary class="card-menu">Letras</summary>
+            <div class="cards" id="xCards"></div>
+          </details>
+
+          <details class="tips card-group">
+            <summary class="card-menu">Pista</summary>
+            <div class="tip-card" id="tip">Primero intenta quitar sumas o restas. Después deja una sola x.</div>
+          </details>
+        </div>
+
+        <div class="history panel">
+          <div class="history-head">
+            <h2>Historial</h2>
+            <div class="steps-counter"><span id="moves">0</span>&nbsp;pasos</div>
+          </div>
+          <ol class="steps" id="steps"></ol>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="app-footer" aria-label="Créditos">
+      <div class="footer-meta">
+        <span>Creado por:</span>
+        <span class="footer-highlight">David Rodríguez Vicente</span>
+        <span class="footer-separator">|</span>
+        <span>Licencia:</span>
+        <a class="footer-highlight" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>
+      </div>
+      <div class="license-subtitle">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</div>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    class Fraction {
+      constructor(n, d = 1) {
+        if (d === 0) throw new Error("No se puede dividir entre 0.");
+        if (!Number.isFinite(n) || !Number.isFinite(d)) throw new Error("Número no válido.");
+        const scale = Fraction.decimalScale(n, d);
+        n = Math.round(n * scale);
+        d = Math.round(d * scale);
+        if (d < 0) { n = -n; d = -d; }
+        const g = Fraction.gcd(Math.abs(n), Math.abs(d));
+        this.n = n / g;
+        this.d = d / g;
+      }
+
+      static decimalScale(...values) {
+        return values.reduce((scale, value) => {
+          const text = String(value);
+          const digits = text.includes(".") ? text.split(".")[1].length : 0;
+          return Math.max(scale, 10 ** digits);
+        }, 1);
+      }
+
+      static gcd(a, b) {
+        while (b) [a, b] = [b, a % b];
+        return a || 1;
+      }
+
+      static zero() { return new Fraction(0); }
+      static one() { return new Fraction(1); }
+      static from(value) { return value instanceof Fraction ? value : new Fraction(value); }
+      add(other) { other = Fraction.from(other); return new Fraction(this.n * other.d + other.n * this.d, this.d * other.d); }
+      sub(other) { other = Fraction.from(other); return new Fraction(this.n * other.d - other.n * this.d, this.d * other.d); }
+      mul(other) { other = Fraction.from(other); return new Fraction(this.n * other.n, this.d * other.d); }
+      div(other) {
+        other = Fraction.from(other);
+        if (other.n === 0) throw new Error("No se puede dividir entre 0.");
+        return new Fraction(this.n * other.d, this.d * other.n);
+      }
+      neg() { return new Fraction(-this.n, this.d); }
+      abs() { return new Fraction(Math.abs(this.n), this.d); }
+      isZero() { return this.n === 0; }
+      isOne() { return this.n === this.d; }
+      isMinusOne() { return this.n === -this.d; }
+      equals(other) { other = Fraction.from(other); return this.n === other.n && this.d === other.d; }
+      valueOf() { return this.n / this.d; }
+      toTex() {
+        if (this.d === 1) return String(this.n);
+        const sign = this.n < 0 ? "-" : "";
+        return `${sign}\\frac{${Math.abs(this.n)}}{${this.d}}`;
+      }
+      toPlain() {
+        if (this.d === 1) return String(this.n);
+        return `${this.n}/${this.d}`;
+      }
+    }
+
+    class Linear {
+      constructor(a = Fraction.zero(), b = Fraction.zero()) {
+        this.a = Fraction.from(a);
+        this.b = Fraction.from(b);
+      }
+
+      static x(coef = 1) { return new Linear(new Fraction(coef), Fraction.zero()); }
+      static constant(value) { return new Linear(Fraction.zero(), Fraction.from(value)); }
+      add(other) { return new Linear(this.a.add(other.a), this.b.add(other.b)); }
+      sub(other) { return new Linear(this.a.sub(other.a), this.b.sub(other.b)); }
+      neg() { return new Linear(this.a.neg(), this.b.neg()); }
+      mul(other) {
+        if (!this.a.isZero() && !other.a.isZero()) throw new Error("Esta app trabaja solo con ecuaciones lineales.");
+        if (!other.a.isZero()) return other.mul(this);
+        return new Linear(this.a.mul(other.b), this.b.mul(other.b));
+      }
+      div(other) {
+        if (!other.a.isZero()) throw new Error("Solo se puede dividir entre números, no entre expresiones con x.");
+        return new Linear(this.a.div(other.b), this.b.div(other.b));
+      }
+      isConstant() { return this.a.isZero(); }
+      isOnlyX() { return this.a.equals(Fraction.one()) && this.b.isZero(); }
+      isSolvedWith(other) { return this.isOnlyX() && other.isConstant(); }
+      toTex() {
+        const parts = [];
+        if (!this.a.isZero()) {
+          if (this.a.isOne()) parts.push("x");
+          else if (this.a.isMinusOne()) parts.push("-x");
+          else parts.push(`${this.a.toTex()}x`);
+        }
+        if (!this.b.isZero()) {
+          const bTex = this.b.abs().toTex();
+          if (parts.length === 0) parts.push(this.b.toTex());
+          else parts.push(`${this.b.n < 0 ? "-" : "+"} ${bTex}`);
+        }
+        return parts.length ? parts.join(" ") : "0";
+      }
+      toPlain() {
+        return this.toTex().replaceAll("\\frac", "").replace(/[{}]/g, "");
+      }
+    }
+
+    function tokenize(input) {
+      const tokens = [];
+      let i = 0;
+      while (i < input.length) {
+        const c = input[i];
+        if (/\s/.test(c)) { i++; continue; }
+        if (/[0-9.]/.test(c)) {
+          let number = c;
+          i++;
+          while (i < input.length && /[0-9.]/.test(input[i])) number += input[i++];
+          if (!/^\d+(\.\d+)?$/.test(number)) throw new Error(`Número no válido: ${number}`);
+          tokens.push({ type: "number", value: Number(number) });
+          continue;
+        }
+        if (c === "x" || c === "X") { tokens.push({ type: "var" }); i++; continue; }
+        if (c === "+" || c === "-") { tokens.push({ type: c }); i++; continue; }
+        if (c === "*" || c === "·" || c === "×") { tokens.push({ type: "*" }); i++; continue; }
+        if (c === "/" || c === "÷") { tokens.push({ type: "/" }); i++; continue; }
+        if (c === "(" || c === ")") { tokens.push({ type: c }); i++; continue; }
+        throw new Error(`No entiendo el símbolo "${c}".`);
+      }
+      return tokens;
+    }
+
+    class Parser {
+      constructor(text) {
+        this.tokens = tokenize(text);
+        this.pos = 0;
+      }
+
+      peek() { return this.tokens[this.pos]; }
+      take(type) {
+        if (this.peek()?.type === type) return this.tokens[this.pos++];
+        return null;
+      }
+      parse() {
+        const value = this.expression();
+        if (this.peek()) throw new Error("Hay algo al final que no he podido leer.");
+        return value;
+      }
+      expression() {
+        let left = this.term();
+        while (this.peek()?.type === "+" || this.peek()?.type === "-") {
+          const op = this.tokens[this.pos++].type;
+          const right = this.term();
+          left = op === "+" ? left.add(right) : left.sub(right);
+        }
+        return left;
+      }
+      term() {
+        let left = this.factor();
+        while (this.peek()?.type === "*" || this.peek()?.type === "/" || this.isImplicitMultiplication()) {
+          const explicit = this.peek()?.type === "*" || this.peek()?.type === "/";
+          const op = explicit ? this.tokens[this.pos++].type : "*";
+          const right = this.factor();
+          left = op === "*" ? left.mul(right) : left.div(right);
+        }
+        return left;
+      }
+      isImplicitMultiplication() {
+        const next = this.peek()?.type;
+        return next === "number" || next === "var" || next === "(";
+      }
+      factor() {
+        if (this.take("+")) return this.factor();
+        if (this.take("-")) return this.factor().neg();
+        const token = this.peek();
+        if (!token) throw new Error("Falta una parte de la expresión.");
+        if (this.take("number")) return Linear.constant(token.value);
+        if (this.take("var")) return Linear.x();
+        if (this.take("(")) {
+          const value = this.expression();
+          if (!this.take(")")) throw new Error("Falta cerrar un paréntesis.");
+          return value;
+        }
+        throw new Error(`No esperaba "${token.type}".`);
+      }
+    }
+
+    class VisibleExpression {
+      constructor(terms = []) {
+        this.terms = terms;
+      }
+
+      static constant(value) {
+        return new VisibleExpression([{ x: false, coef: Fraction.from(value) }]);
+      }
+
+      static x(coef = 1) {
+        return new VisibleExpression([{ x: true, coef: Fraction.from(coef) }]);
+      }
+
+      add(other) {
+        return new VisibleExpression([...this.terms, ...other.terms]);
+      }
+
+      sub(other) {
+        return this.add(other.neg());
+      }
+
+      neg() {
+        return new VisibleExpression(this.terms.map(term => ({ ...term, coef: term.coef.neg() })));
+      }
+
+      mul(other) {
+        const leftConstant = this.singleConstant();
+        const rightConstant = other.singleConstant();
+        if (leftConstant) return other.scale(leftConstant);
+        if (rightConstant) return this.scale(rightConstant);
+        throw new Error("Esta app trabaja solo con ecuaciones lineales.");
+      }
+
+      div(other) {
+        const divisor = other.singleConstant();
+        if (!divisor) throw new Error("Solo se puede dividir entre números, no entre expresiones con x.");
+        return this.scale(Fraction.one().div(divisor));
+      }
+
+      scale(factor) {
+        return new VisibleExpression(this.terms.map(term => ({ ...term, coef: term.coef.mul(factor) })));
+      }
+
+      singleConstant() {
+        return this.terms.length === 1 && !this.terms[0].x ? this.terms[0].coef : null;
+      }
+
+      toTex() {
+        const visible = this.terms.filter(term => !term.coef.isZero());
+        if (!visible.length) return "0";
+        return visible.map((term, index) => this.termToTex(term, index)).join(" ");
+      }
+
+      termToTex(term, index) {
+        const negative = term.coef.n < 0;
+        const sign = index === 0 ? (negative ? "-" : "") : (negative ? "-" : "+");
+        const absCoef = term.coef.abs();
+        let body;
+        if (term.x) {
+          body = absCoef.isOne() ? "x" : `${absCoef.toTex()}x`;
+        } else {
+          body = absCoef.toTex();
+        }
+        return index === 0 ? `${sign}${body}` : `${sign} ${body}`;
+      }
+    }
+
+    class VisibleParser extends Parser {
+      factor() {
+        if (this.take("+")) return this.factor();
+        if (this.take("-")) return this.factor().neg();
+        const token = this.peek();
+        if (!token) throw new Error("Falta una parte de la expresión.");
+        if (this.take("number")) return VisibleExpression.constant(token.value);
+        if (this.take("var")) return VisibleExpression.x();
+        if (this.take("(")) {
+          const value = this.expression();
+          if (!this.take(")")) throw new Error("Falta cerrar un paréntesis.");
+          return value;
+        }
+        throw new Error(`No esperaba "${token.type}".`);
+      }
+    }
+
+    const state = {
+      left: new Linear(2, 3),
+      right: Linear.constant(11),
+      leftWork: "2x + 3",
+      rightWork: "11",
+      leftTex: "2x + 3",
+      rightTex: "11",
+      prepRequired: false,
+      prepDone: true,
+      started: false,
+      selectedLevel: 1,
+      moves: 0,
+      busy: false,
+      demoRunning: false,
+      history: []
+    };
+
+    const examplesByLevel = {
+      1: [
+        "x + 5 = 12",
+        "x - 3 = 9",
+        "x + 8 = 15",
+        "x - 6 = 4",
+        "x + 10 = 3",
+        "x - 7 = -2"
+      ],
+      2: [
+        "2x = 10",
+        "3x + 2 = 14",
+        "2x - 4 = 8",
+        "5x - 6 = 19",
+        "4x + 3 = 23",
+        "x / 3 + 2 = 7"
+      ],
+      3: [
+        "5(x + 1) = 20",
+        "2(x + 3) = 18",
+        "3(x - 2) = 12",
+        "4(x + 2) - 3 = 17",
+        "2(x - 5) + 6 = 10",
+        "6(x + 1) = 30"
+      ],
+      4: [
+        "3(x + 2) = x + 14",
+        "2(x - 1) = x + 7",
+        "4(x + 1) = 2x + 12",
+        "5(x - 2) = 3x + 6",
+        "2(x + 5) = x + 17",
+        "3(x - 4) = 2x + 1"
+      ]
+    };
+
+    const demoByLevel = {
+      1: {
+        equation: "x + 5 = 12",
+        steps: [
+          { type: "op", label: "-5" }
+        ]
+      },
+      2: {
+        equation: "3x + 2 = 14",
+        steps: [
+          { type: "op", label: "-2" },
+          { type: "op", label: "÷3" }
+        ]
+      },
+      3: {
+        equation: "2(x + 2) = 10",
+        steps: [
+          { type: "prep", label: "Distribuir" },
+          { type: "op", label: "-4" },
+          { type: "op", label: "÷2" }
+        ]
+      },
+      4: {
+        equation: "2(x + 2) = x + 10",
+        steps: [
+          { type: "prep", label: "Distribuir" },
+          { type: "op", label: "-x" },
+          { type: "op", label: "-4" }
+        ]
+      }
+    };
+
+    const numberOps = [-10, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 10].map(n => ({
+      label: `${n > 0 ? "+" : ""}${n}`,
+      kind: "number",
+      symbol: `${n > 0 ? "+" : ""}${n}`,
+      placement: "after",
+      apply: side => side.add(Linear.constant(n)),
+      score: () => scoreAddConstant(n)
+    }));
+
+    const xOps = [-3, -2, -1, 1, 2, 3].map(n => ({
+      label: `${n > 0 ? "+" : ""}${n === 1 ? "" : n === -1 ? "-" : n}x`.replace("+-", "-"),
+      kind: "x",
+      symbol: `${n > 0 ? "+" : ""}${n === 1 ? "" : n === -1 ? "-" : n}x`.replace("+-", "-"),
+      placement: "after",
+      apply: side => side.add(Linear.x(n)),
+      score: () => scoreAddX(n)
+    }));
+
+    const scaleOps = [2, 3, 4, 5, -1].flatMap(n => [
+      {
+        label: `×${n}`,
+        kind: "scale",
+        symbol: `×${n}`,
+        placement: "after",
+        apply: side => side.mul(Linear.constant(n)),
+        score: () => -2
+      },
+      {
+        label: `÷${n}`,
+        kind: "scale",
+        symbol: `÷${n}`,
+        placement: "after",
+        apply: side => side.div(Linear.constant(n)),
+        score: () => scoreDivide(n)
+      }
+    ]);
+
+    const prepOps = [
+      {
+        label: "Distribuir",
+        apply: applyDistribute,
+        hint: "Busca algo como 5(x + 1) y reparte el 5 dentro del paréntesis."
+      },
+      {
+        label: "Quitar paréntesis",
+        apply: applyRemoveParentheses,
+        hint: "Quita paréntesis que no tengan un número multiplicando delante."
+      },
+      {
+        label: "Reducir términos",
+        apply: applyReduceTerms,
+        hint: "Junta términos semejantes cuando ya no haya paréntesis."
+      }
+    ];
+
+    const els = {
+      input: document.querySelector("#equationInput"),
+      start: document.querySelector("#startBtn"),
+      random: document.querySelector("#randomBtn"),
+      demo: document.querySelector("#demoBtn"),
+      prepPanel: document.querySelector("#prepPanel"),
+      prepStatus: document.querySelector("#prepStatus"),
+      prepCards: document.querySelector("#prepCards"),
+      left: document.querySelector("#leftDish"),
+      right: document.querySelector("#rightDish"),
+      steps: document.querySelector("#steps"),
+      moves: document.querySelector("#moves"),
+      levelButtons: [...document.querySelectorAll(".level-btn")],
+      coach: document.querySelector("#coach"),
+      goal: document.querySelector("#goal"),
+      balance: document.querySelector("#balance"),
+      dropLayer: document.querySelector("#dropLayer"),
+      toast: document.querySelector("#toast"),
+      tip: document.querySelector("#tip")
+    };
+    const accordionGroups = [...document.querySelectorAll(".toolbox details")];
+
+    function normalizeWorkExpression(expression) {
+      return expression
+        .trim()
+        .replace(/[×·]/g, "*")
+        .replace(/÷/g, "/")
+        .replace(/\s+/g, " ");
+    }
+
+    function workToTex(expression) {
+      return expression
+        .replace(/\*/g, "\\cdot ")
+        .replace(/\//g, "\\div ");
+    }
+
+    function hasPrepWork(leftWork, rightWork) {
+      return /[()]/.test(leftWork + rightWork) || hasReducibleTerms(leftWork) || hasReducibleTerms(rightWork);
+    }
+
+    function hasReducibleTerms(expression) {
+      if (/[()]/.test(expression)) return false;
+      try {
+        const visible = new VisibleParser(expression).parse();
+        const xTerms = visible.terms.filter(term => term.x && !term.coef.isZero()).length;
+        const constants = visible.terms.filter(term => !term.x && !term.coef.isZero()).length;
+        return xTerms > 1 || constants > 1;
+      } catch {
+        return false;
+      }
+    }
+
+    function applyDistribute(leftWork, rightWork) {
+      const left = distributeParentheses(leftWork);
+      const right = distributeParentheses(rightWork);
+      const changed = left.changed || right.changed;
+      return {
+        leftWork: left.expression,
+        rightWork: right.expression,
+        changed,
+        message: "No veo ningún número delante de un paréntesis para distribuir."
+      };
+    }
+
+    function applyRemoveParentheses(leftWork, rightWork) {
+      const left = removePlainParentheses(leftWork);
+      const right = removePlainParentheses(rightWork);
+      const changed = left.changed || right.changed;
+      return {
+        leftWork: left.expression,
+        rightWork: right.expression,
+        changed,
+        message: "No hay paréntesis simples para quitar ahora."
+      };
+    }
+
+    function applyReduceTerms(leftWork, rightWork) {
+      const left = reduceTerms(leftWork);
+      const right = reduceTerms(rightWork);
+      const changed = left.expression !== leftWork || right.expression !== rightWork;
+      return {
+        leftWork: left.expression,
+        rightWork: right.expression,
+        changed,
+        message: "No hay términos semejantes que reducir ahora."
+      };
+    }
+
+    function distributeParentheses(expression) {
+      let changed = false;
+      const replaced = expression.replace(/(^|[+\-])\s*(\d+(?:\.\d+)?)\s*\(\s*([^()]+)\s*\)/g, (match, prefix, coefText, inner, offset) => {
+        changed = true;
+        const sign = prefix === "-" ? -1 : 1;
+        const scaled = new VisibleParser(inner).parse().scale(new Fraction(Number(coefText) * sign)).toTex();
+        return formatInsertedExpression(prefix, scaled, offset === 0);
+      });
+      return { expression: normalizeVisibleSpacing(replaced), changed };
+    }
+
+    function removePlainParentheses(expression) {
+      let changed = false;
+      const replaced = expression.replace(/(^|[+\-])\s*\(\s*([^()]+)\s*\)/g, (match, prefix, inner, offset) => {
+        changed = true;
+        const visible = new VisibleParser(inner).parse();
+        const next = prefix === "-" ? visible.neg().toTex() : visible.toTex();
+        return formatInsertedExpression(prefix, next, offset === 0);
+      });
+      return { expression: normalizeVisibleSpacing(replaced), changed };
+    }
+
+    function reduceTerms(expression) {
+      if (/[()]/.test(expression)) return { expression, changed: false };
+      const reduced = new Parser(expression).parse().toTex();
+      return { expression: normalizeVisibleSpacing(reduced), changed: normalizeVisibleSpacing(reduced) !== normalizeVisibleSpacing(expression) };
+    }
+
+    function formatInsertedExpression(prefix, expression, atStart = false) {
+      const trimmed = expression.trim();
+      if (atStart) return trimmed;
+      if (!prefix) return trimmed;
+      if (trimmed.startsWith("-")) return trimmed;
+      return `+ ${trimmed}`;
+    }
+
+    function normalizeVisibleSpacing(expression) {
+      return expression
+        .replace(/\s+/g, " ")
+        .replace(/\+\s*-/g, "- ")
+        .replace(/-\s*-/g, "+ ")
+        .replace(/\s*([()])\s*/g, "$1")
+        .trim();
+    }
+
+    function parseEquation(raw) {
+      const parts = raw.split("=");
+      if (parts.length !== 2) throw new Error("La ecuación debe tener exactamente un signo =.");
+      const leftWork = normalizeWorkExpression(parts[0]);
+      const rightWork = normalizeWorkExpression(parts[1]);
+      const prepRequired = hasPrepWork(leftWork, rightWork);
+      return {
+        left: new Parser(parts[0]).parse(),
+        right: new Parser(parts[1]).parse(),
+        leftWork,
+        rightWork,
+        leftTex: workToTex(leftWork),
+        rightTex: workToTex(rightWork),
+        prepRequired,
+        prepDone: !prepRequired
+      };
+    }
+
+    function startGame() {
+      try {
+        const { left, right, leftWork, rightWork, leftTex, rightTex, prepRequired, prepDone } = parseEquation(els.input.value);
+        state.left = left;
+        state.right = right;
+        state.leftWork = leftWork;
+        state.rightWork = rightWork;
+        state.leftTex = leftTex;
+        state.rightTex = rightTex;
+        state.prepRequired = prepRequired;
+        state.prepDone = prepDone;
+        state.started = true;
+        state.moves = 0;
+        state.history = [{ left, right, leftTex, rightTex, label: "Inicio" }];
+        els.coach.textContent = state.prepDone
+          ? "La balanza está lista. Elige una tarjeta para aplicarla a los dos lados."
+          : "Primero prepara la ecuación: quita paréntesis y reduce términos cuando toque.";
+        els.prepPanel.open = !state.prepDone;
+        showToast("¡Partida preparada!");
+        render();
+      } catch (error) {
+        showToast(error.message, true);
+      }
+    }
+
+    function applyOperation(op) {
+      applyOperationStep(op);
+    }
+
+    function applyOperationStep(op) {
+      return new Promise(resolve => {
+      if (!state.started || state.busy) {
+        resolve(false);
+        return;
+      }
+      if (!state.prepDone) {
+        showToast("Primero termina la preparación de la ecuación.", true);
+        resolve(false);
+        return;
+      }
+      try {
+        const previousLeft = state.left;
+        const previousRight = state.right;
+        const nextLeft = op.apply(state.left);
+        const nextRight = op.apply(state.right);
+        state.busy = true;
+        animateCards(op.label);
+        setTimeout(() => {
+          state.left = nextLeft;
+          state.right = nextRight;
+          state.leftWork = nextLeft.toTex();
+          state.rightWork = nextRight.toTex();
+          state.leftTex = nextLeft.toTex();
+          state.rightTex = nextRight.toTex();
+          state.moves++;
+          state.history.push({
+            left: nextLeft,
+            right: nextRight,
+            beforeLeft: previousLeft,
+            beforeRight: previousRight,
+            beforeLeftTex: state.history[state.history.length - 1]?.leftTex || previousLeft.toTex(),
+            beforeRightTex: state.history[state.history.length - 1]?.rightTex || previousRight.toTex(),
+            leftTex: nextLeft.toTex(),
+            rightTex: nextRight.toTex(),
+            label: op.label,
+            operationHtml: buildOperationHtml(
+              state.history[state.history.length - 1]?.leftTex || previousLeft.toTex(),
+              state.history[state.history.length - 1]?.rightTex || previousRight.toTex(),
+              op
+            )
+          });
+          state.busy = false;
+          els.balance.classList.add("bump");
+          setTimeout(() => els.balance.classList.remove("bump"), 430);
+          render();
+          const status = solutionStatus();
+          if (status === "infinite") {
+            els.coach.textContent = "¡Infinitas soluciones! Los dos lados representan siempre lo mismo.";
+            celebrate();
+          } else if (status === "none") {
+            els.coach.textContent = "Esta ecuación no tiene solución: los dos lados no pueden ser iguales.";
+            showToast("No tiene solución.", true);
+          } else if (isSolved()) {
+            els.coach.textContent = `¡Resuelto! La solución es x = ${solvedValue().toPlain()}.`;
+            celebrate();
+          }
+          resolve(true);
+        }, 1120);
+      } catch (error) {
+        showToast(error.message, true);
+        state.busy = false;
+        resolve(false);
+      }
+      });
+    }
+
+    function isSolved() {
+      return state.left.isSolvedWith(state.right) || state.right.isSolvedWith(state.left);
+    }
+
+    function solutionStatus() {
+      if (!state.prepDone) return "preparing";
+      if (!state.left.a.isZero() || !state.right.a.isZero()) return "pending";
+      return state.left.b.equals(state.right.b) ? "infinite" : "none";
+    }
+
+    function isFinished() {
+      const status = solutionStatus();
+      return isSolved() || status === "infinite" || status === "none";
+    }
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function findOperation(label) {
+      return [...numberOps, ...xOps, ...scaleOps].find(op => op.label === label);
+    }
+
+    function findPrepOperation(label) {
+      return prepOps.find(op => op.label === label);
+    }
+
+    async function runDemo() {
+      if (state.demoRunning) return;
+      const demo = demoByLevel[state.selectedLevel];
+      state.demoRunning = true;
+      els.input.value = demo.equation;
+      startGame();
+      els.coach.textContent = `Ejemplo del nivel ${state.selectedLevel}: mira cómo cae cada tarjeta.`;
+      render();
+      await delay(1900);
+
+      for (const step of demo.steps) {
+        const op = step.type === "prep" ? findPrepOperation(step.label) : findOperation(step.label);
+        if (!op) {
+          showToast(`No encuentro la tarjeta ${step.label}.`, true);
+          break;
+        }
+        if (step.type === "prep") {
+          els.prepPanel.open = true;
+          renderPrepState();
+          els.coach.textContent = `Ejemplo: usamos ${step.label}.`;
+          renderCards();
+          await delay(1300);
+          await applyPrepStep(op);
+        } else {
+          els.coach.textContent = `Ejemplo: dejamos caer ${step.label} en los dos lados.`;
+          renderCards();
+          await delay(1300);
+          await applyOperationStep(op);
+        }
+        await delay(2100);
+      }
+
+      state.demoRunning = false;
+      render();
+    }
+
+    function solvedValue() {
+      return state.left.isSolvedWith(state.right) ? state.right.b : state.left.b;
+    }
+
+    function render() {
+      els.left.innerHTML = `\\(${state.leftTex}\\)`;
+      els.right.innerHTML = `\\(${state.rightTex}\\)`;
+      els.moves.textContent = state.moves;
+      els.input.disabled = state.demoRunning;
+      els.start.disabled = state.demoRunning;
+      els.random.disabled = state.demoRunning;
+      els.demo.disabled = state.demoRunning;
+      renderLevelButtons();
+      const status = solutionStatus();
+      els.goal.innerHTML = !state.prepDone
+        ? "Fase previa: preparar la ecuación"
+        : status === "infinite"
+          ? "Resultado: infinitas soluciones"
+        : status === "none"
+          ? "Resultado: no tiene solución"
+        : isSolved()
+          ? `Objetivo conseguido: \\(x=${solvedValue().toTex()}\\)`
+          : "Objetivo: conseguir \\(x = número\\)";
+      renderHistory();
+      renderCards();
+      renderPrepState();
+      updateTilt();
+      updateTip();
+      typeset();
+    }
+
+    function renderHistory() {
+      els.steps.innerHTML = "";
+      state.history.forEach((step, index) => {
+        const li = document.createElement("li");
+        li.className = "math";
+        const operation = index === 0
+          ? "Ecuación inicial"
+          : step.kind === "prep"
+            ? `Preparación: ${step.label}`
+            : `Tarjeta ${step.label} en ambos lados`;
+        const equationLine = index === 0 || step.kind === "prep"
+          ? ""
+          : `<div class="step-equation">${step.operationHtml}</div>`;
+        const resultLabel = index === 0 ? "Ecuación" : step.kind === "prep" ? "Ecuación preparada" : "Resultado";
+        const resultLine = buildEquationRowHtml(step.leftTex || step.left.toTex(), step.rightTex || step.right.toTex(), resultLabel);
+        li.innerHTML = `
+          <span>${index}</span>
+          <div class="step-detail">
+            <div class="step-op">${operation}</div>
+            ${equationLine}
+            <div class="step-result">${resultLine}</div>
+          </div>
+        `;
+        els.steps.appendChild(li);
+      });
+    }
+
+    function renderLevelButtons() {
+      els.levelButtons.forEach(button => {
+        const isActive = Number(button.dataset.level) === state.selectedLevel;
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+        button.disabled = state.demoRunning;
+      });
+    }
+
+    function renderPrepState() {
+      els.prepPanel.classList.remove("prep-needed", "prep-off", "prep-complete");
+      if (!state.prepRequired) {
+        els.prepPanel.classList.add("prep-off");
+        els.prepStatus.textContent = "apagada";
+        els.prepPanel.open = false;
+        return;
+      }
+      if (state.prepDone) {
+        els.prepPanel.classList.add("prep-complete");
+        els.prepStatus.textContent = "¡listo!";
+        return;
+      }
+      els.prepPanel.classList.add("prep-needed");
+      els.prepStatus.textContent = "encendida";
+    }
+
+    function buildOperationHtml(leftTexBase, rightTexBase, op) {
+      const leftTex = appendOperationTex(leftTexBase, op.symbol);
+      const rightTex = appendOperationTex(rightTexBase, op.symbol);
+      return buildEquationRowHtml(leftTex, rightTex, "Operación");
+    }
+
+    function buildEquationRowHtml(leftTex, rightTex, label) {
+      return `
+        <div class="step-op">${label}</div>
+        <div class="equation-row">
+          <div class="eq-side eq-left">\\(${leftTex}\\)</div>
+          <div class="eq-sign">\\(=\\)</div>
+          <div class="eq-side eq-right">\\(${rightTex}\\)</div>
+        </div>
+      `;
+    }
+
+    function appendOperationTex(expressionTex, symbol) {
+      return `${expressionTex} \\mathbf{${operationToTex(symbol)}}`;
+    }
+
+    function operationToTex(symbol) {
+      return String(symbol)
+        .replace("×", "\\times ")
+        .replace("÷", "\\div ");
+    }
+
+    function renderCards() {
+      renderPrepCards();
+      fillCards("#numberCards", numberOps);
+      fillCards("#xCards", xOps);
+      fillCards("#scaleCards", scaleOps);
+    }
+
+    function renderPrepCards() {
+      els.prepCards.innerHTML = "";
+      prepOps.forEach(op => {
+        const button = document.createElement("button");
+        button.className = "op-card";
+        button.dataset.kind = "prep";
+        button.textContent = op.label;
+        button.disabled = !state.started || state.busy || state.demoRunning || isFinished() || state.prepDone;
+        button.title = op.hint;
+        button.addEventListener("click", () => applyPrepOperation(op));
+        els.prepCards.appendChild(button);
+      });
+    }
+
+    function fillCards(selector, ops) {
+      const box = document.querySelector(selector);
+      box.innerHTML = "";
+      ops.forEach(op => {
+        const button = document.createElement("button");
+        button.className = "op-card";
+        button.dataset.kind = op.kind;
+        button.textContent = op.label;
+        button.disabled = !state.started || state.busy || state.demoRunning || isFinished() || !state.prepDone;
+        if (state.started && !isFinished() && op.score() > 0) button.classList.add("good");
+        button.addEventListener("click", () => applyOperation(op));
+        box.appendChild(button);
+      });
+    }
+
+    function applyPrepOperation(op) {
+      applyPrepStep(op);
+    }
+
+    function applyPrepStep(op) {
+      return new Promise(resolve => {
+      if (!state.started || state.busy || state.prepDone) {
+        resolve(false);
+        return;
+      }
+      try {
+        const previousLeft = state.leftWork;
+        const previousRight = state.rightWork;
+        const next = op.apply(previousLeft, previousRight);
+        if (!next.changed) {
+          showToast(next.message || "Esa preparación no cambia la ecuación ahora.", true);
+          resolve(false);
+          return;
+        }
+        state.busy = true;
+        animateCards(op.label);
+        setTimeout(() => {
+        const left = new Parser(next.leftWork).parse();
+        const right = new Parser(next.rightWork).parse();
+        state.left = left;
+        state.right = right;
+        state.leftWork = next.leftWork;
+        state.rightWork = next.rightWork;
+        state.leftTex = workToTex(next.leftWork);
+        state.rightTex = workToTex(next.rightWork);
+        state.prepDone = !hasPrepWork(state.leftWork, state.rightWork);
+        state.prepRequired = true;
+        state.moves++;
+        state.history.push({
+          left,
+          right,
+          leftTex: state.leftTex,
+          rightTex: state.rightTex,
+          label: op.label,
+          kind: "prep"
+        });
+        els.coach.textContent = state.prepDone
+          ? "Ecuación preparada. Ahora ya puedes usar las tarjetas de la balanza."
+          : "Buen paso. Sigue preparando la ecuación antes de resolverla.";
+        if (state.prepDone) els.prepPanel.open = false;
+        state.busy = false;
+        render();
+        resolve(true);
+        }, 1120);
+      } catch (error) {
+        showToast(error.message, true);
+        state.busy = false;
+        resolve(false);
+      }
+      });
+    }
+
+    function scoreAddConstant(n) {
+      const leftConst = state.left.b;
+      const rightConst = state.right.b;
+      if (!state.left.a.isZero() && !leftConst.isZero() && leftConst.add(n).isZero()) return 5;
+      if (!state.right.a.isZero() && !rightConst.isZero() && rightConst.add(n).isZero()) return 5;
+      return 0;
+    }
+
+    function scoreAddX(n) {
+      if (!state.left.a.isZero() && !state.right.a.isZero()) {
+        if (state.left.a.add(n).isZero() || state.right.a.add(n).isZero()) return 5;
+      }
+      return 0;
+    }
+
+    function scoreDivide(n) {
+      if (state.left.b.isZero() && state.right.isConstant() && state.left.a.equals(new Fraction(n))) return 6;
+      if (state.right.b.isZero() && state.left.isConstant() && state.right.a.equals(new Fraction(n))) return 6;
+      if (state.left.b.isZero() && state.right.isConstant() && state.left.a.equals(new Fraction(-n))) return 4;
+      if (state.right.b.isZero() && state.left.isConstant() && state.right.a.equals(new Fraction(-n))) return 4;
+      return 0;
+    }
+
+    function updateTilt() {
+      els.balance.classList.remove("tilt-left", "tilt-right");
+    }
+
+    function updateTip() {
+      if (!state.started) {
+        els.tip.textContent = "Prueba con una ecuación como 2x + 3 = 11 o 3x + 2 = x + 10.";
+        return;
+      }
+      if (!state.prepDone) {
+        if (/\d+\s*\(/.test(state.leftWork + state.rightWork)) {
+          els.tip.textContent = "Usa Distribuir cuando veas un número multiplicando a un paréntesis, como 5(x + 1).";
+          return;
+        }
+        if (/[()]/.test(state.leftWork + state.rightWork)) {
+          els.tip.textContent = "Usa Quitar paréntesis para expresiones como 20 + (x - 2).";
+          return;
+        }
+        els.tip.textContent = "Usa Reducir términos para juntar números con números y x con x.";
+        return;
+      }
+      const status = solutionStatus();
+      if (status === "infinite") {
+        els.tip.textContent = "Han desaparecido las x y queda una igualdad verdadera. Eso significa infinitas soluciones.";
+        return;
+      }
+      if (status === "none") {
+        els.tip.textContent = "Han desaparecido las x y queda una igualdad falsa. Eso significa que no tiene solución.";
+        return;
+      }
+      if (isSolved()) {
+        els.tip.textContent = "Cuando la x queda sola y el otro lado es un número, la partida termina.";
+        return;
+      }
+      if (!state.left.a.isZero() && !state.right.a.isZero()) {
+        els.tip.textContent = "Hay x en los dos lados. Usa una tarjeta con x para quitarla de uno de los platos.";
+        return;
+      }
+      const side = !state.left.a.isZero() ? state.left : state.right;
+      if (!side.b.isZero()) {
+        els.tip.textContent = `La x aún tiene un número pegado. Busca la tarjeta ${side.b.n > 0 ? "-" : "+"}${side.b.abs().toPlain()} para cancelarlo.`;
+        return;
+      }
+      if (!side.a.isOne()) {
+        els.tip.textContent = `La x está multiplicada por ${side.a.toPlain()}. Usa una división para dejar una sola x.`;
+        return;
+      }
+      els.tip.textContent = "Ya casi está: mira si puedes escribir la solución como x igual a un número.";
+    }
+
+    function animateCards(label) {
+      const targets = [
+        document.querySelector("#leftPan .dish").getBoundingClientRect(),
+        document.querySelector("#rightPan .dish").getBoundingClientRect()
+      ];
+      const layer = els.dropLayer.getBoundingClientRect();
+      targets.forEach(rect => {
+        const card = document.createElement("div");
+        card.className = "fall-card";
+        card.textContent = label;
+        card.style.left = `${rect.left - layer.left + rect.width / 2 - 46}px`;
+        card.style.top = `${rect.top - layer.top - 8}px`;
+        els.dropLayer.appendChild(card);
+        setTimeout(() => card.remove(), 1280);
+      });
+    }
+
+    function showToast(text, error = false) {
+      els.toast.textContent = text;
+      els.toast.style.background = error ? "#ffe3e7" : "#ffffff";
+      els.toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => els.toast.classList.remove("show"), 2400);
+    }
+
+    function celebrate() {
+      showToast("¡Nivel superado! La x está sola.");
+      const colors = ["#ffd34d", "#23d3e6", "#ff5ca8", "#1dbf73", "#7457ff", "#ff8b3d"];
+      for (let i = 0; i < 36; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti";
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.background = colors[i % colors.length];
+        piece.style.animationDelay = `${Math.random() * .35}s`;
+        piece.style.animationDuration = `${1.25 + Math.random() * 1.1}s`;
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 2600);
+      }
+    }
+
+    function typeset() {
+      document.querySelectorAll(".math").forEach(el => el.classList.add("pending-math"));
+      if (!window.MathJax?.typesetPromise) return;
+      MathJax.typesetClear?.();
+      MathJax.typesetPromise()
+        .then(() => document.querySelectorAll(".pending-math").forEach(el => el.classList.remove("pending-math")))
+        .catch(() => document.querySelectorAll(".pending-math").forEach(el => el.classList.remove("pending-math")));
+    }
+
+    els.start.addEventListener("click", startGame);
+    els.random.addEventListener("click", () => {
+      const current = els.input.value.trim();
+      const examples = examplesByLevel[state.selectedLevel];
+      let next = examples[Math.floor(Math.random() * examples.length)];
+      if (examples.length > 1) {
+        while (next === current) next = examples[Math.floor(Math.random() * examples.length)];
+      }
+      els.input.value = next;
+      startGame();
+    });
+    els.demo.addEventListener("click", runDemo);
+    els.levelButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        state.selectedLevel = Number(button.dataset.level);
+        renderLevelButtons();
+        const examples = examplesByLevel[state.selectedLevel];
+        els.input.value = examples[0];
+        startGame();
+      });
+    });
+    accordionGroups.forEach(group => {
+      group.addEventListener("toggle", () => {
+        if (group === els.prepPanel && group.open && !state.prepRequired) {
+          group.open = false;
+          return;
+        }
+        if (!group.open) return;
+        accordionGroups.forEach(otherGroup => {
+          if (otherGroup !== group) otherGroup.open = false;
+        });
+      });
+    });
+    els.input.addEventListener("keydown", event => {
+      if (event.key === "Enter") startGame();
+    });
+    window.addEventListener("mathjax-ready", render);
+
+    renderCards();
+    startGame();
+  </script>
+</body>
+</html>
