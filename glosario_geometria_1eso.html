@@ -1,0 +1,2085 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glosario de Geometría - 1º ESO</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5b6475;
+      --line: #d8deea;
+      --paper: #f5f7fb;
+      --panel: #ffffff;
+      --accent: #2563eb;
+      --accent-dark: #173f9d;
+      --accent-soft: #e6efff;
+      --teal: #0f766e;
+      --teal-soft: #def7f2;
+      --blue: #2563eb;
+      --blue-soft: #e6efff;
+      --rose: #c02655;
+      --rose-soft: #ffe6ef;
+      --amber: #b45309;
+      --amber-soft: #fff1d6;
+      --green: #15803d;
+      --green-soft: #e4f8ea;
+      --violet: #6d28d9;
+      --violet-soft: #efe7ff;
+      --shadow: 0 18px 44px rgba(23, 32, 51, 0.10);
+      --shadow-soft: 0 8px 22px rgba(23, 32, 51, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(180deg, #eef4ff 0, #f8fafc 300px, #f5f7fb 100%),
+        var(--paper);
+      background-size: 32px 32px, 32px 32px, auto;
+      font-family: "Trebuchet MS", "Segoe UI", Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      border-bottom: 0;
+      background: linear-gradient(135deg, #14213d, #173f9d 62%, #0f766e);
+      color: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      box-shadow: 0 10px 30px rgba(20, 33, 61, 0.22);
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px 0;
+    }
+
+    .title-block {
+      min-width: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.55rem, 3vw, 2.35rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+      font-family: "Segoe UI", "Trebuchet MS", Arial, Helvetica, sans-serif;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.98rem;
+    }
+
+    main {
+      padding: 28px 0 48px;
+    }
+
+    .choice-panel {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .choice-panel h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+    }
+
+    .choice-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .choice-button {
+      border: 2px solid transparent;
+      border-radius: 8px;
+      background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--accent), var(--teal)) border-box;
+      color: var(--ink);
+      min-height: 84px;
+      padding: 16px;
+      font: inherit;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+
+    .choice-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 46px rgba(23, 32, 51, 0.16);
+    }
+
+    .choice-button strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .choice-button span {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.is-active {
+      display: block;
+    }
+
+    .view-top {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 14px;
+    }
+
+    .back-button {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      padding: 9px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .study-panel {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 0 0 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .study-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .study-head h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+    }
+
+    .score {
+      color: #0f3a35;
+      font-weight: 700;
+      white-space: nowrap;
+      text-align: right;
+      border: 1px solid #b7eee2;
+      background: var(--teal-soft);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+
+    .study-setup {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .student-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+
+    .student-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .student-input {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 10px 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .goal-text {
+      margin: 0 0 14px;
+      color: #172033;
+      font-weight: 800;
+      border: 1px solid #c7d7fe;
+      border-left: 7px solid var(--accent);
+      border-radius: 8px;
+      background: var(--accent-soft);
+      padding: 12px 14px;
+    }
+
+    .mode-tab,
+    .option-button,
+    .action-button,
+    .letter-button {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mode-tab {
+      padding: 10px 12px;
+      text-align: left;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .mode-tab[aria-pressed="true"] {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: #064e48;
+    }
+
+    .study-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background:
+        linear-gradient(90deg, rgba(37, 99, 235, 0.08), transparent 36%),
+        #f8fafc;
+    }
+
+    .study-meta {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .study-question {
+      margin: 0 0 14px;
+      font-size: clamp(1.12rem, 2vw, 1.35rem);
+      font-weight: 800;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .option-button {
+      min-height: 54px;
+      padding: 12px;
+      text-align: left;
+      background: #ffffff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .option-button:hover:not(:disabled),
+    .letter-button:hover:not(:disabled),
+    .action-button:hover:not(:disabled),
+    .back-button:hover,
+    .toggle-section:hover {
+      border-color: var(--accent);
+    }
+
+    .option-button.correct {
+      border-color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .option-button.wrong {
+      border-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .hangman-word {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0;
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .hangman-char {
+      min-width: 22px;
+      text-align: center;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .hangman-char.space {
+      border-bottom: 0;
+      min-width: 12px;
+    }
+
+    .letter-grid {
+      display: grid;
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+      gap: 6px;
+      margin: 12px 0;
+    }
+
+    .letter-button {
+      min-height: 36px;
+    }
+
+    .letter-button:disabled {
+      cursor: default;
+      opacity: 0.55;
+    }
+
+    .answer-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .answer-input {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 10px 12px;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .action-button {
+      padding: 10px 12px;
+    }
+
+    .action-button.primary {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, var(--accent), var(--teal));
+      color: #ffffff;
+    }
+
+    .feedback {
+      min-height: 28px;
+      margin: 12px 0 0;
+      font-weight: 800;
+    }
+
+    .feedback.ok {
+      color: var(--green);
+    }
+
+    .feedback.ko {
+      color: var(--rose);
+    }
+
+    .save-status {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .save-status.ok {
+      color: var(--green);
+    }
+
+    .save-status.ko {
+      color: var(--rose);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(32, 33, 36, 0.62);
+      z-index: 20;
+    }
+
+    .modal-overlay.is-visible {
+      display: grid;
+    }
+
+    .warning-modal {
+      width: min(520px, 100%);
+      border: 4px solid var(--rose);
+      border-radius: 8px;
+      background: #fff8c9;
+      padding: 24px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    .warning-modal h2 {
+      margin: 0 0 10px;
+      color: var(--rose);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      text-transform: uppercase;
+    }
+
+    .warning-modal p {
+      margin: 0 0 18px;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .modal-button {
+      border: 0;
+      border-radius: 8px;
+      background: var(--rose);
+      color: #ffffff;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .modal-button.secondary {
+      background: #ffffff;
+      color: var(--rose);
+      border: 2px solid var(--rose);
+    }
+
+    .modal-button.is-hidden {
+      display: none;
+    }
+
+    .search-panel {
+      margin: 0 0 24px;
+    }
+
+    .search-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .search-box span {
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      font: inherit;
+      color: var(--ink);
+      background: transparent;
+    }
+
+    .section-title {
+      margin: 30px 0 12px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .toggle-section {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      padding: 12px 14px;
+      font: inherit;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .toggle-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--accent);
+      font-size: 1rem;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .group.is-collapsed .grid {
+      display: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card[data-group="basicos"] {
+      border-top: 5px solid var(--blue);
+    }
+
+    .card[data-group="triangulos"] {
+      border-top: 5px solid var(--green);
+    }
+
+    .card[data-group="puntos"] {
+      border-top: 5px solid var(--rose);
+    }
+
+    .card[data-group="cuadrilateros"] {
+      border-top: 5px solid var(--amber);
+    }
+
+    .term-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .term {
+      font-size: 1.18rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .session {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .definition {
+      margin: 0;
+      color: #2e3135;
+    }
+
+    .visual-toggle {
+      align-self: flex-start;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      padding: 6px 10px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .visual-panel {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 10px;
+    }
+
+    .visual-panel.is-visible {
+      display: block;
+    }
+
+    .concept-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 210px;
+    }
+
+    .study-image {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 10px;
+      margin-bottom: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .empty {
+      display: none;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      color: var(--muted);
+      background: #ffffff;
+      text-align: center;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      padding: 18px 0 28px;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 900px) {
+      .mode-tabs,
+      .option-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .topbar {
+        display: block;
+      }
+
+      .choice-actions,
+      .student-row {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .study-head,
+      .answer-row {
+        display: block;
+      }
+
+      .score {
+        margin-top: 8px;
+      }
+
+      .mode-tabs,
+      .option-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .letter-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+
+      .answer-input,
+      .answer-row .action-button {
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      .card {
+        min-height: auto;
+      }
+    }
+
+    @media print {
+      header {
+        position: static;
+      }
+
+      body {
+        background: #ffffff;
+      }
+
+      footer {
+        display: none;
+      }
+
+      .wrap {
+        width: 100%;
+      }
+
+      main {
+        padding: 0;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card {
+        break-inside: avoid;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap topbar">
+      <div class="title-block">
+        <h1>Glosario de Geometría</h1>
+        <p class="subtitle">Aprendemos palabras básicas</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="choice-panel" id="choice-panel" aria-label="Entrada">
+      <h2>Selecciona una opción</h2>
+      <div class="choice-actions">
+        <button class="choice-button" type="button" data-open-view="glossary-view">
+          <strong>Ver glosario</strong>
+          <span>Revisa y aprende el vocabulario básico de geometría con definiciones claras e imágenes cuando ayudan.</span>
+        </button>
+        <button class="choice-button" type="button" data-open-view="study-view">
+          <strong>Modo estudio</strong>
+          <span>Practica con retos activos, consigue tu racha objetivo y envía una tarea demostrable a tu profe.</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="view" id="study-view" aria-label="Modo de estudio">
+      <div class="view-top">
+        <button class="back-button" type="button" data-back-home>Volver</button>
+      </div>
+      <section class="study-panel">
+        <div class="study-head">
+          <h2>Modo de estudio</h2>
+          <div class="score" id="study-score">0 aciertos seguidos · 0 intentos</div>
+        </div>
+        <div class="study-setup">
+          <div class="student-row">
+            <label>
+              <span class="student-label">Nombre</span>
+              <input class="student-input" id="student-name" type="text" autocomplete="name" placeholder="Nombre de la persona que estudia">
+            </label>
+            <button class="action-button primary" type="button" id="start-study">Empezar a estudiar</button>
+          </div>
+          <div class="mode-tabs" aria-label="Modos de estudio">
+            <button class="mode-tab" type="button" data-study-mode="definition-term" aria-pressed="true">1. Definición → concepto</button>
+            <button class="mode-tab" type="button" data-study-mode="hangman" aria-pressed="false">2. Ahorcado</button>
+            <button class="mode-tab" type="button" data-study-mode="image-term" aria-pressed="false">3. Imagen → concepto</button>
+            <button class="mode-tab" type="button" data-study-mode="term-definition" aria-pressed="false">4. Concepto → definición</button>
+            <button class="mode-tab" type="button" data-study-mode="mixed" aria-pressed="false">5. Final mixto</button>
+          </div>
+          <p class="goal-text" id="goal-text"></p>
+        </div>
+        <div class="study-card hidden" id="study-card">
+          <p class="study-meta" id="study-meta"></p>
+          <p class="study-question" id="study-question"></p>
+          <div id="study-answer"></div>
+          <p class="feedback" id="study-feedback" aria-live="polite"></p>
+          <div class="action-row">
+            <button class="action-button primary" type="button" id="next-question">Nueva pregunta</button>
+            <button class="action-button" type="button" id="save-study">Finalizar y guardar</button>
+          </div>
+          <p class="save-status" id="save-status" aria-live="polite"></p>
+        </div>
+      </section>
+    </section>
+
+    <section class="view" id="glossary-view" aria-label="Glosario">
+      <div class="view-top">
+        <button class="back-button" type="button" data-back-home>Volver</button>
+      </div>
+      <section class="search-panel" aria-label="Buscador del glosario">
+        <label class="search-label" for="search">Buscar</label>
+        <div class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="search" type="search" placeholder="Concepto o palabra de la definición">
+        </div>
+      </section>
+
+      <div id="empty" class="empty">Sin resultados.</div>
+
+      <section class="group" data-section="basicos">
+      <div class="section-title">
+        <h2><button class="toggle-section" type="button" aria-expanded="true">Sesión 1 <span class="toggle-icon" aria-hidden="true">−</span></button></h2>
+      </div>
+      <div class="grid">
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Punto</div><div class="session">S1</div></div>
+          <p class="definition">Lugar exacto del plano. No tiene longitud, anchura ni grosor.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Recta</div><div class="session">S1</div></div>
+          <p class="definition">Sucesión infinita de puntos en una misma dirección. No tiene principio ni fin.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Semirrecta</div><div class="session">S1</div></div>
+          <p class="definition">Parte de una recta que empieza en un punto y se extiende infinitamente en un sentido.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Segmento</div><div class="session">S1</div></div>
+          <p class="definition">Parte de una recta limitada por dos puntos llamados extremos.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Ángulo</div><div class="session">S1</div></div>
+          <p class="definition">Porción del plano comprendida entre dos semirrectas con el mismo origen.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Vértice</div><div class="session">S1</div></div>
+          <p class="definition">Punto donde se unen dos lados de un ángulo o de una figura.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Ángulo agudo</div><div class="session">S1</div></div>
+          <p class="definition">Ángulo que mide menos de 90 grados.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Ángulo recto</div><div class="session">S1</div></div>
+          <p class="definition">Ángulo que mide exactamente 90 grados.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Ángulo obtuso</div><div class="session">S1</div></div>
+          <p class="definition">Ángulo que mide más de 90 grados y menos de 180 grados.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Ángulo llano</div><div class="session">S1</div></div>
+          <p class="definition">Ángulo que mide exactamente 180 grados.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Ángulos complementarios</div><div class="session">S1</div></div>
+          <p class="definition">Dos ángulos cuya suma es 90 grados.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Ángulos suplementarios</div><div class="session">S1</div></div>
+          <p class="definition">Dos ángulos cuya suma es 180 grados.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Rectas paralelas</div><div class="session">S1</div></div>
+          <p class="definition">Rectas que nunca se cortan, aunque se prolonguen indefinidamente.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Rectas secantes</div><div class="session">S1</div></div>
+          <p class="definition">Rectas que se cortan en un punto.</p>
+        </article>
+        <article class="card" data-group="basicos">
+          <div class="term-row"><div class="term">Rectas perpendiculares</div><div class="session">S1</div></div>
+          <p class="definition">Rectas secantes que se cortan formando cuatro ángulos rectos.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="group" data-section="triangulos">
+      <div class="section-title">
+        <h2><button class="toggle-section" type="button" aria-expanded="true">Sesión 2 <span class="toggle-icon" aria-hidden="true">−</span></button></h2>
+      </div>
+      <div class="grid">
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Triángulo</div><div class="session">S2</div></div>
+          <p class="definition">Polígono formado por 3 lados, 3 vértices y 3 ángulos interiores.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Lado</div><div class="session">S2</div></div>
+          <p class="definition">Cada segmento que forma el contorno de una figura.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Ángulo interior</div><div class="session">S2</div></div>
+          <p class="definition">Ángulo que queda dentro de una figura, formado por dos lados consecutivos.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Desigualdad triangular</div><div class="session">S2</div></div>
+          <p class="definition">En un triángulo, cualquier lado debe medir menos que la suma de los otros dos.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Triángulo equilátero</div><div class="session">S2</div></div>
+          <p class="definition">Triángulo que tiene sus tres lados iguales.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Triángulo isósceles</div><div class="session">S2</div></div>
+          <p class="definition">Triángulo que tiene dos lados iguales.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Triángulo escaleno</div><div class="session">S2</div></div>
+          <p class="definition">Triángulo que tiene sus tres lados distintos.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Triángulo acutángulo</div><div class="session">S2</div></div>
+          <p class="definition">Triángulo cuyos tres ángulos son agudos.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Triángulo rectángulo</div><div class="session">S2</div></div>
+          <p class="definition">Triángulo que tiene un ángulo recto.</p>
+        </article>
+        <article class="card" data-group="triangulos">
+          <div class="term-row"><div class="term">Triángulo obtusángulo</div><div class="session">S2</div></div>
+          <p class="definition">Triángulo que tiene un ángulo obtuso.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="group" data-section="puntos">
+      <div class="section-title">
+        <h2><button class="toggle-section" type="button" aria-expanded="true">Sesión 3 y 3b <span class="toggle-icon" aria-hidden="true">−</span></button></h2>
+      </div>
+      <div class="grid">
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Altura</div><div class="session">S3</div></div>
+          <p class="definition">Segmento perpendicular trazado desde un vértice hasta el lado opuesto o su prolongación.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Ortocentro</div><div class="session">S3</div></div>
+          <p class="definition">Punto donde se cortan las tres alturas de un triángulo.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Mediana</div><div class="session">S3</div></div>
+          <p class="definition">Segmento que une un vértice con el punto medio del lado opuesto.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Baricentro</div><div class="session">S3</div></div>
+          <p class="definition">Punto donde se cortan las tres medianas de un triángulo.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Punto medio</div><div class="session">S3</div></div>
+          <p class="definition">Punto que divide un segmento en dos partes iguales.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Mediatriz</div><div class="session">S3</div></div>
+          <p class="definition">Recta perpendicular a un lado que pasa por su punto medio.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Circuncentro</div><div class="session">S3</div></div>
+          <p class="definition">Punto donde se cortan las tres mediatrices de un triángulo.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Circunferencia circunscrita</div><div class="session">S3</div></div>
+          <p class="definition">Circunferencia que pasa por los tres vértices de un triángulo.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Bisectriz</div><div class="session">S3</div></div>
+          <p class="definition">Recta que divide un ángulo en dos ángulos iguales.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Incentro</div><div class="session">S3</div></div>
+          <p class="definition">Punto donde se cortan las tres bisectrices de un triángulo.</p>
+        </article>
+        <article class="card" data-group="puntos">
+          <div class="term-row"><div class="term">Circunferencia inscrita</div><div class="session">S3</div></div>
+          <p class="definition">Circunferencia interior que toca los tres lados de un triángulo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="group" data-section="cuadrilateros">
+      <div class="section-title">
+        <h2><button class="toggle-section" type="button" aria-expanded="true">Sesión 4 y 4b <span class="toggle-icon" aria-hidden="true">−</span></button></h2>
+      </div>
+      <div class="grid">
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Cuadrilátero</div><div class="session">S4</div></div>
+          <p class="definition">Polígono formado por cuatro lados, cuatro vértices y cuatro ángulos interiores.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Paralelogramo</div><div class="session">S4</div></div>
+          <p class="definition">Cuadrilátero con dos pares de lados opuestos paralelos.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Trapecio</div><div class="session">S4</div></div>
+          <p class="definition">Cuadrilátero que tiene exactamente un par de lados paralelos.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Trapecio isósceles</div><div class="session">S4</div></div>
+          <p class="definition">Trapecio cuyos lados no paralelos miden lo mismo.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Trapecio rectángulo</div><div class="session">S4</div></div>
+          <p class="definition">Trapecio que tiene un lado perpendicular a las bases.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Trapecio escaleno</div><div class="session">S4</div></div>
+          <p class="definition">Trapecio con lados y ángulos diferentes.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Trapezoide</div><div class="session">S4</div></div>
+          <p class="definition">Cuadrilátero que no tiene ningún par de lados paralelos.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Ángulos consecutivos</div><div class="session">S4</div></div>
+          <p class="definition">Ángulos que están uno al lado del otro y comparten un lado.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Cuadrado</div><div class="session">S4b</div></div>
+          <p class="definition">Paralelogramo con cuatro lados iguales y cuatro ángulos rectos.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Rectángulo</div><div class="session">S4b</div></div>
+          <p class="definition">Paralelogramo con cuatro ángulos rectos y lados opuestos iguales.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Rombo</div><div class="session">S4b</div></div>
+          <p class="definition">Paralelogramo con cuatro lados iguales, aunque sus ángulos no tienen por qué ser rectos.</p>
+        </article>
+        <article class="card" data-group="cuadrilateros">
+          <div class="term-row"><div class="term">Romboide</div><div class="session">S4b</div></div>
+          <p class="definition">Paralelogramo con lados opuestos iguales, sin cuatro lados iguales ni cuatro ángulos rectos.</p>
+        </article>
+      </div>
+    </section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">IES Teis · Matemáticas 1º ESO · Geometría.</div>
+  </footer>
+
+  <div class="modal-overlay" id="warning-modal" role="dialog" aria-modal="true" aria-labelledby="warning-title" aria-describedby="warning-text">
+    <div class="warning-modal">
+      <h2 id="warning-title">Atención</h2>
+      <p id="warning-text"></p>
+      <div class="modal-actions">
+        <button class="modal-button" type="button" id="close-warning">Entendido</button>
+        <button class="modal-button secondary is-hidden" type="button" id="continue-study-warning">Seguir estudiando</button>
+        <button class="modal-button is-hidden" type="button" id="send-anyway-warning">Enviar igualmente</button>
+        <button class="modal-button is-hidden" type="button" id="start-fullscreen-warning">Empezar en pantalla completa</button>
+        <button class="modal-button is-hidden" type="button" id="resume-fullscreen-warning">Reanudar</button>
+        <button class="modal-button secondary is-hidden" type="button" id="exit-fullscreen-warning">Salir definitivamente</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwHKbIixeC0gyhwnSIdyfey3Pqh-CKYPul7ywzbuw1Z3E8rNCNC6xQHXkkUYHDXnsNZ/exec";
+    const searchInput = document.querySelector("#search");
+    const emptyMessage = document.querySelector("#empty");
+    const choicePanel = document.querySelector("#choice-panel");
+    const views = Array.from(document.querySelectorAll(".view"));
+    const openViewButtons = Array.from(document.querySelectorAll("[data-open-view]"));
+    const backButtons = Array.from(document.querySelectorAll("[data-back-home]"));
+    const groups = Array.from(document.querySelectorAll(".group"));
+    const cards = Array.from(document.querySelectorAll(".card"));
+    const modeTabs = Array.from(document.querySelectorAll(".mode-tab"));
+    const studentNameInput = document.querySelector("#student-name");
+    const startStudy = document.querySelector("#start-study");
+    const studyCard = document.querySelector("#study-card");
+    const goalText = document.querySelector("#goal-text");
+    const studyMeta = document.querySelector("#study-meta");
+    const studyQuestion = document.querySelector("#study-question");
+    const studyAnswer = document.querySelector("#study-answer");
+    const studyFeedback = document.querySelector("#study-feedback");
+    const nextQuestion = document.querySelector("#next-question");
+    const saveStudy = document.querySelector("#save-study");
+    const saveStatus = document.querySelector("#save-status");
+    const studyScore = document.querySelector("#study-score");
+    const warningModal = document.querySelector("#warning-modal");
+    const warningText = document.querySelector("#warning-text");
+    const closeWarning = document.querySelector("#close-warning");
+    const continueStudyWarning = document.querySelector("#continue-study-warning");
+    const sendAnywayWarning = document.querySelector("#send-anyway-warning");
+    const startFullscreenWarning = document.querySelector("#start-fullscreen-warning");
+    const resumeFullscreenWarning = document.querySelector("#resume-fullscreen-warning");
+    const exitFullscreenWarning = document.querySelector("#exit-fullscreen-warning");
+    const studyGoals = {
+      "definition-term": {
+        label: "Definición → concepto",
+        target: 10,
+        description: "Objetivo: 10 aciertos consecutivos."
+      },
+      hangman: {
+        label: "Ahorcado",
+        target: 8,
+        description: "Objetivo: 8 conceptos escritos correctamente de forma consecutiva."
+      },
+      "image-term": {
+        label: "Imagen → concepto",
+        target: 10,
+        description: "Objetivo: 10 imágenes identificadas correctamente de forma consecutiva."
+      },
+      "term-definition": {
+        label: "Concepto → definición",
+        target: 10,
+        description: "Objetivo: 10 definiciones identificadas de forma consecutiva."
+      },
+      mixed: {
+        label: "Final mixto",
+        target: 14,
+        description: "Objetivo: 14 aciertos consecutivos mezclando todos los tipos de pregunta."
+      }
+    };
+    const terms = cards.map((card) => ({
+      term: card.querySelector(".term").innerText.trim(),
+      definition: card.querySelector(".definition").innerText.trim(),
+      session: card.querySelector(".session").innerText.trim(),
+      group: card.dataset.group
+    }));
+    const confusionGroups = [
+      ["Punto", "Vértice", "Punto medio", "Ortocentro", "Baricentro", "Circuncentro", "Incentro"],
+      ["Recta", "Semirrecta", "Segmento", "Mediatriz", "Bisectriz", "Altura", "Mediana"],
+      ["Ángulo", "Ángulo interior", "Ángulo agudo", "Ángulo recto", "Ángulo obtuso", "Ángulo llano"],
+      ["Ángulos complementarios", "Ángulos suplementarios", "Ángulos consecutivos"],
+      ["Rectas paralelas", "Rectas secantes", "Rectas perpendiculares"],
+      ["Triángulo", "Cuadrilátero", "Paralelogramo", "Trapecio", "Trapezoide"],
+      ["Triángulo equilátero", "Triángulo isósceles", "Triángulo escaleno"],
+      ["Triángulo acutángulo", "Triángulo rectángulo", "Triángulo obtusángulo"],
+      ["Altura", "Mediana", "Mediatriz", "Bisectriz"],
+      ["Ortocentro", "Baricentro", "Circuncentro", "Incentro"],
+      ["Circunferencia circunscrita", "Circunferencia inscrita", "Circuncentro", "Incentro"],
+      ["Cuadrado", "Rectángulo", "Rombo", "Romboide", "Paralelogramo"],
+      ["Trapecio", "Trapecio isósceles", "Trapecio rectángulo", "Trapecio escaleno", "Trapezoide"],
+      ["Lado", "Segmento", "Rectas paralelas"]
+    ];
+
+    function svgWrap(content) {
+      return `<svg class="concept-svg" viewBox="0 0 260 170" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="258" height="168" rx="12" fill="#ffffff" stroke="#d8deea"/>
+        <g stroke="#94a3b8" stroke-width="1" opacity="0.34">
+          <path d="M20 35H240M20 70H240M20 105H240M20 140H240M55 18V152M100 18V152M145 18V152M190 18V152"/>
+        </g>
+        ${content}
+      </svg>`;
+    }
+
+    function baseTriangle(extra = "", points = "70,130 190,130 130,38") {
+      return `<polygon points="${points}" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/>${extra}`;
+    }
+
+    function notableTriangle(extra = "") {
+      return baseTriangle(extra, "58,130 205,130 112,42");
+    }
+
+    function canonicalTerm(term, session = "") {
+      const triangleTypes = {
+        "Triángulo equilátero": "Equilátero",
+        "Triángulo isósceles": "Isósceles",
+        "Triángulo escaleno": "Escaleno",
+        "Triángulo acutángulo": "Acutángulo",
+        "Triángulo rectángulo": "Triángulo rectángulo",
+        "Triángulo obtusángulo": "Obtusángulo"
+      };
+      const quadrilateralTypes = {
+        "Cuadrilátero paralelogramo": "Paralelogramo",
+        "Cuadrilátero trapecio": "Trapecio",
+        "Cuadrilátero trapecio isósceles": "Trapecio isósceles",
+        "Cuadrilátero trapecio rectángulo": "Trapecio rectángulo",
+        "Cuadrilátero trapecio escaleno": "Trapecio escaleno",
+        "Cuadrilátero trapezoide": "Trapezoide",
+        "Cuadrilátero cuadrado": "Cuadrado",
+        "Cuadrilátero rectángulo": "Rectángulo",
+        "Cuadrilátero rombo": "Rombo",
+        "Cuadrilátero romboide": "Romboide"
+      };
+      return triangleTypes[term] || quadrilateralTypes[term] || term;
+    }
+
+    function visualSvg(termOrItem, session = "") {
+      const visualItem = typeof termOrItem === "object" ? termOrItem : { term: termOrItem, session };
+      const term = canonicalTerm(visualItem.term, visualItem.session);
+      switch (term) {
+        case "Punto":
+          return svgWrap(`<circle cx="130" cy="85" r="8" fill="#c02655"/><text x="145" y="82" fill="#172033" font-size="18" font-weight="800">A</text>`);
+        case "Recta":
+          return svgWrap(`<line x1="48" y1="122" x2="212" y2="48" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/><path d="M48 122l19-1-11-15" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M212 48l-19 1 11 15" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`);
+        case "Semirrecta":
+          return svgWrap(`<defs><marker id="arrow-ray" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M2 2L10 6L2 10Z" fill="#2563eb"/></marker></defs><circle cx="55" cy="86" r="9" fill="#c02655"/><line x1="55" y1="86" x2="218" y2="86" stroke="#2563eb" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow-ray)"/>`);
+        case "Segmento":
+          return svgWrap(`<line x1="62" y1="112" x2="198" y2="58" stroke="#2563eb" stroke-width="5"/><circle cx="62" cy="112" r="7" fill="#c02655"/><circle cx="198" cy="58" r="7" fill="#c02655"/><text x="45" y="135" fill="#172033" font-size="18" font-weight="800">A</text><text x="206" y="54" fill="#172033" font-size="18" font-weight="800">B</text>`);
+        case "Ángulo":
+          return svgWrap(`<path d="M88 118L130 82L208 118" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M113 101A34 34 0 0 0 154 97" fill="none" stroke="#c02655" stroke-width="4"/><circle cx="130" cy="82" r="6" fill="#c02655"/><text x="137" y="116" fill="#172033" font-size="18" font-weight="800">α</text>`);
+        case "Vértice":
+          return svgWrap(`<path d="M70 125L130 64L206 125" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><circle cx="130" cy="64" r="9" fill="#c02655"/>`);
+        case "Ángulo agudo":
+          return svgWrap(`<path d="M70 125H210M70 125L160 70" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M104 125A34 34 0 0 0 99 107" fill="none" stroke="#c02655" stroke-width="4"/>`);
+        case "Ángulo recto":
+          return svgWrap(`<path d="M78 124H180M78 124V42" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M78 100H102V124" fill="none" stroke="#c02655" stroke-width="4"/>`);
+        case "Ángulo obtuso":
+          return svgWrap(`<path d="M70 125H210M70 125L32 48" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M108 125A38 38 0 0 0 53 91" fill="none" stroke="#c02655" stroke-width="4"/>`);
+        case "Ángulo llano":
+          return svgWrap(`<line x1="45" y1="88" x2="215" y2="88" stroke="#2563eb" stroke-width="5"/><circle cx="130" cy="88" r="6" fill="#c02655"/><path d="M80 88A50 50 0 0 1 180 88" fill="none" stroke="#c02655" stroke-width="4"/>`);
+        case "Ángulos complementarios":
+          return svgWrap(`<path d="M78 124H184M78 124V42" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><line x1="78" y1="124" x2="146" y2="64" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M78 100H102V124" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M78 92A32 32 0 0 1 102 103" fill="none" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/><path d="M113 93A44 44 0 0 1 122 124" fill="none" stroke="#c02655" stroke-width="5" stroke-linecap="round"/>`);
+        case "Ángulos suplementarios":
+          return svgWrap(`<line x1="45" y1="105" x2="215" y2="105" stroke="#2563eb" stroke-width="5"/><line x1="130" y1="105" x2="88" y2="45" stroke="#0f766e" stroke-width="4"/><path d="M88 105A42 42 0 0 1 106 70" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M106 70A42 42 0 0 1 172 105" fill="none" stroke="#c02655" stroke-width="4"/>`);
+        case "Ángulos consecutivos":
+          return svgWrap(`<path d="M72 125H215M72 125L160 74M72 125L120 42" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M112 125A40 40 0 0 0 107 105" fill="none" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/><path d="M116 99A54 54 0 0 0 99 78" fill="none" stroke="#c02655" stroke-width="6" stroke-linecap="round"/>`);
+        case "Rectas paralelas":
+          return svgWrap(`<line x1="50" y1="65" x2="210" y2="45" stroke="#2563eb" stroke-width="5"/><line x1="50" y1="122" x2="210" y2="102" stroke="#2563eb" stroke-width="5"/><path d="M111 51l8 14M124 49l8 14M111 108l8 14M124 106l8 14" stroke="#c02655" stroke-width="3" stroke-linecap="round"/>`);
+        case "Rectas secantes":
+          return svgWrap(`<line x1="55" y1="130" x2="205" y2="40" stroke="#2563eb" stroke-width="5"/><line x1="55" y1="40" x2="205" y2="130" stroke="#0f766e" stroke-width="5"/><circle cx="130" cy="85" r="7" fill="#c02655"/>`);
+        case "Rectas perpendiculares":
+          return svgWrap(`<line x1="130" y1="35" x2="130" y2="135" stroke="#2563eb" stroke-width="5"/><line x1="55" y1="85" x2="205" y2="85" stroke="#0f766e" stroke-width="5"/><path d="M130 85h24v24h-24" fill="none" stroke="#c02655" stroke-width="4"/>`);
+        case "Triángulo":
+          return svgWrap(baseTriangle(`<text x="63" y="148" fill="#172033" font-size="16" font-weight="800">A</text><text x="190" y="148" fill="#172033" font-size="16" font-weight="800">B</text><text x="130" y="33" fill="#172033" font-size="16" font-weight="800">C</text>`));
+        case "Lado":
+          return svgWrap(baseTriangle(`<line x1="70" y1="130" x2="190" y2="130" stroke="#c02655" stroke-width="7"/>`));
+        case "Ángulo interior":
+          return svgWrap(baseTriangle(`<path d="M91 130A28 28 0 0 1 82 108" fill="none" stroke="#c02655" stroke-width="4"/><text x="96" y="117" fill="#172033" font-size="18" font-weight="800">α</text>`));
+        case "Equilátero":
+          return svgWrap(baseTriangle(`<text x="92" y="92" fill="#c02655" font-size="20" font-weight="800">a</text><text x="164" y="92" fill="#c02655" font-size="20" font-weight="800">a</text><text x="127" y="151" fill="#c02655" font-size="20" font-weight="800">a</text>`));
+        case "Isósceles":
+          return svgWrap(`<polygon points="70,132 190,132 130,42" fill="#e6efff" stroke="none"/><line x1="70" y1="132" x2="130" y2="42" stroke="#c02655" stroke-width="6" stroke-linecap="round"/><line x1="130" y1="42" x2="190" y2="132" stroke="#c02655" stroke-width="6" stroke-linecap="round"/><line x1="70" y1="132" x2="190" y2="132" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/>`);
+        case "Escaleno":
+          return svgWrap(`<polygon points="52,132 211,118 104,44" fill="#e6efff" stroke="none"/><line x1="52" y1="132" x2="211" y2="118" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/><line x1="211" y1="118" x2="104" y2="44" stroke="#c02655" stroke-width="6" stroke-linecap="round"/><line x1="104" y1="44" x2="52" y2="132" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/>`);
+        case "Acutángulo":
+          return svgWrap(baseTriangle(`<path d="M91 130A28 28 0 0 1 82 108M170 130A28 28 0 0 0 178 108M119 59A28 28 0 0 0 141 59" fill="none" stroke="#c02655" stroke-width="4"/>`));
+        case "Triángulo rectángulo":
+          return svgWrap(baseTriangle(`<path d="M70 130h24v-24" fill="none" stroke="#c02655" stroke-width="4"/>`, "70,130 195,130 70,44"));
+        case "Obtusángulo":
+          return svgWrap(`<polygon points="48,132 222,132 116,78" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/><path d="M87 93A46 46 0 0 0 157 99" fill="none" stroke="#c02655" stroke-width="6" stroke-linecap="round"/>`);
+        case "Altura":
+          return svgWrap(notableTriangle(`<line x1="112" y1="42" x2="112" y2="130" stroke="#c02655" stroke-width="4" stroke-dasharray="7 5"/><path d="M112 130h20v-20" fill="none" stroke="#c02655" stroke-width="3"/>`));
+        case "Ortocentro":
+          return svgWrap(notableTriangle(`<line x1="112" y1="42" x2="112" y2="130" stroke="#c02655" stroke-width="3" stroke-dasharray="6 5"/><line x1="58" y1="130" x2="147" y2="83" stroke="#c02655" stroke-width="3" stroke-dasharray="6 5"/><line x1="205" y1="130" x2="89" y2="75" stroke="#c02655" stroke-width="3" stroke-dasharray="6 5"/><circle cx="116" cy="96" r="7" fill="#c02655"/><text x="128" y="98" fill="#172033" font-size="18" font-weight="800">H</text>`));
+        case "Mediana":
+          return svgWrap(notableTriangle(`<circle cx="131.5" cy="130" r="6" fill="#c02655"/><line x1="112" y1="42" x2="131.5" y2="130" stroke="#c02655" stroke-width="4"/><path d="M120 142h14M137 142h14" stroke="#c02655" stroke-width="3" stroke-linecap="round"/>`));
+        case "Baricentro":
+          return svgWrap(notableTriangle(`<line x1="112" y1="42" x2="131.5" y2="130" stroke="#c02655" stroke-width="3"/><line x1="58" y1="130" x2="158.5" y2="86" stroke="#c02655" stroke-width="3"/><line x1="205" y1="130" x2="85" y2="86" stroke="#c02655" stroke-width="3"/><circle cx="125" cy="101" r="7" fill="#c02655"/><text x="137" y="103" fill="#172033" font-size="18" font-weight="800">G</text>`));
+        case "Punto medio":
+          return svgWrap(`<line x1="60" y1="95" x2="200" y2="95" stroke="#2563eb" stroke-width="5"/><circle cx="60" cy="95" r="6" fill="#2563eb"/><circle cx="200" cy="95" r="6" fill="#2563eb"/><circle cx="130" cy="95" r="8" fill="#c02655"/><path d="M86 110h20M154 110h20" stroke="#c02655" stroke-width="3" stroke-linecap="round"/>`);
+        case "Mediatriz":
+          return svgWrap(notableTriangle(`<circle cx="131.5" cy="130" r="6" fill="#c02655"/><line x1="131.5" y1="32" x2="131.5" y2="150" stroke="#c02655" stroke-width="4" stroke-dasharray="7 5"/><path d="M131.5 130h20v-20" fill="none" stroke="#c02655" stroke-width="3"/><path d="M118 142h13M134 142h13" stroke="#c02655" stroke-width="3" stroke-linecap="round"/>`));
+        case "Circuncentro":
+          return svgWrap(`<circle cx="130" cy="107" r="61" fill="none" stroke="#0f766e" stroke-width="4"/><polygon points="70,118 190,118 115,48" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/><line x1="130" y1="38" x2="130" y2="154" stroke="#c02655" stroke-width="3" stroke-dasharray="6 5"/><line x1="55" y1="59" x2="160" y2="126" stroke="#c02655" stroke-width="3" stroke-dasharray="6 5"/><line x1="120" y1="118" x2="185" y2="48" stroke="#c02655" stroke-width="3" stroke-dasharray="6 5"/><path d="M130 118h17v-17" fill="none" stroke="#c02655" stroke-width="2"/><circle cx="70" cy="118" r="5" fill="#2563eb"/><circle cx="190" cy="118" r="5" fill="#2563eb"/><circle cx="115" cy="48" r="5" fill="#2563eb"/><circle cx="130" cy="107" r="7" fill="#c02655"/><text x="142" y="109" fill="#172033" font-size="18" font-weight="800">O</text>`);
+        case "Circunferencia circunscrita":
+          return svgWrap(`<circle cx="130" cy="90" r="60" fill="#f8fafc" stroke="#0f766e" stroke-width="4"/><polygon points="81,125 179,125 130,32" fill="#e6efff" stroke="#2563eb" stroke-width="4"/><circle cx="130" cy="90" r="5" fill="#c02655"/>`);
+        case "Bisectriz":
+          return svgWrap(notableTriangle(`<line x1="112" y1="42" x2="126" y2="130" stroke="#c02655" stroke-width="4"/><path d="M95 63A28 28 0 0 0 110 70" fill="none" stroke="#0f766e" stroke-width="3"/><path d="M114 70A28 28 0 0 0 131 62" fill="none" stroke="#0f766e" stroke-width="3"/>`));
+        case "Incentro":
+          return svgWrap(`<polygon points="60,132 220,132 140,42" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/><circle cx="140" cy="96" r="36" fill="none" stroke="#0f766e" stroke-width="4"/><line x1="140" y1="42" x2="140" y2="96" stroke="#c02655" stroke-width="3"/><line x1="60" y1="132" x2="140" y2="96" stroke="#c02655" stroke-width="3"/><line x1="220" y1="132" x2="140" y2="96" stroke="#c02655" stroke-width="3"/><circle cx="140" cy="96" r="7" fill="#c02655"/><circle cx="140" cy="132" r="4" fill="#0f766e"/><circle cx="113" cy="72" r="4" fill="#0f766e"/><circle cx="167" cy="72" r="4" fill="#0f766e"/><text x="152" y="98" fill="#172033" font-size="18" font-weight="800">I</text>`);
+        case "Circunferencia inscrita":
+          return svgWrap(`<polygon points="60,132 220,132 140,42" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/><circle cx="140" cy="96" r="36" fill="none" stroke="#0f766e" stroke-width="4"/><circle cx="140" cy="96" r="5" fill="#c02655"/><circle cx="140" cy="132" r="4" fill="#0f766e"/><circle cx="113" cy="72" r="4" fill="#0f766e"/><circle cx="167" cy="72" r="4" fill="#0f766e"/>`);
+        case "Cuadrilátero":
+          return svgWrap(`<polygon points="70,45 190,58 210,128 55,130" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/>`);
+        case "Paralelogramo":
+          return svgWrap(`<polygon points="85,48 205,48 175,128 55,128" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/><path d="M135 42l7 12M150 42l7 12M105 122l7 12M120 122l7 12" stroke="#c02655" stroke-width="3" stroke-linecap="round"/><path d="M66 91l12 5M73 76l12 5M185 96l12 5M192 81l12 5" stroke="#0f766e" stroke-width="3" stroke-linecap="round"/>`);
+        case "Cuadrado":
+          return svgWrap(`<rect x="75" y="40" width="110" height="110" fill="#e6efff" stroke="#2563eb" stroke-width="4"/><path d="M75 62h18M93 40v18M167 40v18M185 62h-18M185 128h-18M167 150v-18M93 150v-18M75 128h18" stroke="#c02655" stroke-width="3" stroke-linecap="round"/>`);
+        case "Rectángulo":
+          return svgWrap(`<rect x="55" y="55" width="150" height="82" fill="#e6efff" stroke="none"/><line x1="55" y1="55" x2="205" y2="55" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/><line x1="55" y1="137" x2="205" y2="137" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/><line x1="55" y1="55" x2="55" y2="137" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/><line x1="205" y1="55" x2="205" y2="137" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/><path d="M55 77h22V55M183 55v22h22M205 115h-22v22M77 137v-22H55" fill="none" stroke="#c02655" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`);
+        case "Rombo":
+          return svgWrap(`<polygon points="130,28 205,88 130,148 55,88" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/>`);
+        case "Romboide":
+          return svgWrap(`<polygon points="92,48 215,48 168,128 45,128" fill="#e6efff" stroke="none"/><line x1="92" y1="48" x2="215" y2="48" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/><line x1="45" y1="128" x2="168" y2="128" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/><line x1="215" y1="48" x2="168" y2="128" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/><line x1="45" y1="128" x2="92" y2="48" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/>`);
+        case "Trapecio":
+          return svgWrap(`<polygon points="90,50 170,50 215,130 45,130" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/><line x1="90" y1="50" x2="170" y2="50" stroke="#c02655" stroke-width="6"/><line x1="45" y1="130" x2="215" y2="130" stroke="#c02655" stroke-width="6"/>`);
+        case "Trapecio isósceles":
+          return svgWrap(`<polygon points="88,52 172,52 214,130 46,130" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/><path d="M62 96l12-7M186 89l12 7" stroke="#c02655" stroke-width="4" stroke-linecap="round"/>`);
+        case "Trapecio rectángulo":
+          return svgWrap(`<polygon points="70,50 175,50 215,130 70,130" fill="#e6efff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/><path d="M70 108h22v22" fill="none" stroke="#c02655" stroke-width="4"/>`);
+        case "Trapecio escaleno":
+          return svgWrap(`<polygon points="82,52 178,52 220,130 52,130" fill="#e6efff" stroke="none"/><line x1="82" y1="52" x2="178" y2="52" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/><line x1="178" y1="52" x2="220" y2="130" stroke="#c02655" stroke-width="6" stroke-linecap="round"/><line x1="220" y1="130" x2="52" y2="130" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/><line x1="52" y1="130" x2="82" y2="52" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>`);
+        case "Trapezoide":
+          return svgWrap(`<polygon points="55,42 218,70 155,142 34,112" fill="#e6efff" stroke="none"/><line x1="55" y1="42" x2="218" y2="70" stroke="#2563eb" stroke-width="6" stroke-linecap="round"/><line x1="218" y1="70" x2="155" y2="142" stroke="#c02655" stroke-width="6" stroke-linecap="round"/><line x1="155" y1="142" x2="34" y2="112" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/><line x1="34" y1="112" x2="55" y2="42" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>`);
+        default:
+          return "";
+      }
+    }
+
+    function addVisualsToGlossary() {
+      cards.forEach((card) => {
+        const term = card.querySelector(".term").innerText.trim();
+        const session = card.querySelector(".session").innerText.trim();
+        const svg = visualSvg({ term, session });
+        if (!svg) return;
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "visual-toggle";
+        button.setAttribute("aria-expanded", "false");
+        button.textContent = "+ imagen";
+
+        const panel = document.createElement("div");
+        panel.className = "visual-panel";
+        panel.innerHTML = svg;
+
+        button.addEventListener("click", () => {
+          const isOpen = panel.classList.toggle("is-visible");
+          button.setAttribute("aria-expanded", String(isOpen));
+          button.textContent = isOpen ? "− imagen" : "+ imagen";
+        });
+
+        card.appendChild(button);
+        card.appendChild(panel);
+      });
+    }
+
+    function visualTerms() {
+      return terms.filter((item) => visualSvg(item));
+    }
+    const studyState = {
+      mode: "definition-term",
+      activeType: "definition-term",
+      current: null,
+      answered: false,
+      guessed: new Set(),
+      remaining: 6,
+      correct: 0,
+      attempts: 0,
+      streak: 0,
+      bestStreak: 0,
+      student: "",
+      started: false,
+      startTime: null,
+      endTime: null,
+      saved: false,
+      fullscreenRequired: false
+    };
+    let warningMode = "normal";
+    let fullscreenWarningOpen = false;
+    let pendingFullscreenWarning = false;
+    let pendingStudyStudent = "";
+
+    function normalize(text) {
+      return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function pickTerm() {
+      return terms[Math.floor(Math.random() * terms.length)];
+    }
+
+    function overlapScore(a, b) {
+      const stopWords = new Set(["de", "del", "la", "las", "el", "los", "un", "una", "que", "con", "por", "en", "y", "o", "se", "sus"]);
+      const wordsA = normalize(a).split(/[^a-z0-9ñ]+/).filter((word) => word.length > 2 && !stopWords.has(word));
+      const wordsB = new Set(normalize(b).split(/[^a-z0-9ñ]+/).filter((word) => word.length > 2 && !stopWords.has(word)));
+      return wordsA.reduce((score, word) => score + (wordsB.has(word) ? 1 : 0), 0);
+    }
+
+    function similarTerms(current) {
+      const inConfusionGroup = confusionGroups
+        .filter((group) => group.some((term) => normalize(term) === normalize(current.term)))
+        .flat();
+      const confusionSet = new Set(inConfusionGroup.map(normalize));
+
+      return terms
+        .filter((candidate) => normalize(candidate.term) !== normalize(current.term))
+        .map((candidate) => {
+          let score = 0;
+          if (confusionSet.has(normalize(candidate.term))) score += 80;
+          if (candidate.session === current.session) score += 18;
+          if (candidate.group === current.group) score += 12;
+          score += overlapScore(current.term, candidate.term) * 7;
+          score += overlapScore(current.definition, candidate.definition) * 4;
+          return { candidate, score };
+        })
+        .sort((a, b) => b.score - a.score || a.candidate.term.localeCompare(b.candidate.term, "es"))
+        .map((item) => item.candidate);
+    }
+
+    function optionSet(current, asksForTerm) {
+      const correct = asksForTerm ? current.term : current.definition;
+      const labels = [];
+      const seen = new Set([normalize(correct)]);
+
+      similarTerms(current).forEach((candidate) => {
+        const label = asksForTerm ? candidate.term : candidate.definition;
+        const normalized = normalize(label);
+        if (!seen.has(normalized) && labels.length < 3) {
+          labels.push(label);
+          seen.add(normalized);
+        }
+      });
+
+      if (labels.length < 3) {
+        shuffle(terms).forEach((candidate) => {
+          const label = asksForTerm ? candidate.term : candidate.definition;
+          const normalized = normalize(label);
+          if (!seen.has(normalized) && labels.length < 3) {
+            labels.push(label);
+            seen.add(normalized);
+          }
+        });
+      }
+
+      return shuffle([correct, ...labels]);
+    }
+
+    function currentGoal() {
+      return studyGoals[studyState.mode];
+    }
+
+    function updateGoalText() {
+      goalText.textContent = currentGoal().description;
+    }
+
+    function updateScore() {
+      const goal = currentGoal();
+      const name = studyState.student ? `${studyState.student} · ` : "";
+      studyScore.textContent = `${name}${studyState.streak}/${goal.target} aciertos seguidos · ${studyState.attempts} intentos`;
+    }
+
+    function setSaveStatus(message, type = "") {
+      saveStatus.textContent = message;
+      saveStatus.className = `save-status ${type}`.trim();
+    }
+
+    function showWarning(message) {
+      warningMode = "normal";
+      warningText.textContent = message;
+      closeWarning.textContent = "Entendido";
+      closeWarning.classList.remove("is-hidden");
+      continueStudyWarning.classList.add("is-hidden");
+      sendAnywayWarning.classList.add("is-hidden");
+      startFullscreenWarning.classList.add("is-hidden");
+      resumeFullscreenWarning.classList.add("is-hidden");
+      exitFullscreenWarning.classList.add("is-hidden");
+      warningModal.classList.add("is-visible");
+      closeWarning.focus();
+    }
+
+    function showUnfinishedGoalWarning() {
+      warningMode = "unfinished-goal";
+      const goal = currentGoal();
+      warningText.textContent = `Todavía no has alcanzado el objetivo de ${goal.target} aciertos seguidos. Puedes seguir intentándolo antes de enviar tus datos.`;
+      closeWarning.classList.add("is-hidden");
+      continueStudyWarning.classList.remove("is-hidden");
+      sendAnywayWarning.classList.remove("is-hidden");
+      startFullscreenWarning.classList.add("is-hidden");
+      resumeFullscreenWarning.classList.add("is-hidden");
+      exitFullscreenWarning.classList.add("is-hidden");
+      warningModal.classList.add("is-visible");
+      continueStudyWarning.focus();
+    }
+
+    function showStartFullscreenWarning(studentName) {
+      warningMode = "start-fullscreen";
+      pendingStudyStudent = studentName;
+      warningText.textContent = "Al empezar se activará el modo de pantalla completa. Si sales de la pantalla completa o cambias de pestaña, se reiniciará tu racha actual.";
+      closeWarning.textContent = "Cancelar";
+      closeWarning.classList.remove("is-hidden");
+      continueStudyWarning.classList.add("is-hidden");
+      sendAnywayWarning.classList.add("is-hidden");
+      startFullscreenWarning.classList.remove("is-hidden");
+      resumeFullscreenWarning.classList.add("is-hidden");
+      exitFullscreenWarning.classList.add("is-hidden");
+      warningModal.classList.add("is-visible");
+      startFullscreenWarning.focus();
+    }
+
+    function showFullscreenWarning() {
+      warningMode = "fullscreen";
+      fullscreenWarningOpen = true;
+      pendingFullscreenWarning = false;
+      warningText.textContent = "Has salido de la pantalla completa. Tu racha actual se ha reiniciado. Pulsa Reanudar para volver a pantalla completa o Salir definitivamente para abandonar el modo protegido.";
+      closeWarning.classList.add("is-hidden");
+      continueStudyWarning.classList.add("is-hidden");
+      sendAnywayWarning.classList.add("is-hidden");
+      startFullscreenWarning.classList.add("is-hidden");
+      resumeFullscreenWarning.classList.remove("is-hidden");
+      exitFullscreenWarning.classList.remove("is-hidden");
+      warningModal.classList.add("is-visible");
+      resumeFullscreenWarning.focus();
+    }
+
+    function hideWarning() {
+      if (warningMode === "fullscreen") return;
+      warningModal.classList.remove("is-visible");
+      warningMode = "normal";
+      closeWarning.textContent = "Entendido";
+    }
+
+    function resetStudyProgress() {
+      studyState.correct = 0;
+      studyState.attempts = 0;
+      studyState.streak = 0;
+      studyState.bestStreak = 0;
+      studyState.saved = false;
+      saveStudy.disabled = false;
+      setSaveStatus("");
+      updateScore();
+    }
+
+    function markAnswer(isCorrect) {
+      if (studyState.answered) return;
+      studyState.answered = true;
+      studyState.attempts += 1;
+      if (isCorrect) {
+        studyState.correct += 1;
+        studyState.streak += 1;
+        studyState.bestStreak = Math.max(studyState.bestStreak, studyState.streak);
+      } else {
+        studyState.streak = 0;
+      }
+      updateScore();
+    }
+
+    function goalReached() {
+      return studyState.streak >= currentGoal().target;
+    }
+
+    function goalAchievedInSession() {
+      return studyState.bestStreak >= currentGoal().target;
+    }
+
+    function hasUnsavedStudyData() {
+      return studyState.started && studyState.attempts > 0 && !studyState.saved;
+    }
+
+    function isFullscreen() {
+      return document.fullscreenElement
+        || document.webkitFullscreenElement
+        || document.mozFullScreenElement
+        || document.msFullscreenElement;
+    }
+
+    async function enterFullscreen() {
+      const element = document.documentElement;
+      try {
+        if (element.requestFullscreen) {
+          await element.requestFullscreen();
+        } else if (element.webkitRequestFullscreen) {
+          element.webkitRequestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) {
+          element.msRequestFullscreen();
+        }
+      } catch (error) {
+        setSaveStatus("No se pudo activar pantalla completa. Puedes continuar, pero si sales se reiniciarán las rachas.", "ko");
+      }
+    }
+
+    function isStudySessionActive() {
+      return studyState.started && !studyState.saved && studyState.fullscreenRequired;
+    }
+
+    function resetStreaksForFullscreenExit() {
+      studyState.streak = 0;
+      updateScore();
+      studyFeedback.textContent = "Has salido de pantalla completa. La racha actual se ha reiniciado.";
+      studyFeedback.className = "feedback ko";
+    }
+
+    function handleFullscreenChange() {
+      if (!isStudySessionActive() || fullscreenWarningOpen) return;
+      if (!isFullscreen()) {
+        resetStreaksForFullscreenExit();
+        showFullscreenWarning();
+      }
+    }
+
+    async function resumeFromFullscreenWarning() {
+      fullscreenWarningOpen = false;
+      pendingFullscreenWarning = false;
+      warningModal.classList.remove("is-visible");
+      warningMode = "normal";
+      await enterFullscreen();
+      if (studyCard && !studyCard.classList.contains("hidden")) {
+        nextQuestion.focus();
+      }
+    }
+
+    function exitProtectedStudyMode() {
+      studyState.fullscreenRequired = false;
+      fullscreenWarningOpen = false;
+      pendingFullscreenWarning = false;
+      warningModal.classList.remove("is-visible");
+      warningMode = "normal";
+      resetStudyProgress();
+      studyFeedback.textContent = "Has salido del modo de pantalla completa. El progreso de la sesión se ha reiniciado.";
+      studyFeedback.className = "feedback ko";
+      if (studyState.started) {
+        renderStudyQuestion();
+      }
+    }
+
+    function formatDateTime(date) {
+      return new Intl.DateTimeFormat("es-ES", {
+        dateStyle: "short",
+        timeStyle: "medium"
+      }).format(date);
+    }
+
+    async function getPublicIp() {
+      try {
+        const response = await fetch("https://api.ipify.org?format=json", {
+          cache: "no-store"
+        });
+        const data = await response.json();
+        return data.ip || "";
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function buildStudyPayload(publicIp) {
+      const endTime = studyState.endTime || new Date();
+      const startTime = studyState.startTime || endTime;
+      return {
+        fecha_envio: formatDateTime(new Date()),
+        hora_inicio: formatDateTime(startTime),
+        hora_fin: formatDateTime(endTime),
+        duracion_segundos: Math.max(0, Math.round((endTime - startTime) / 1000)),
+        nombre: studyState.student,
+        tipo_estudio: currentGoal().label,
+        aciertos: studyState.correct,
+        intentos: studyState.attempts,
+        racha_final: studyState.streak,
+        mejor_racha: studyState.bestStreak,
+        objetivo: currentGoal().target,
+        objetivo_conseguido: studyState.bestStreak >= currentGoal().target,
+        ip_publica: publicIp
+      };
+    }
+
+    async function saveStudySession(forceSave = false) {
+      if (!studyState.started) {
+        setSaveStatus("Empieza una sesión de estudio antes de guardar.", "ko");
+        return;
+      }
+      if (!GOOGLE_SHEET_WEB_APP_URL) {
+        setSaveStatus("Falta pegar la URL del Web App de Google Apps Script en el HTML.", "ko");
+        return;
+      }
+      if (!forceSave && !goalAchievedInSession()) {
+        showUnfinishedGoalWarning();
+        return;
+      }
+
+      studyState.endTime = new Date();
+      saveStudy.disabled = true;
+      setSaveStatus("Guardando datos...", "");
+
+      try {
+        const publicIp = await getPublicIp();
+        const payload = buildStudyPayload(publicIp);
+        await fetch(GOOGLE_SHEET_WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+        studyState.saved = true;
+        setSaveStatus("Datos enviados a tu profe.", "ok");
+      } catch (error) {
+        setSaveStatus("No se han podido enviar los datos. Revisa la conexión o la URL del Web App.", "ko");
+        saveStudy.disabled = false;
+      }
+    }
+
+    function renderChoiceQuestion(type) {
+      const current = pickTerm();
+      studyState.current = current;
+      studyState.activeType = type;
+      studyState.answered = false;
+      studyFeedback.textContent = "";
+      studyFeedback.className = "feedback";
+
+      const asksForTerm = type === "definition-term";
+      const correct = asksForTerm ? current.term : current.definition;
+      const options = optionSet(current, asksForTerm);
+
+      studyMeta.textContent = asksForTerm
+        ? "Definición → concepto"
+        : "Concepto → definición";
+      studyQuestion.textContent = asksForTerm ? current.definition : current.term;
+      studyAnswer.innerHTML = "";
+
+      const grid = document.createElement("div");
+      grid.className = "option-grid";
+
+      options.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option-button";
+        button.textContent = option;
+        button.addEventListener("click", () => {
+          if (studyState.answered) return;
+          const isCorrect = normalize(option) === normalize(correct);
+          markAnswer(isCorrect);
+          Array.from(grid.querySelectorAll(".option-button")).forEach((item) => {
+            item.disabled = true;
+            if (normalize(item.textContent) === normalize(correct)) item.classList.add("correct");
+          });
+          if (!isCorrect) button.classList.add("wrong");
+          studyFeedback.textContent = isCorrect ? "Correcto." : `Respuesta correcta: ${correct}`;
+          if (goalReached()) {
+            studyFeedback.textContent = `Objetivo conseguido: ${currentGoal().target} aciertos consecutivos.`;
+          }
+          studyFeedback.classList.add(isCorrect ? "ok" : "ko");
+        });
+        grid.appendChild(button);
+      });
+
+      studyAnswer.appendChild(grid);
+    }
+
+    function normalizedLetter(char) {
+      return normalize(char).charAt(0);
+    }
+
+    function isLetter(char) {
+      return /^[a-zñáéíóúü]$/i.test(char);
+    }
+
+    function isHangmanComplete() {
+      return [...studyState.current.term].every((char) => !isLetter(char) || studyState.guessed.has(normalizedLetter(char)));
+    }
+
+    function finishHangman(isCorrect) {
+      markAnswer(isCorrect);
+      studyAnswer.querySelectorAll("button, input").forEach((control) => {
+        control.disabled = true;
+      });
+      studyFeedback.textContent = isCorrect ? "Correcto." : `Respuesta correcta: ${studyState.current.term}`;
+      if (goalReached()) {
+        studyFeedback.textContent = `Objetivo conseguido: ${currentGoal().target} aciertos consecutivos.`;
+      }
+      studyFeedback.className = `feedback ${isCorrect ? "ok" : "ko"}`;
+    }
+
+    function renderHangmanWord() {
+      const word = studyAnswer.querySelector(".hangman-word");
+      word.innerHTML = "";
+      [...studyState.current.term].forEach((char) => {
+        const span = document.createElement("span");
+        span.className = "hangman-char";
+        if (char === " ") {
+          span.classList.add("space");
+          span.textContent = " ";
+        } else if (!isLetter(char) || studyState.guessed.has(normalizedLetter(char))) {
+          span.textContent = char;
+        } else {
+          span.textContent = "_";
+        }
+        word.appendChild(span);
+      });
+    }
+
+    function renderHangman() {
+      const current = pickTerm();
+      studyState.current = current;
+      studyState.activeType = "hangman";
+      studyState.answered = false;
+      studyState.guessed = new Set();
+      studyState.remaining = 6;
+      studyMeta.textContent = "Ahorcado";
+      studyQuestion.textContent = current.definition;
+      studyFeedback.textContent = "";
+      studyFeedback.className = "feedback";
+      studyAnswer.innerHTML = `
+        <div class="hangman-word" aria-label="Concepto oculto"></div>
+        <p class="study-meta" id="hangman-status">Errores restantes: 6</p>
+        <div class="letter-grid" aria-label="Letras"></div>
+        <div class="answer-row">
+          <input class="answer-input" id="full-answer" type="text" placeholder="Escribir concepto completo">
+          <button class="action-button" type="button" id="check-full-answer">Comprobar</button>
+        </div>
+      `;
+
+      renderHangmanWord();
+      const letters = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+      const letterGrid = studyAnswer.querySelector(".letter-grid");
+      letters.forEach((letter) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "letter-button";
+        button.textContent = letter;
+        button.addEventListener("click", () => {
+          if (studyState.answered) return;
+          button.disabled = true;
+          const normalized = normalizedLetter(letter);
+          studyState.guessed.add(normalized);
+          if (!normalize(studyState.current.term).includes(normalized)) {
+            studyState.remaining -= 1;
+          }
+          renderHangmanWord();
+          studyAnswer.querySelector("#hangman-status").textContent = `Errores restantes: ${studyState.remaining}`;
+          if (isHangmanComplete()) finishHangman(true);
+          if (studyState.remaining <= 0) finishHangman(false);
+        });
+        letterGrid.appendChild(button);
+      });
+
+      const fullAnswer = studyAnswer.querySelector("#full-answer");
+      const checkFullAnswer = studyAnswer.querySelector("#check-full-answer");
+      const checkTypedAnswer = () => {
+        if (studyState.answered) return;
+        finishHangman(normalize(fullAnswer.value.trim()) === normalize(studyState.current.term));
+      };
+      checkFullAnswer.addEventListener("click", checkTypedAnswer);
+      fullAnswer.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") checkTypedAnswer();
+      });
+    }
+
+    function renderImageQuestion() {
+      const imageTerms = visualTerms();
+      const current = imageTerms[Math.floor(Math.random() * imageTerms.length)];
+      const correct = current.term;
+      const options = optionSet(current, true);
+
+      studyState.current = current;
+      studyState.activeType = "image-term";
+      studyState.answered = false;
+      studyMeta.textContent = "Imagen → concepto";
+      studyQuestion.textContent = "¿Qué concepto representa esta imagen?";
+      studyFeedback.textContent = "";
+      studyFeedback.className = "feedback";
+      studyAnswer.innerHTML = "";
+
+      const imageBox = document.createElement("div");
+      imageBox.className = "study-image";
+      imageBox.innerHTML = visualSvg(current);
+
+      const grid = document.createElement("div");
+      grid.className = "option-grid";
+
+      options.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option-button";
+        button.textContent = option;
+        button.addEventListener("click", () => {
+          if (studyState.answered) return;
+          const isCorrect = normalize(option) === normalize(correct);
+          markAnswer(isCorrect);
+          Array.from(grid.querySelectorAll(".option-button")).forEach((item) => {
+            item.disabled = true;
+            if (normalize(item.textContent) === normalize(correct)) item.classList.add("correct");
+          });
+          if (!isCorrect) button.classList.add("wrong");
+          studyFeedback.textContent = isCorrect ? "Correcto." : `Respuesta correcta: ${correct}`;
+          if (goalReached()) {
+            studyFeedback.textContent = `Objetivo conseguido: ${currentGoal().target} aciertos consecutivos.`;
+          }
+          studyFeedback.classList.add(isCorrect ? "ok" : "ko");
+        });
+        grid.appendChild(button);
+      });
+
+      studyAnswer.appendChild(imageBox);
+      studyAnswer.appendChild(grid);
+    }
+
+    function renderStudyQuestion() {
+      if (studyState.mode === "mixed") {
+        const types = ["definition-term", "hangman", "image-term", "term-definition"];
+        studyState.activeType = types[Math.floor(Math.random() * types.length)];
+      } else {
+        studyState.activeType = studyState.mode;
+      }
+
+      if (studyState.activeType === "hangman") {
+        renderHangman();
+      } else if (studyState.activeType === "image-term") {
+        renderImageQuestion();
+      } else {
+        renderChoiceQuestion(studyState.activeType);
+      }
+
+      if (studyState.mode === "mixed") {
+        studyMeta.textContent = `Final mixto · ${studyMeta.textContent}`;
+      }
+    }
+
+    function setExpanded(group, expanded) {
+      const button = group.querySelector(".toggle-section");
+      const icon = group.querySelector(".toggle-icon");
+      group.classList.toggle("is-collapsed", !expanded);
+      button.setAttribute("aria-expanded", String(expanded));
+      icon.textContent = expanded ? "−" : "+";
+    }
+
+    function applySearch() {
+      const query = normalize(searchInput.value.trim());
+      let totalVisible = 0;
+
+      cards.forEach((card) => {
+        const matches = !query || normalize(card.innerText).includes(query);
+        card.classList.toggle("hidden", !matches);
+        if (matches) totalVisible += 1;
+      });
+
+      groups.forEach((group) => {
+        const hasVisibleCards = Array.from(group.querySelectorAll(".card")).some((card) => !card.classList.contains("hidden"));
+        group.classList.toggle("hidden", !hasVisibleCards);
+        if (query && hasVisibleCards) {
+          setExpanded(group, true);
+        }
+      });
+
+      emptyMessage.style.display = totalVisible === 0 ? "block" : "none";
+    }
+
+    function showHome() {
+      choicePanel.style.display = "block";
+      views.forEach((view) => view.classList.remove("is-active"));
+    }
+
+    function showView(viewId) {
+      choicePanel.style.display = "none";
+      views.forEach((view) => view.classList.toggle("is-active", view.id === viewId));
+    }
+
+    async function beginStudySession(studentName, fullscreenRequired = true) {
+      studyState.student = studentName;
+      studyState.started = true;
+      studyState.startTime = new Date();
+      studyState.endTime = null;
+      studyState.saved = false;
+      studyState.fullscreenRequired = fullscreenRequired;
+      if (fullscreenRequired) {
+        await enterFullscreen();
+      }
+      resetStudyProgress();
+      updateGoalText();
+      studyCard.classList.remove("hidden");
+      renderStudyQuestion();
+    }
+
+    function startStudySession() {
+      if (hasUnsavedStudyData()) {
+        showWarning("Antes de empezar otra sesión, pulsa Finalizar y guardar.");
+        return;
+      }
+      const studentName = (studentNameInput.value || studentNameInput.getAttribute("value") || "").trim();
+      if (!studentName) {
+        goalText.textContent = "Escribe un nombre para empezar.";
+        studentNameInput.focus();
+        return;
+      }
+      showStartFullscreenWarning(studentName);
+    }
+
+    groups.forEach((group) => {
+      const button = group.querySelector(".toggle-section");
+      button.addEventListener("click", () => {
+        const expanded = button.getAttribute("aria-expanded") === "true";
+        setExpanded(group, !expanded);
+      });
+    });
+
+    searchInput.addEventListener("input", applySearch);
+
+    openViewButtons.forEach((button) => {
+      button.addEventListener("click", () => showView(button.dataset.openView));
+    });
+
+    backButtons.forEach((button) => {
+      button.addEventListener("click", showHome);
+    });
+
+    modeTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        if (tab.dataset.studyMode === studyState.mode) return;
+        if (hasUnsavedStudyData()) {
+          showWarning("Antes de cambiar de modo, pulsa Finalizar y guardar.");
+          return;
+        }
+        studyState.mode = tab.dataset.studyMode;
+        modeTabs.forEach((item) => item.setAttribute("aria-pressed", String(item === tab)));
+        updateGoalText();
+        resetStudyProgress();
+        if (studyState.started && studyState.fullscreenRequired) {
+          enterFullscreen();
+          renderStudyQuestion();
+        } else if (studyState.started) {
+          renderStudyQuestion();
+        }
+      });
+    });
+
+    nextQuestion.addEventListener("click", renderStudyQuestion);
+    saveStudy.addEventListener("click", () => saveStudySession());
+    closeWarning.addEventListener("click", hideWarning);
+    continueStudyWarning.addEventListener("click", hideWarning);
+    sendAnywayWarning.addEventListener("click", () => {
+      hideWarning();
+      saveStudySession(true);
+    });
+    startFullscreenWarning.addEventListener("click", () => {
+      hideWarning();
+      beginStudySession(pendingStudyStudent, true);
+    });
+    resumeFullscreenWarning.addEventListener("click", resumeFromFullscreenWarning);
+    exitFullscreenWarning.addEventListener("click", exitProtectedStudyMode);
+    warningModal.addEventListener("click", (event) => {
+      if (event.target === warningModal) hideWarning();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") hideWarning();
+    });
+    ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"]
+      .forEach((eventName) => document.addEventListener(eventName, handleFullscreenChange));
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden" && isStudySessionActive() && !fullscreenWarningOpen) {
+        resetStreaksForFullscreenExit();
+        pendingFullscreenWarning = true;
+      }
+      if (document.visibilityState === "visible" && pendingFullscreenWarning) {
+        showFullscreenWarning();
+      }
+    });
+    startStudy.addEventListener("click", startStudySession);
+    studentNameInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") startStudySession();
+    });
+    addVisualsToGlossary();
+    updateGoalText();
+    updateScore();
+  </script>
+</body>
+</html>
+
