@@ -198,15 +198,14 @@
 
         .option-divider {
             border-top: 2px dashed var(--line);
-            margin: 30px 0;
-            position: relative;
+            margin: 30px 0 0;
         }
 
         .option-tag {
-            position: absolute;
-            top: -13px;
-            left: 50%;
-            transform: translateX(-50%);
+            display: block;
+            width: max-content;
+            max-width: calc(100% - 80px);
+            margin: -13px auto 20px;
             background: var(--paper);
             padding: 0 15px;
             font-weight: 600;
@@ -451,34 +450,108 @@
                         <div class="content">
                             <div class="step-card">
                                 <span class="step-badge">Paso 1</span>
-                                <h3 class="step-title">Extracción de datos</h3>
-                                <p>Sean los sucesos: $C$ = estudiar en casa y $B$ = estudiar en biblioteca.</p>
+                                <h3 class="step-title">Leer el enunciado y nombrar los sucesos</h3>
+                                <p>Antes de calcular, traducimos el texto a lenguaje de probabilidad. Esto evita
+                                    confundir expresiones parecidas como "en casa o en la biblioteca" y "en casa y en la
+                                    biblioteca".</p>
+                                <p>Definimos los sucesos:</p>
                                 <ul>
-                                    <li>$P(C \cup B) = 0,80$</li>
-                                    <li>$P(C \cap B) = 0,15$</li>
-                                    <li>$P(\bar{C}) = 0,40 \Rightarrow P(C) = 1 - 0,40 = 0,60$</li>
+                                    <li>$C$: la persona estudia en casa.</li>
+                                    <li>$B$: la persona estudia en la biblioteca municipal.</li>
                                 </ul>
+                                <p>Ahora anotamos los datos del enunciado:</p>
+                                <div class="math-block">
+                                    $P(C \cup B)=0,80$ porque el 80 % estudia en casa o en la biblioteca.<br>
+                                    $P(C \cap B)=0,15$ porque el 15 % estudia en casa y en la biblioteca.<br>
+                                    $P(\bar C)=0,40$ porque el 40 % no estudia en casa.
+                                </div>
+                                <p>Como $P(\bar C)$ es la probabilidad de no estar en $C$, calculamos la probabilidad
+                                    contraria:</p>
+                                <div class="math-block">$$P(C)=1-P(\bar C)=1-0,40=0,60$$</div>
+                                <div class="result-box" style="text-align:left;">Datos preparados:<br>
+                                    $P(C \cup B)=0,80$, $P(C \cap B)=0,15$ y $P(C)=0,60$.</div>
                             </div>
 
                             <div class="step-card">
                                 <span class="step-badge">Paso 2</span>
-                                <h3 class="step-title">1.1. Probabilidad condicionada</h3>
-                                <p>Nos piden $P(\bar{B} | C)$. Aplicando la fórmula de Laplace para la condición:</p>
-                                <div class="math-block">$$P(\bar{B}|C) = \frac{P(C \cap \bar{B})}{P(C)}$$</div>
-                                <p>Para el numerador (estudia en casa pero no en biblioteca): al total de gente en casa
-                                    ($0,60$) le restamos los que están en ambos lugares ($0,15$).</p>
-                                <div class="result-box">Resultado: $P(\bar{B}|C) = \frac{0,45}{0,60} = 0,75$ (75%)</div>
+                                <h3 class="step-title">1.1. Identificar qué probabilidad se pide</h3>
+                                <p>El apartado dice: "si la persona estudia en casa, ¿cuál es la probabilidad de que no
+                                    lo haga en la biblioteca?". La información "si estudia en casa" significa que ya
+                                    estamos dentro del grupo $C$.</p>
+                                <p>Por tanto, nos piden una probabilidad condicionada:</p>
+                                <div class="math-block">$$P(\bar B \mid C)$$</div>
+                                <p>Se lee así: probabilidad de no estudiar en la biblioteca, sabiendo que la persona
+                                    estudia en casa.</p>
                             </div>
 
                             <div class="step-card">
                                 <span class="step-badge">Paso 3</span>
-                                <h3 class="step-title">1.2. Justificación de la decisión</h3>
-                                <p>Necesitamos $P(B)$ para saber si supera el límite del 30%:</p>
+                                <h3 class="step-title">Calcular el numerador de la probabilidad condicionada</h3>
+                                <p>La fórmula de probabilidad condicionada es:</p>
+                                <div class="math-block">$$P(\bar{B}|C) = \frac{P(C \cap \bar{B})}{P(C)}$$</div>
+                                <p>El denominador ya lo conocemos: $P(C)=0,60$. Falta calcular el numerador
+                                    $P(C \cap \bar B)$, que significa "estudia en casa, pero no en la biblioteca".</p>
+                                <p>Dentro de quienes estudian en casa hay dos grupos: quienes también estudian en la
+                                    biblioteca y quienes no. Por eso restamos:</p>
+                                <div class="math-block">$$P(C \cap \bar B)=P(C)-P(C \cap B)=0,60-0,15=0,45$$</div>
+                                <div class="result-box" style="text-align:left;">Interpretación: el 45 % de las personas
+                                    encuestadas estudia en casa y no estudia en la biblioteca.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 4</span>
+                                <h3 class="step-title">Terminar el apartado 1.1</h3>
+                                <p>Sustituimos los valores en la fórmula:</p>
+                                <div class="math-block">$$P(\bar B \mid C)=\frac{0,45}{0,60}=0,75$$</div>
+                                <p>El resultado $0,75$ equivale al 75 %.</p>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 1.1.</strong> Si
+                                    sabemos que una persona estudia en casa, la probabilidad de que no estudie en la
+                                    biblioteca municipal es del <strong>75 %</strong>.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 5</span>
+                                <h3 class="step-title">1.2. Calcular el porcentaje que estudia en la biblioteca</h3>
+                                <p>Para decidir si se amplía el horario, no necesitamos una probabilidad condicionada.
+                                    Necesitamos saber qué porcentaje total de estudiantes usa la biblioteca, es decir,
+                                    necesitamos $P(B)$.</p>
+                                <p>El dato $P(C \cup B)=0,80$ incluye a quienes estudian en casa, en la biblioteca o en
+                                    ambos sitios. Para relacionar esos datos usamos la fórmula de la unión:</p>
                                 <div class="math-block">$$P(C \cup B) = P(C) + P(B) - P(C \cap B)$$</div>
-                                <p>Sustituyendo: $0,80 = 0,60 + P(B) - 0,15 \Rightarrow P(B) = 0,35$.</p>
-                                <div class="result-box">El porcentaje es del 35%, que es superior al 30%. Por lo tanto,
-                                    <strong>sí ampliarán el horario</strong>.
+                                <p>Se resta $P(C \cap B)$ porque las personas que estudian en ambos lugares se han
+                                    contado dos veces: una dentro de $C$ y otra dentro de $B$.</p>
+                                <p>Sustituimos los valores conocidos:</p>
+                                <div class="math-block">
+                                    $$0,80=0,60+P(B)-0,15$$
+                                    $$0,80=0,45+P(B)$$
+                                    $$P(B)=0,80-0,45=0,35$$
                                 </div>
+                                <p>Por tanto, el 35 % de las personas encuestadas estudia en la biblioteca municipal.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 6</span>
+                                <h3 class="step-title">Comparar con la condición del enunciado</h3>
+                                <p>El ayuntamiento ampliará el horario si el porcentaje que estudia en la biblioteca es
+                                    superior al 30 %. Hemos obtenido:</p>
+                                <div class="math-block">$$P(B)=0,35=35\%$$</div>
+                                <p>Como $35\% \gt 30\%$, se cumple la condición indicada.</p>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 1.2.</strong> Sí,
+                                    los responsables del ayuntamiento ampliarán el horario de la biblioteca municipal,
+                                    porque el porcentaje de estudiantes que la utiliza es del <strong>35 %</strong>,
+                                    superior al límite del <strong>30 %</strong>.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Comprobación</span>
+                                <h3 class="step-title">Cómo saber si los resultados tienen sentido</h3>
+                                <ul>
+                                    <li>La probabilidad condicionada del apartado 1.1 está entre 0 y 1, así que es
+                                        posible.</li>
+                                    <li>El 75 % se refiere solo a quienes estudian en casa, no a toda la encuesta.</li>
+                                    <li>El 35 % del apartado 1.2 sí se refiere al total de estudiantes encuestados.</li>
+                                    <li>La decisión final se toma comparando 35 % con 30 %, no comparando 75 % con 30 %.</li>
+                                </ul>
                             </div>
                         </div>
                     </details>
@@ -508,7 +581,27 @@
                         <div class="content">
                             <div class="step-card">
                                 <span class="step-badge">Paso 1</span>
-                                <h3 class="step-title">2.1. Región Factible y Vértices</h3>
+                                <h3 class="step-title">Leer el sistema y preparar las rectas frontera</h3>
+                                <p>En programación lineal, cada inecuación limita una zona del plano. Para dibujar esa
+                                    zona, primero sustituimos cada desigualdad por una igualdad: así obtenemos las rectas
+                                    frontera.</p>
+                                <div class="math-block">
+                                    $2x \geq 3y-7 \Rightarrow 2x-3y=-7$<br>
+                                    $x+y+1 \geq 0 \Rightarrow x+y=-1$<br>
+                                    $x \leq 3 \Rightarrow x=3$<br>
+                                    $x+2y \leq 7 \Rightarrow x+2y=7$
+                                </div>
+                                <p>La región factible será la parte común que cumple las cuatro desigualdades a la vez.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 2</span>
+                                <h3 class="step-title">2.1. Representar la región factible</h3>
+                                <p>Una vez dibujadas las rectas, se comprueba qué lado de cada recta cumple la
+                                    inecuación. Para hacerlo de forma segura se puede probar un punto sencillo, como
+                                    $(0,0)$, siempre que no esté sobre la recta.</p>
+                                <p>La zona azul del gráfico es la intersección de los cuatro semiplanos: todos sus puntos
+                                    cumplen simultáneamente las restricciones del enunciado.</p>
 
                                 <div class="graph-container">
                                     <svg viewBox="0 0 560 480">
@@ -539,29 +632,62 @@
                                         <text x="335" y="445" font-size="14" fill="#c0392b">(3, -4)</text>
                                     </svg>
                                 </div>
-
-                                <p>Las restricciones convertidas a igualdades permiten encontrar los cortes resolviendo
-                                    sus sistemas emparejados:</p>
-                                <ul>
-                                    <li>Intersección $2x-3y=-7$ con $x+y=-1 \Rightarrow (-2, 1)$</li>
-                                    <li>Intersección $2x-3y=-7$ con $x+2y=7 \Rightarrow (1, 3)$</li>
-                                    <li>Intersección $x+2y=7$ con $x=3 \Rightarrow (3, 2)$</li>
-                                    <li>Intersección $x=3$ con $x+y=-1 \Rightarrow (3, -4)$</li>
-                                </ul>
                             </div>
 
                             <div class="step-card">
-                                <span class="step-badge">Paso 2</span>
-                                <h3 class="step-title">2.2. Optimización</h3>
-                                <p>Evaluamos la función $f(x,y) = 2x+3y$ en cada uno de los vértices hallados:</p>
+                                <span class="step-badge">Paso 3</span>
+                                <h3 class="step-title">Calcular los vértices de la región</h3>
+                                <p>Los vértices aparecen donde se cortan dos rectas frontera. No todos los cortes sirven:
+                                    solo nos quedamos con los que forman parte de la región factible.</p>
+
+                                <p>Calculamos los cortes que aparecen en el contorno de la región:</p>
+                                <ul>
+                                    <li>$2x-3y=-7$ con $x+y=-1$: al resolver el sistema se obtiene $(-2,1)$.</li>
+                                    <li>$2x-3y=-7$ con $x+2y=7$: al resolver el sistema se obtiene $(1,3)$.</li>
+                                    <li>$x+2y=7$ con $x=3$: sustituyendo $x=3$, queda $3+2y=7$, luego $y=2$ y el
+                                        punto es $(3,2)$.</li>
+                                    <li>$x=3$ con $x+y=-1$: sustituyendo $x=3$, queda $3+y=-1$, luego $y=-4$ y el
+                                        punto es $(3,-4)$.</li>
+                                </ul>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 2.1.</strong> La
+                                    región factible es el polígono de vértices $(-2,1)$, $(1,3)$, $(3,2)$ y $(3,-4)$.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 4</span>
+                                <h3 class="step-title">2.2. Entender por qué basta con evaluar los vértices</h3>
+                                <p>La función que queremos optimizar es lineal:</p>
+                                <div class="math-block">$$f(x,y)=2x+3y$$</div>
+                                <p>Cuando una función lineal se optimiza sobre una región poligonal cerrada, el máximo y
+                                    el mínimo, si existen, se alcanzan en algún vértice de la región. Por eso no probamos
+                                    puntos al azar: evaluamos solo los cuatro vértices.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 5</span>
+                                <h3 class="step-title">Evaluar la función objetivo</h3>
+                                <p>Sustituimos cada vértice en $f(x,y)=2x+3y$:</p>
                                 <div class="math-block">
                                     $f(-2, 1) = 2(-2) + 3(1) = -1$<br>
                                     $f(1, 3) = 2(1) + 3(3) = 11$<br>
                                     $f(3, 2) = 2(3) + 3(2) = 12$<br>
                                     $f(3, -4) = 2(3) + 3(-4) = -6$
                                 </div>
-                                <div class="result-box">El máximo es 12 en el punto $(3, 2)$. El mínimo es -6 en el
-                                    punto $(3, -4)$.</div>
+                                <p>Comparamos los valores obtenidos: el mayor es $12$ y el menor es $-6$.</p>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 2.2.</strong> El
+                                    máximo de la función es $12$ y se alcanza en el punto $(3,2)$. El mínimo de la
+                                    función es $-6$ y se alcanza en el punto $(3,-4)$.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Comprobación</span>
+                                <h3 class="step-title">Cómo revisar el resultado</h3>
+                                <ul>
+                                    <li>Todos los vértices dados deben cumplir las cuatro inecuaciones del sistema.</li>
+                                    <li>La región es cerrada y acotada, así que tiene sentido que existan máximo y
+                                        mínimo.</li>
+                                    <li>En el apartado 2.2 no se comparan coordenadas, sino valores de $f(x,y)$.</li>
+                                </ul>
                             </div>
                         </div>
                     </details>
@@ -604,29 +730,91 @@
                         <div class="content">
                             <div class="step-card">
                                 <span class="step-badge">Paso 1</span>
-                                <h3 class="step-title">3.1.1. Cálculo del Beneficio Máximo</h3>
-                                <p>Derivamos la función e igualamos a cero:</p>
-                                <div class="math-block">$$B'(x) = -2x + 10 = 0 \Rightarrow x = 5$$</div>
-                                <p>$B(5) = -(5)^2+10(5)-16=9$.</p>
-                                <div class="result-box">Al vender 5000 unidades, el beneficio máximo es de 900 euros.
-                                </div>
+                                <h3 class="step-title">Leer la función y las unidades</h3>
+                                <p>La función del beneficio es:</p>
+                                <div class="math-block">$$B(x)=-x^2+10x-16$$</div>
+                                <p>Hay que tener cuidado con las unidades: $x$ se mide en miles de unidades vendidas y
+                                    $B(x)$ se mide en cientos de euros.</p>
+                                <ul>
+                                    <li>$x=5$ significa 5000 unidades vendidas.</li>
+                                    <li>$B(x)=9$ significa 900 euros de beneficio.</li>
+                                </ul>
+                                <p>Además, solo se estudia el intervalo $1 \leq x \leq 9$.</p>
                             </div>
 
                             <div class="step-card">
                                 <span class="step-badge">Paso 2</span>
-                                <h3 class="step-title">3.1.2. Beneficios Positivos</h3>
-                                <p>Estudiamos $B(x) > 0 \Rightarrow -x^2 + 10x - 16 > 0$. Raíces: $x = 2$ y $x = 8$.</p>
-                                <div class="result-box">Hay beneficio si venden entre 2000 y 8000 unidades.</div>
+                                <h3 class="step-title">3.1.1. Buscar el beneficio máximo</h3>
+                                <p>Para encontrar un máximo en una función derivable, buscamos primero los puntos donde
+                                    la derivada se anula. Esos puntos son candidatos a máximo o mínimo.</p>
+                                <div class="math-block">$$B'(x) = -2x + 10 = 0 \Rightarrow x = 5$$</div>
+                                <p>Como la función $B(x)$ es una parábola con coeficiente principal negativo
+                                    ($-x^2$), la parábola está abierta hacia abajo. Por tanto, el punto crítico
+                                    corresponde al máximo.</p>
+                                <p>Calculamos el beneficio en ese punto:</p>
+                                <div class="math-block">$$B(5)=-(5)^2+10(5)-16=-25+50-16=9$$</div>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 3.1.1.</strong> El
+                                    beneficio máximo se alcanza al vender $x=5$, es decir, <strong>5000 unidades</strong>.
+                                    Como $B(5)=9$ y el beneficio se mide en cientos de euros, el beneficio máximo es de
+                                    <strong>900 euros</strong>.</div>
                             </div>
 
                             <div class="step-card">
                                 <span class="step-badge">Paso 3</span>
+                                <h3 class="step-title">3.1.2. Plantear cuándo hay beneficio positivo</h3>
+                                <p>La empresa tiene beneficio positivo cuando $B(x)\gt0$. Por tanto, resolvemos:</p>
+                                <div class="math-block">$$-x^2+10x-16\gt0$$</div>
+                                <p>Primero buscamos los puntos donde el beneficio es cero, porque ahí cambia el signo de
+                                    la función:</p>
+                                <div class="math-block">
+                                    $$-x^2+10x-16=0$$
+                                    $$x^2-10x+16=0$$
+                                    $$x=\frac{10 \pm \sqrt{100-64}}{2}=\frac{10 \pm 6}{2}$$
+                                </div>
+                                <p>Así obtenemos las raíces $x=2$ y $x=8$.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 4</span>
+                                <h3 class="step-title">Decidir en qué intervalo la función es positiva</h3>
+                                <p>Como la parábola está abierta hacia abajo, la función es positiva entre sus dos raíces
+                                    y negativa fuera de ellas.</p>
+                                <div class="math-block">$$B(x)\gt0 \quad \text{si} \quad 2\lt x\lt8$$</div>
+                                <p>Los extremos $x=2$ y $x=8$ no se incluyen, porque en ellos $B(x)=0$ y el beneficio no
+                                    es positivo.</p>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 3.1.2.</strong> La
+                                    empresa obtiene beneficios positivos cuando vende <strong>más de 2000</strong> y
+                                    <strong>menos de 8000</strong> unidades diarias.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 5</span>
                                 <h3 class="step-title">3.1.3. Beneficio Medio</h3>
-                                <p>Calculamos la integral por Barrow:</p>
-                                <div class="math-block">$$I = \left[-\frac{x^3}{3} + 5x^2 - 16x\right]_3^7 =
-                                    \frac{92}{3}$$</div>
-                                <div class="result-box">Beneficio Medio: $\frac{1}{4} \cdot \frac{92}{3} = \frac{23}{3}
-                                    \approx 7,67$ (766,67 €)</div>
+                                <p>El beneficio medio en el intervalo de 3000 a 7000 unidades corresponde a $x$ entre 3
+                                    y 7. El enunciado ya da la fórmula:</p>
+                                <div class="math-block">$$B_m=\frac{1}{7-3}\int_3^7 B(x)\,dx$$</div>
+                                <p>Primero calculamos la integral. Una primitiva de $B(x)$ es:</p>
+                                <div class="math-block">$$\int(-x^2+10x-16)\,dx=-\frac{x^3}{3}+5x^2-16x$$</div>
+                                <p>Aplicamos la regla de Barrow:</p>
+                                <div class="math-block">
+                                    $$\int_3^7 B(x)\,dx=\left[-\frac{x^3}{3}+5x^2-16x\right]_3^7$$
+                                    $$=\left(-\frac{343}{3}+245-112\right)-\left(-9+45-48\right)=\frac{92}{3}$$
+                                </div>
+                                <p>Ahora dividimos entre la longitud del intervalo, que es $7-3=4$:</p>
+                                <div class="math-block">$$B_m=\frac{1}{4}\cdot\frac{92}{3}=\frac{23}{3}\approx 7,67$$</div>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 3.1.3.</strong> El
+                                    beneficio medio es $\frac{23}{3}$ cientos de euros, aproximadamente
+                                    <strong>766,67 euros</strong>.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Comprobación</span>
+                                <h3 class="step-title">Cómo revisar esta opción</h3>
+                                <ul>
+                                    <li>El máximo está dentro del intervalo permitido $1 \leq x \leq 9$.</li>
+                                    <li>Los valores $x=2$ y $x=8$ son puntos de beneficio cero, no positivo.</li>
+                                    <li>Al final hay que convertir cientos de euros a euros.</li>
+                                </ul>
                             </div>
                         </div>
                     </details>
@@ -659,25 +847,68 @@
                             <div class="content">
                                 <div class="step-card">
                                     <span class="step-badge">Paso 1</span>
-                                    <h3 class="step-title">3.2.1. Periodos de Crecimiento</h3>
-                                    <p>Derivamos cada rama: $R'(t) = -4(t-3)$ [0-6] y $R'(t) = 10(t-9)$ [6-12]. Puntos
-                                        críticos en 3 y 9.</p>
-                                    <div class="result-box">Aumentan en $0 < t < 3$ (enero a marzo) y $9 < t < 12$
-                                            (septiembre a diciembre). Disminuyen de $3 < t < 9$.</div>
+                                    <h3 class="step-title">Leer la función por tramos</h3>
+                                    <p>La función $R(t)$ no tiene una sola expresión para todo el año. Está definida por
+                                        tramos, así que hay que estudiar cada tramo por separado:</p>
+                                    <div class="math-block">
+                                        $R(t)=96-2(t-3)^2$ si $0 \leq t \leq 6$.<br>
+                                        $R(t)=5(t-9)^2+33$ si $6 \lt t \leq 12$.
+                                    </div>
+                                    <p>La variable $t$ mide los meses transcurridos desde el 1 de enero. Por ejemplo,
+                                        $t=0$ es el inicio de enero, $t=3$ se sitúa al comienzo de abril, $t=6$ al
+                                        comienzo de julio, $t=9$ al comienzo de octubre y $t=12$ al final del año.</p>
+                                </div>
+
+                                <div class="step-card">
+                                    <span class="step-badge">Paso 2</span>
+                                    <h3 class="step-title">3.2.1. Estudiar crecimiento y decrecimiento</h3>
+                                    <p>Para saber cuándo aumentan o disminuyen las reservas, estudiamos el signo de la
+                                        derivada. Si $R'(t)\gt0$, la función aumenta. Si $R'(t)\lt0$, la función disminuye.</p>
+                                    <p>Derivamos cada tramo:</p>
+                                    <div class="math-block">
+                                        $R'(t)=-4(t-3)$ si $0 \leq t \leq 6$.<br>
+                                        $R'(t)=10(t-9)$ si $6 \lt t \leq 12$.
+                                    </div>
+                                    <p>Los posibles cambios de comportamiento aparecen cuando la derivada se hace cero:
+                                        $t=3$ en el primer tramo y $t=9$ en el segundo.</p>
+                                    <ul>
+                                        <li>En $0\lt t\lt3$, $R'(t)\gt0$, por tanto las reservas aumentan.</li>
+                                        <li>En $3\lt t\lt6$, $R'(t)\lt0$, por tanto las reservas disminuyen.</li>
+                                        <li>En $6\lt t\lt9$, $R'(t)\lt0$, por tanto las reservas siguen disminuyendo.</li>
+                                        <li>En $9\lt t\lt12$, $R'(t)\gt0$, por tanto las reservas aumentan.</li>
+                                    </ul>
+                                    <div class="result-box" style="text-align:left;"><strong>Respuesta 3.2.1.</strong>
+                                        Las reservas aumentan en $0\lt t\lt3$ y en $9\lt t\lt12$. Disminuyen en $3\lt t\lt9$.</div>
+                                </div>
+
+                                <div class="step-card">
+                                    <span class="step-badge">Paso 3</span>
+                                    <h3 class="step-title">3.2.2. Buscar las reservas mínimas</h3>
+                                    <p>Para encontrar el mínimo absoluto en todo el año, comparamos los valores de la
+                                        función en los extremos de los tramos y en los puntos críticos:</p>
+                                    <div class="math-block">
+                                        $$R(0)=96-2(0-3)^2=96-18=78$$
+                                        $$R(3)=96-2(3-3)^2=96$$
+                                        $$R(6)=96-2(6-3)^2=96-18=78$$
+                                        $$R(9)=5(9-9)^2+33=33$$
+                                        $$R(12)=5(12-9)^2+33=45+33=78$$
+                                    </div>
+                                    <p>El menor de esos valores es $33$.</p>
+                                    <div class="result-box" style="text-align:left;"><strong>Respuesta 3.2.2.</strong>
+                                        Las reservas mínimas han sido del <strong>33 %</strong> y se han producido en
+                                        $t=9$, es decir, hacia el comienzo de octubre.</div>
                                     </div>
 
                                     <div class="step-card">
-                                        <span class="step-badge">Paso 2</span>
-                                        <h3 class="step-title">3.2.2. Mínimo de Reservas</h3>
-                                        <p>Mínimos posibles en extremos ($t=0, 6, 12$) o valles ($t=9$).<br> $R(0)=78$,
-                                            $R(6)=78$, $R(12)=78$, $R(9)=33$.</p>
-                                        <div class="result-box">Las reservas mínimas son del 33% en septiembre ($t=9$).
-                                        </div>
-                                    </div>
-
-                                    <div class="step-card">
-                                        <span class="step-badge">Paso 3</span>
+                                        <span class="step-badge">Paso 4</span>
                                         <h3 class="step-title">3.2.3. Representación Gráfica</h3>
+                                        <p>Para dibujar la gráfica de forma razonada, colocamos los puntos principales y
+                                            respetamos el comportamiento de cada tramo:</p>
+                                        <ul>
+                                            <li>Primer tramo: sube hasta $t=3$ y después baja hasta $t=6$.</li>
+                                            <li>Segundo tramo: sigue bajando hasta $t=9$ y después vuelve a subir.</li>
+                                            <li>Puntos importantes: $(0,78)$, $(3,96)$, $(6,78)$, $(9,33)$ y $(12,78)$.</li>
+                                        </ul>
                                         <div class="graph-container">
                                             <svg viewBox="0 0 600 320">
                                                 <pattern id="grid3" width="40" height="20"
@@ -711,6 +942,20 @@
                                                 <circle cx="540" cy="124" r="5" fill="#c0392b" />
                                             </svg>
                                         </div>
+                                        <div class="result-box" style="text-align:left;"><strong>Respuesta 3.2.3.</strong>
+                                            La gráfica debe mostrar un máximo en $t=3$, un mínimo en $t=9$ y continuidad
+                                            en $t=6$, donde ambos tramos tienen el mismo valor, $78$.</div>
+                                    </div>
+
+                                    <div class="step-card">
+                                        <span class="step-badge">Comprobación</span>
+                                        <h3 class="step-title">Cómo revisar esta opción</h3>
+                                        <ul>
+                                            <li>No se debe derivar la función como si tuviera una sola fórmula.</li>
+                                            <li>Los intervalos de crecimiento y decrecimiento se justifican con el signo
+                                                de $R'(t)$.</li>
+                                            <li>El mínimo absoluto se decide comparando valores, no solo mirando el dibujo.</li>
+                                        </ul>
                                     </div>
                                 </div>
                         </details>
@@ -744,13 +989,61 @@
                         <summary>Solución Guiada de la Opción 4.1</summary>
                         <div class="content">
                             <div class="step-card">
-                                <span class="step-badge">Paso Único</span>
-                                <p>El error máximo es la mitad del ancho del intervalo: $E = \frac{85.9-76.1}{2} = 4,9$.
-                                </p>
-                                <div class="math-block">$$E = Z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}} \Rightarrow 4,9
-                                    = Z_{\alpha/2} \cdot \frac{20}{8} \Rightarrow Z_{\alpha/2} = 1,96$$</div>
-                                <p>Según la tabla, esto corresponde a un descarte lateral de $\alpha/2 = 0.025$.</p>
-                                <div class="result-box">Nivel de Confianza: $1 - \alpha = 0,95 \Rightarrow 95\%$.</div>
+                                <span class="step-badge">Paso 1</span>
+                                <h3 class="step-title">Identificar qué dato falta</h3>
+                                <p>El enunciado da un intervalo para la media poblacional:</p>
+                                <div class="math-block">$$[76,1,\ 85,9]$$</div>
+                                <p>También da la desviación típica poblacional, $\sigma=20$, y el tamaño muestral,
+                                    $n=64$. Lo que falta es el nivel de confianza con el que se construyó ese intervalo.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 2</span>
+                                <h3 class="step-title">Calcular el error máximo del intervalo</h3>
+                                <p>En un intervalo de confianza de la media, el error máximo es la distancia desde el
+                                    centro del intervalo hasta uno de sus extremos. Por eso se calcula como la mitad de
+                                    la amplitud total:</p>
+                                <div class="math-block">$$E=\frac{85,9-76,1}{2}=\frac{9,8}{2}=4,9$$</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 3</span>
+                                <h3 class="step-title">Relacionar el error con el valor crítico</h3>
+                                <p>Como la desviación típica poblacional es conocida, usamos la fórmula del error para
+                                    un intervalo de confianza de la media:</p>
+                                <div class="math-block">$$E=z_{\alpha/2}\cdot\frac{\sigma}{\sqrt n}$$</div>
+                                <p>Sustituimos los datos:</p>
+                                <div class="math-block">
+                                    $$4,9=z_{\alpha/2}\cdot\frac{20}{\sqrt{64}}$$
+                                    $$4,9=z_{\alpha/2}\cdot\frac{20}{8}$$
+                                    $$4,9=z_{\alpha/2}\cdot2,5$$
+                                    $$z_{\alpha/2}=\frac{4,9}{2,5}=1,96$$
+                                </div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 4</span>
+                                <h3 class="step-title">Pasar del valor crítico al nivel de confianza</h3>
+                                <p>El dato de apoyo indica que $P(Z\gt1,96)=0,025$. Ese valor corresponde a una cola de la
+                                    distribución normal.</p>
+                                <p>Como un intervalo bilateral tiene dos colas, entonces:</p>
+                                <div class="math-block">
+                                    $$\frac{\alpha}{2}=0,025 \Rightarrow \alpha=0,05$$
+                                    $$1-\alpha=1-0,05=0,95$$
+                                </div>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 4.1.</strong> El
+                                    intervalo se ha construido con un nivel de confianza del <strong>95 %</strong>.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Comprobación</span>
+                                <h3 class="step-title">Cómo revisar este apartado</h3>
+                                <ul>
+                                    <li>El error máximo debe ser la mitad del intervalo, no el intervalo completo.</li>
+                                    <li>El valor $0,025$ es una cola; para el nivel de confianza hay que considerar las
+                                        dos colas.</li>
+                                    <li>Un valor crítico $1,96$ está asociado al 95 % en intervalos bilaterales.</li>
+                                </ul>
                             </div>
                         </div>
                     </details>
@@ -770,18 +1063,64 @@
                         <summary>Solución Guiada de la Opción 4.2</summary>
                         <div class="content">
                             <div class="step-card">
-                                <span class="step-badge">Paso Único</span>
-                                <p>Modelo Binomial $B(5, \ 0.9)$.</p>
-                                <div class="math-block">4.2.1. $P(X=5) = \binom{5}{5} 0.9^5 \cdot 0.1^0 = 0.59049$</div>
-                                <div class="math-block">4.2.2. $P(X < 2)=P(X=0) + P(X=1)=0.1^5 + 5 \cdot 0.9 \cdot
-                                        0.1^4=0.00046$</div>
-                                </div>
+                                <span class="step-badge">Paso 1</span>
+                                <h3 class="step-title">Identificar el modelo de probabilidad</h3>
+                                <p>Cada individuo puede tener cuenta bancaria o no tenerla. Además, se eligen 5
+                                    individuos y la probabilidad de tener cuenta bancaria es siempre $0,9$.</p>
+                                <p>Por eso usamos una distribución binomial:</p>
+                                <div class="math-block">$$X=\text{número de individuos con cuenta bancaria}$$
+                                    $$X \sim B(5,0,9)$$</div>
+                                <p>La fórmula general es:</p>
+                                <div class="math-block">$$P(X=k)=\binom{5}{k}(0,9)^k(0,1)^{5-k}$$</div>
                             </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 2</span>
+                                <h3 class="step-title">4.2.1. Probabilidad de que todos tengan cuenta</h3>
+                                <p>"Todos" significa que los 5 individuos tienen cuenta bancaria, es decir, $X=5$.</p>
+                                <div class="math-block">
+                                    $$P(X=5)=\binom{5}{5}(0,9)^5(0,1)^0$$
+                                    $$P(X=5)=1\cdot0,9^5\cdot1=0,59049$$
+                                </div>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 4.2.1.</strong> La
+                                    probabilidad de que los 5 individuos tengan cuenta bancaria es
+                                    <strong>0,59049</strong>, aproximadamente el <strong>59,05 %</strong>.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 3</span>
+                                <h3 class="step-title">4.2.2. Probabilidad de que menos de 2 tengan cuenta</h3>
+                                <p>"Menos de 2" significa que pueden tener cuenta bancaria 0 individuos o 1 individuo.
+                                    Por tanto:</p>
+                                <div class="math-block">$$P(X\lt2)=P(X=0)+P(X=1)$$</div>
+                                <p>Calculamos cada caso:</p>
+                                <div class="math-block">
+                                    $$P(X=0)=\binom{5}{0}(0,9)^0(0,1)^5=0,00001$$
+                                    $$P(X=1)=\binom{5}{1}(0,9)^1(0,1)^4=5\cdot0,9\cdot0,0001=0,00045$$
+                                </div>
+                                <p>Sumamos:</p>
+                                <div class="math-block">$$P(X\lt2)=0,00001+0,00045=0,00046$$</div>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 4.2.2.</strong> La
+                                    probabilidad de que menos de 2 individuos tengan cuenta bancaria es
+                                    <strong>0,00046</strong>, aproximadamente el <strong>0,046 %</strong>.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Comprobación</span>
+                                <h3 class="step-title">Cómo revisar este apartado</h3>
+                                <ul>
+                                    <li>La probabilidad de "no tener cuenta" es $1-0,9=0,1$.</li>
+                                    <li>"Menos de 2" no significa $X=2$, sino $X=0$ o $X=1$.</li>
+                                    <li>El resultado del apartado 4.2.2 debe ser muy pequeño, porque tener cuenta es muy
+                                        probable para cada individuo.</li>
+                                </ul>
+                            </div>
+                        </div>
                     </details>
                 </div>
 
                 <hr class="option-divider">
-                <span class="option-tag">O BIEN (ÁLGEBRA)</span>
+                <span class="option-tag">Y ADEMÁS</span>
 
                 <p style="padding: 15px 40px 0; margin-bottom: 0; color: var(--blue);"><strong>B. BLOQUE DE ÁLGEBRA
                         (Responda 4.3 o 4.4)</strong></p>
@@ -799,12 +1138,51 @@
                         <summary>Solución Guiada de la Opción 4.3</summary>
                         <div class="content">
                             <div class="step-card">
-                                <span class="step-badge">Paso Único</span>
-                                <p>Realizamos la multiplicación $A \cdot B$ y la igualamos a C:</p>
+                                <span class="step-badge">Paso 1</span>
+                                <h3 class="step-title">Comprobar qué operación hay que hacer</h3>
+                                <p>La igualdad del enunciado es $A \cdot B=C$. La matriz $A$ tiene tamaño $3 \times 3$ y
+                                    la matriz $B$ tiene tamaño $3 \times 1$, así que el producto $A \cdot B$ tendrá tamaño
+                                    $3 \times 1$, igual que $C$.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 2</span>
+                                <h3 class="step-title">Multiplicar fila por columna</h3>
+                                <p>Calculamos cada componente del producto usando una fila de $A$ y la columna de $B$:</p>
+                                <div class="math-block">
+                                    Primera fila: $a\cdot2+1\cdot1+1\cdot b=2a+1+b$.<br>
+                                    Segunda fila: $0\cdot2+a\cdot1+(-1)\cdot b=a-b$.<br>
+                                    Tercera fila: $a\cdot2+1\cdot1+(-1)\cdot b=2a+1-b$.
+                                </div>
+                                <p>Por tanto:</p>
                                 <div class="math-block">$$\begin{pmatrix} 2a+1+b \\ a-b \\ 2a+1-b \end{pmatrix} =
                                     \begin{pmatrix} 1 \\ c \\ c \end{pmatrix}$$</div>
-                                <div class="result-box" style="text-align:left;">Ecuaciones del sistema:<br> 1) $2a + b
-                                    + 1 = 1$<br> 2) $a - b = c$<br> 3) $2a - b + 1 = c$</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 3</span>
+                                <h3 class="step-title">Igualar componentes</h3>
+                                <p>Dos matrices columna son iguales si sus componentes correspondientes son iguales. Por
+                                    eso obtenemos una ecuación por cada fila:</p>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 4.3.</strong> El
+                                    sistema pedido es:<br>
+                                    1. $2a+b+1=1$<br>
+                                    2. $a-b=c$<br>
+                                    3. $2a-b+1=c$
+                                </div>
+                                <p>Si se quiere simplificar la primera ecuación, también puede escribirse como
+                                    $2a+b=0$.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Comprobación</span>
+                                <h3 class="step-title">Cómo revisar este apartado</h3>
+                                <ul>
+                                    <li>El resultado de $A \cdot B$ debe tener tres filas y una columna.</li>
+                                    <li>Cada ecuación sale de igualar una fila del producto con la fila correspondiente
+                                        de $C$.</li>
+                                    <li>No hay que resolver el sistema si el enunciado solo pide expresarlo.</li>
+                                </ul>
                             </div>
                         </div>
                     </details>
@@ -823,14 +1201,54 @@
                         <summary>Solución Guiada de la Opción 4.4</summary>
                         <div class="content">
                             <div class="step-card">
-                                <span class="step-badge">Paso Único</span>
-                                <p>1. Transponemos y efectuamos $M = A^t \cdot B$:</p>
+                                <span class="step-badge">Paso 1</span>
+                                <h3 class="step-title">Preparar el producto matricial</h3>
+                                <p>La matriz $A$ tiene tamaño $3 \times 2$, por tanto su traspuesta $A^t$ tiene tamaño
+                                    $2 \times 3$:</p>
+                                <div class="math-block">$$A^t=\begin{pmatrix}1&1&1\\1&2&3\end{pmatrix}$$</div>
+                                <p>Como $B$ tiene tamaño $3 \times 2$, el producto $A^t \cdot B$ tendrá tamaño
+                                    $2 \times 2$.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 2</span>
+                                <h3 class="step-title">Calcular la matriz $A^t \cdot B$</h3>
+                                <p>Multiplicamos filas de $A^t$ por columnas de $B$:</p>
                                 <div class="math-block">$$M = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 2 & 3 \end{pmatrix}
                                     \begin{pmatrix} 1 & 1 \\ 1 & k \\ 1 & k^2 \end{pmatrix} = \begin{pmatrix} 3 &
                                     1+k+k^2 \\ 6 & 1+2k+3k^2 \end{pmatrix}$$</div>
-                                <p>2. Determinante: $\det(M) = 3(1+2k+3k^2) - 6(1+k+k^2) = 3k^2 - 3$.</p>
-                                <div class="result-box">Para que tenga inversa, el determinante no puede ser nulo: $3k^2
-                                    - 3 \neq 0 \Rightarrow k \neq 1, k \neq -1$.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Paso 3</span>
+                                <h3 class="step-title">Usar la condición de matriz inversible</h3>
+                                <p>Una matriz cuadrada $2 \times 2$ tiene inversa si, y solo si, su determinante es
+                                    distinto de cero. Calculamos el determinante de $M$:</p>
+                                <div class="math-block">
+                                    $$\det(M)=3(1+2k+3k^2)-6(1+k+k^2)$$
+                                    $$\det(M)=3+6k+9k^2-6-6k-6k^2=3k^2-3$$
+                                </div>
+                                <p>Pedimos que no sea cero:</p>
+                                <div class="math-block">
+                                    $$3k^2-3\neq0$$
+                                    $$3(k^2-1)\neq0$$
+                                    $$(k-1)(k+1)\neq0$$
+                                </div>
+                                <div class="result-box" style="text-align:left;"><strong>Respuesta 4.4.</strong> La
+                                    matriz $A^t \cdot B$ tiene inversa para todos los valores de $k$ excepto
+                                    <strong>$k=1$</strong> y <strong>$k=-1$</strong>. Es decir, $k \neq 1$ y $k \neq -1$.</div>
+                            </div>
+
+                            <div class="step-card">
+                                <span class="step-badge">Comprobación</span>
+                                <h3 class="step-title">Cómo revisar este apartado</h3>
+                                <ul>
+                                    <li>Solo se puede hablar de inversa porque $A^t \cdot B$ es una matriz cuadrada
+                                        $2 \times 2$.</li>
+                                    <li>La condición correcta es determinante distinto de cero.</li>
+                                    <li>Los valores que anulan el determinante son los que se excluyen, no los que se
+                                        aceptan.</li>
+                                </ul>
                             </div>
                         </div>
                     </details>
