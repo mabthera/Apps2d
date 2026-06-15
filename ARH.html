@@ -190,6 +190,20 @@
         #guide-btn:hover {
             background-color: #27ae60;
         }
+
+        .item.selected {
+            outline: 4px solid #3498db;
+            outline-offset: 2px;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+            z-index: 10;
+        }
+
+        .slot.ready-to-receive {
+            border-color: #3498db;
+            background-color: rgba(52, 152, 219, 0.05) !important;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -214,10 +228,10 @@
             <div class="help-section">
                 <h4>📌 Cómo usar la aplicación</h4>
                 <ul class="help-list">
-                    <li><strong>Asignación:</strong> Arrastra los bloques de colores desde "Horas sin asignar" hasta el
-                        recadro de cada profesor/a.</li>
-                    <li><strong>Devolución:</strong> Para quitar una materia, arrástrala de vuelta al bloque superior.
-                    </li>
+                    <li><strong>Asignación:</strong> Pulsa un bloque para seleccionarlo y luego pulsa en el recuadro del
+                        destino. También puedes <strong>arrastrar y soltar</strong> si usas ordenador.</li>
+                    <li><strong>Devolución:</strong> Selecciona el bloque en el profesor y pulsa de nuevo en el bloque
+                        superior de "Horas sin asignar" (o arrástralo de vuelta).</li>
                     <li><strong>Gardas:</strong> En el bloque de "Gardas" de cada profesor, puedes escribir directamente
                         el número de horas para ajustarlas.</li>
                 </ul>
@@ -392,6 +406,44 @@
         const slots = document.querySelectorAll('.slot');
         const itemsContainerL = document.getElementById('items-container-L');
         const itemsContainerC = document.getElementById('items-container-C');
+        let selectedItem = null;
+
+        function selectItem(item) {
+            // Limpiar selección previa
+            if (selectedItem) {
+                selectedItem.classList.remove('selected');
+                slots.forEach(s => s.classList.remove('ready-to-receive'));
+            }
+
+            if (selectedItem === item) {
+                selectedItem = null;
+            } else {
+                selectedItem = item;
+                selectedItem.classList.add('selected');
+                slots.forEach(s => s.classList.add('ready-to-receive'));
+            }
+        }
+
+        function moveItemToSlot(item, slot) {
+            let targetContainer;
+            if (slot.id === 'unassigned-slot') {
+                targetContainer = document.getElementById(`items-container-${item.dataset.type}`);
+            } else {
+                targetContainer = slot.querySelector('.slot-content');
+            }
+
+            if (targetContainer) {
+                targetContainer.appendChild(item);
+                updateAllCounts();
+            }
+
+            // Limpiar estado
+            if (selectedItem) {
+                selectedItem.classList.remove('selected');
+                selectedItem = null;
+            }
+            slots.forEach(s => s.classList.remove('ready-to-receive'));
+        }
 
         data.forEach(([text, value, type, valL, valC, initialOwner], idx) => {
             const item = document.createElement('div');
@@ -465,6 +517,11 @@
             item.addEventListener('dragstart', e => {
                 e.dataTransfer.setData('text/plain', e.target.id);
             });
+
+            item.addEventListener('click', e => {
+                e.stopPropagation();
+                selectItem(item);
+            });
         });
 
         slots.forEach(slot => {
@@ -473,19 +530,23 @@
                 e.preventDefault();
                 const id = e.dataTransfer.getData('text/plain');
                 const dragged = document.getElementById(id);
-                if (!dragged) return;
-
-                let targetContainer;
-                if (slot.id === 'unassigned-slot') {
-                    // Devolver al contenedor según su tipo
-                    targetContainer = document.getElementById(`items-container-${dragged.dataset.type}`);
-                } else {
-                    targetContainer = slot.querySelector('.slot-content');
-                }
-
-                targetContainer.appendChild(dragged);
-                updateAllCounts();
+                if (dragged) moveItemToSlot(dragged, slot);
             });
+
+            slot.addEventListener('click', () => {
+                if (selectedItem) {
+                    moveItemToSlot(selectedItem, slot);
+                }
+            });
+        });
+
+        // Click en el fondo para deseleccionar
+        document.body.addEventListener('click', (e) => {
+            if (selectedItem && !e.target.closest('.item') && !e.target.closest('.slot')) {
+                selectedItem.classList.remove('selected');
+                selectedItem = null;
+                slots.forEach(s => s.classList.remove('ready-to-receive'));
+            }
         });
 
         function updateCount(slot) {
