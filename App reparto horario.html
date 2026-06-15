@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparto carga horaria Dpto. Matemáticas 26/27 - IES de TEIS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .slot {
+            border: 2px dashed #999;
+            border-radius: 6px;
+            padding: 10px;
+            width: 220px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin-bottom: 20px;
+        }
+
+        /* Unassigned slot full width */
+        #unassigned-slot {
+            width: 100%;
+        }
+
+        .slot h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .slot-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+
+        /* Unassigned items flow in rows */
+        #unassigned-slot .slot-content {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            min-height: 40px;
+            border: 1px dashed #eee;
+            padding: 5px;
+        }
+
+        .item {
+            padding: 10px;
+            border-radius: 6px;
+            cursor: move;
+            user-select: none;
+            min-width: 140px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #all-slots {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .help-section h4 {
+            color: #2c3e50;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+
+        .help-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .help-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .help-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        mark.yellow {
+            background-color: rgba(255, 255, 0, 0.3);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        mark.green {
+            background-color: rgba(144, 238, 144, 0.3);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        mark.red {
+            background-color: rgba(255, 0, 0, 0.1);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        #help-btn,
+        #guide-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #help-btn:hover,
+        #guide-btn:hover {
+            background-color: #2980b9;
+        }
+
+        #guide-btn {
+            background-color: #2ecc71;
+        }
+
+        #guide-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Reparto carga horaria Dpto. Matemáticas 26/27<br>IES de TEIS</h1>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button id="help-btn" style="margin-right: 10px;">❓ Reglas de Reparto</button>
+        <button id="guide-btn" style="margin-right: 10px;">📚 Guía de Dinamizaciones / Cargos</button>
+        <button id="export-btn" style="padding: 10px 20px; cursor: pointer;">Exportar Configuración (JSON)</button>
+        <button id="import-btn" style="padding: 10px 20px; cursor: pointer;">Importar Configuración (JSON)</button>
+        <input type="file" id="import-file" style="display: none;" accept=".json">
+    </div>
+
+    <!-- Modal de Ayuda -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="margin:0;">Ayuda: Instrucciones de Reparto 26/27</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div class="help-section">
+                <h4>📌 Cómo usar la aplicación</h4>
+                <ul class="help-list">
+                    <li><strong>Asignación:</strong> Arrastra los bloques de colores desde "Horas sin asignar" hasta el
+                        recadro de cada profesor/a.</li>
+                    <li><strong>Devolución:</strong> Para quitar una materia, arrástrala de vuelta al bloque superior.
+                    </li>
+                    <li><strong>Gardas:</strong> En el bloque de "Gardas" de cada profesor, puedes escribir directamente
+                        el número de horas para ajustarlas.</li>
+                </ul>
+
+                <h4>⚖️ Reglas de Reparto (Resolución)</h4>
+                <ul class="help-list">
+                    <li><strong>Horas Lectivas (L):</strong> El objetivo son estrictamente <strong>18 horas</strong> por
+                        profesor/a.
+                        <br><small><i>Ejemplos: ESO, Bachillerato, PDC, ESA, FPB.</i></small>
+                    </li>
+                    <li><strong>Permanencia Total:</strong> Al final del reparto, el cómputo total debe alcanzar las
+                        <strong>23 horas</strong> de permanencia en el centro.
+                        <br><small><i>Incluye L + Complementarias (Guardias, Tutoría, Jefatura Dpto, Reuniones,
+                                etc.)</i></small>
+                    </li>
+                    <li><strong>Déficit de Horas:</strong> En caso de no llegar a las 18 horas lectivas o a las 23 horas
+                        de permanencia total, se debe rellenar <strong>aumentando las horas de guardias</strong>.</li>
+                </ul>
+
+                <h4>🎨 Indicadores Visuales</h4>
+                <ul class="help-list">
+                    <li><mark class="yellow">Fondo Amarillo:</mark> El profesor ha alcanzado el objetivo de <strong>18h
+                            lectivas</strong> o las <strong>23h de permanencia</strong>.</li>
+                    <li><mark class="green">Fondo Verde:</mark> El reparto está en curso y dentro de los límites
+                        normales.</li>
+                    <li><mark class="red">Fondo Rojo:</mark> Se han superado las 18h lectivas o las 23h totales.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Guía de Dinamizaciones -->
+    <div id="guide-modal" class="modal">
+        <div class="modal-content" style="border-left: 8px solid #2ecc71;">
+            <div class="modal-header">
+                <h2 style="margin:0;">Guía: Dinamizaciones y Cargos 26/27</h2>
+                <span class="close-btn" id="close-guide">&times;</span>
+            </div>
+            <div class="help-section">
+                <h4>🚀 Funciones y Dinamizaciones <small>(Aconsejable/Variable)</small></h4>
+                <ul class="help-list">
+                    <li><strong>Dinamización Lingüística (EDLG):</strong> <strong>2 horas</strong> (1L + 1C). <span
+                            style="color: #555; font-size: 0.85em;">(Aconsejable)</span></li>
+                    <li><strong>Coordinación TIC / E-Dixgal:</strong> <strong>3 horas</strong> (1L + 2C). <span
+                            style="color: #555; font-size: 0.85em;">(Variable según centro)</span></li>
+                    <li><strong>Biblioteca:</strong> <strong>2 horas</strong> (1L + 1C). <span
+                            style="color: #555; font-size: 0.85em;">(Recomendado)</span></li>
+                    <li><strong>Erasmus+ / Internacionalización:</strong> <strong>2 horas</strong> (1L + 1C). <span
+                            style="color: #555; font-size: 0.85em;">(Variable)</span></li>
+                    <li><strong>Convivencia e Benestar:</strong> <strong>3 horas</strong> (1L + 2C). <span
+                            style="color: #555; font-size: 0.85em;">(Aconsejable)</span></li>
+                </ul>
+
+                <h4>💼 Cargos Organizativos <small>(Por Normativa)</small></h4>
+                <ul class="help-list">
+                    <li><strong>Xefatura de Departamento:</strong> <strong>3 horas</strong> (1L + 2C). <span
+                            style="color: #27ae60; font-size: 0.85em; font-weight: bold;">✔ Por Instrucción</span></li>
+                    <li><strong>Titoría:</strong> <strong>2 horas</strong> (1L + 1C). <span
+                            style="color: #27ae60; font-size: 0.85em; font-weight: bold;">✔ Por Instrucción</span></li>
+                    <li><strong>Calidade / Proxectos:</strong> <strong>1 a 2 horas</strong> (C). <span
+                            style="color: #555; font-size: 0.85em;">(Variable)</span></li>
+                </ul>
+
+                <h4>📅 Distribución Semanal Estándar</h4>
+                <ul class="help-list">
+                    <li><strong>18 Sesións Lectivas:</strong> Docencia directa y cargos con reducción horaria.</li>
+                    <li><strong>Complementarias Fixas (5h):</strong> 1h de atención a familias y 4h de
+                        guardias/reuniones de departamento.</li>
+                    <li><strong>Permanencia Non Fixa:</strong> Hasta completar las 30 horas de permanencia en el centro
+                        (clausura de actas, CCP, formación, etc.).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Bloque Sin asignar -->
+    <div class="slot" id="unassigned-slot" data-name="Horas sin asignar">
+        <h3 style="margin-bottom: 5px;">Horas sin asignar</h3>
+        <div
+            style="font-weight: bold; margin-bottom: 15px; text-align: center; color: #555; background: #eee; padding: 5px; border-radius: 4px;">
+            Total Asignadas: <span id="global-count-L">0</span>L + <span id="global-count-C">0</span>C = <span
+                id="global-total">0</span>
+            <span style="margin-left: 15px; color: #8B0000;">(Faltan: <span id="global-remaining">138</span>)</span>
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+                <h4 style="margin: 0 0 10px 0; border-bottom: 1px solid #ccc;">Lectivas (<span id="count-L"
+                        class="count">0</span>)</h4>
+                <div class="slot-content" id="items-container-L" style="min-height: 50px;"></div>
+            </div>
+            <div style="flex: 1;">
+                <h4 style="margin: 0 0 10px 0; border-bottom: 1px solid #ccc;">Complementarias (<span id="count-C"
+                        class="count">0</span>)</h4>
+                <div class="slot-content" id="items-container-C" style="min-height: 50px;"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Bloques de asignación -->
+    <div id="all-slots">
+        <div class="slot" data-name="Jaime">
+            <h3>Jaime (<span class="count">0</span>)</h3>
+            <div class="slot-content"></div>
+        </div>
+        <div class="slot" data-name="David">
+            <h3>David (<span class="count">0</span>)</h3>
+            <div class="slot-content"></div>
+        </div>
+        <div class="slot" data-name="Almudena">
+            <h3>Almudena (<span class="count">0</span>)</h3>
+            <div class="slot-content"></div>
+        </div>
+        <div class="slot" data-name="Pablo">
+            <h3>Pablo (<span class="count">0</span>)</h3>
+            <div class="slot-content"></div>
+        </div>
+        <div class="slot" data-name="Manu">
+            <h3>Manu (<span class="count">0</span>)</h3>
+            <div class="slot-content"></div>
+        </div>
+        <div class="slot" data-name="Prov.">
+            <h3>Prov. (<span class="count">0</span>)</h3>
+            <div class="slot-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de los rectángulos
+        const data = [
+            ["1º A ESO (4h)", 4, 'L'],
+            ["1º B ESO (4h)", 4, 'L'],
+            ["Ex. Francés 1ºA (1h)", 1, 'L'],
+            ["Ex. Francés 1ºB (1h)", 1, 'L'],
+            ["2º A ESO (5h)", 5, 'L'],
+            ["2º B ESO (5h)", 5, 'L'],
+            ["Ex. Francés 2ºA (1h)", 1, 'L'],
+            ["Ex. Francés 2ºB (1h)", 1, 'L'],
+            ["3º A ESO (4h)", 4, 'L'],
+            ["3º B ESO (4h)", 4, 'L'],
+            ["4º ESO M.A. (4h)", 4, 'L'],
+            ["4º ESO M.B. (4h)", 4, 'L'],
+            ["3º PDC (8h)", 8, 'L'],
+            ["1°Bach. CC.SS. (4h)", 4, 'L'],
+            ["1°Bach. C.T. (4h)", 4, 'L'],
+            ["2°Bach. CC.SS. (4h)", 4, 'L'],
+            ["2°Bach. C.T. (4h)", 4, 'L'],
+            ["2º FPB E.P. (7h)", 7, 'L'],
+            ["2º FPB I.O. (7h)", 7, 'L'],
+            ["E.S.A. (8h)", 8, 'L'],
+            ["Xefat. Estudos (14h)", 14, 'L'],
+            ["Xefat. dpto (1+2h)", 3, 'C', 1, 2],
+            ["Consello Esc. (1h)", 1, 'C'],
+            ["Convivencia (3h)", 3, 'C'],
+            ["Tutoría (??) (1+1h)", 2, 'C', 1, 1],
+            ["Tutoría (??) (1+1h)", 2, 'C', 1, 1],
+            ["Tutoría (??) (1+1h)", 2, 'C', 1, 1],
+            ["Tutoría (??) (1+1h)", 2, 'C', 1, 1],
+            ["Tutoría (??) (1+1h)", 2, 'C', 1, 1],
+            ["Dpto. Orientación (1h)", 1, 'C'],
+            ["Atención P/N (1h)", 1, 'C', 0, 1, "Jaime"],
+            ["Atención P/N (1h)", 1, 'C', 0, 1, "David"],
+            ["Atención P/N (1h)", 1, 'C', 0, 1, "Almudena"],
+            ["Atención P/N (1h)", 1, 'C', 0, 1, "Pablo"],
+            ["Atención P/N (1h)", 1, 'C', 0, 1, "Manu"],
+            ["Atención P/N (1h)", 1, 'C', 0, 1, "Prov."],
+            ["Gardas", 0, 'C', 0, 0, "Jaime"],
+            ["Gardas", 0, 'C', 0, 0, "David"],
+            ["Gardas", 0, 'C', 0, 0, "Almudena"],
+            ["Gardas", 0, 'C', 0, 0, "Pablo"],
+            ["Gardas", 0, 'C', 0, 0, "Manu"],
+            ["Gardas", 0, 'C', 0, 0, "Prov."]
+        ];
+
+        const slots = document.querySelectorAll('.slot');
+        const itemsContainerL = document.getElementById('items-container-L');
+        const itemsContainerC = document.getElementById('items-container-C');
+
+        data.forEach(([text, value, type, valL, valC, initialOwner], idx) => {
+            const item = document.createElement('div');
+            item.className = 'item';
+            item.id = `item-${idx}`;
+            item.dataset.value = value;
+            item.dataset.type = type;
+            if (valL !== undefined) item.dataset.valL = valL;
+            if (valC !== undefined) item.dataset.valC = valC;
+            item.draggable = true;
+
+            if (text === "Gardas") {
+                item.innerHTML = `<span style="margin-right:5px;">Gardas:</span><input type="number" value="${valC || value}" style="width: 35px; padding: 2px;" class="garda-input">h`;
+                const input = item.querySelector('.garda-input');
+                input.addEventListener('change', (e) => {
+                    const newVal = parseInt(e.target.value, 10) || 0;
+                    item.dataset.value = newVal;
+                    item.dataset.valC = newVal;
+                    updateAllCounts();
+                });
+                input.addEventListener('mousedown', e => e.stopPropagation()); // Evitar inicio de drag al clicar input
+            } else {
+                item.textContent = text;
+            }
+
+            // Asignar color según categoría
+            const textLC = text.toLowerCase();
+            let bgColor;
+            if (textLC.includes('eso') || textLC.includes('franc')) {
+                bgColor = 'hsl(120, 70%, 90%)'; // verde pastel
+            } else if (textLC.includes('bach')) {
+                bgColor = 'hsl(210, 70%, 90%)'; // azul pastel
+            } else if (
+                textLC.includes('fpb') ||
+                textLC.includes('e.s.a.') ||
+                textLC.includes('esa') ||
+                textLC.includes('pdc')
+            ) {
+                bgColor = 'hsl(30, 70%, 90%)'; // naranja pastel
+            } else if (
+                textLC.includes('tutor') ||
+                textLC.includes('dpto') ||
+                textLC.includes('consello') ||
+                textLC.includes('Dpto') ||
+                textLC.includes('Ref') ||
+                textLC.includes('convivencia') ||
+                textLC.includes('xefat') ||
+                textLC.includes('gardas') ||
+                textLC.includes('atención')
+            ) {
+                bgColor = 'hsl(0, 0%, 85%)'; // gris pastel
+            } else {
+                const hue = Math.random() * 360;
+                bgColor = `hsl(${hue},70%,90%)`;
+            }
+            item.style.backgroundColor = bgColor;
+
+            if (initialOwner) {
+                const slot = Array.from(slots).find(s => s.dataset.name === initialOwner);
+                if (slot) {
+                    slot.querySelector('.slot-content').appendChild(item);
+                } else {
+                    if (type === 'L') itemsContainerL.appendChild(item);
+                    else itemsContainerC.appendChild(item);
+                }
+            } else {
+                if (type === 'L') itemsContainerL.appendChild(item);
+                else itemsContainerC.appendChild(item);
+            }
+
+            item.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', e.target.id);
+            });
+        });
+
+        slots.forEach(slot => {
+            slot.addEventListener('dragover', e => e.preventDefault());
+            slot.addEventListener('drop', e => {
+                e.preventDefault();
+                const id = e.dataTransfer.getData('text/plain');
+                const dragged = document.getElementById(id);
+                if (!dragged) return;
+
+                let targetContainer;
+                if (slot.id === 'unassigned-slot') {
+                    // Devolver al contenedor según su tipo
+                    targetContainer = document.getElementById(`items-container-${dragged.dataset.type}`);
+                } else {
+                    targetContainer = slot.querySelector('.slot-content');
+                }
+
+                targetContainer.appendChild(dragged);
+                updateAllCounts();
+            });
+        });
+
+        function updateCount(slot) {
+            const span = slot.querySelector('span.count');
+            const items = slot.querySelectorAll('.slot-content .item');
+
+            let sumL = 0;
+            let sumC = 0;
+
+            items.forEach(it => {
+                if (it.dataset.valL !== undefined || it.dataset.valC !== undefined) {
+                    sumL += parseInt(it.dataset.valL || 0, 10);
+                    sumC += parseInt(it.dataset.valC || 0, 10);
+                } else {
+                    const val = parseInt(it.dataset.value, 10);
+                    if (it.dataset.type === 'L') sumL += val;
+                    else sumC += val;
+                }
+            });
+
+            const total = sumL + sumC;
+
+            if (slot.id === 'unassigned-slot') {
+                const spanL = document.getElementById('count-L');
+                const spanC = document.getElementById('count-C');
+                spanL.textContent = sumL;
+                spanC.textContent = sumC;
+                spanL.style.color = sumL > 0 ? '#8B0000' : '#333';
+                spanC.style.color = sumC > 0 ? '#8B0000' : '#333';
+                slot.style.backgroundColor = 'transparent';
+            } else {
+                if (span) span.innerHTML = `${sumL}L + ${sumC}C = <strong>${total}</strong>`;
+
+                // Lógica de colores según el total de horas (usando sumL para el criterio principal)
+                if (total === 0) {
+                    slot.style.backgroundColor = 'transparent';
+                    if (span) span.style.color = '#333';
+                } else if (sumL > 18 || total > 23) {
+                    slot.style.backgroundColor = 'rgba(255, 0, 0, 0.1)'; // Rojo suave (exceso)
+                    if (span) span.style.color = '#8B0000';
+                } else if (sumL === 18 || total === 23) {
+                    slot.style.backgroundColor = 'rgba(255, 255, 0, 0.15)'; // Amarillo suave (objetivo cumplido)
+                    if (span) span.style.color = (sumL === 18) ? '#8B8000' : '#8B0000';
+                } else {
+                    slot.style.backgroundColor = 'rgba(144, 238, 144, 0.2)'; // Verde suave (asignación normal)
+                    if (span) span.style.color = '#004d00';
+                }
+            }
+            return { L: sumL, C: sumC };
+        }
+
+        function updateAllCounts() {
+            let globalL = 0;
+            let globalC = 0;
+
+            slots.forEach(slot => {
+                const result = updateCount(slot);
+                if (slot.id !== 'unassigned-slot' && result) {
+                    globalL += result.L;
+                    globalC += result.C;
+                }
+            });
+
+            document.getElementById('global-count-L').textContent = globalL;
+            document.getElementById('global-count-C').textContent = globalC;
+
+            const totalAssigned = globalL + globalC;
+            document.getElementById('global-total').textContent = totalAssigned;
+            document.getElementById('global-remaining').textContent = 138 - totalAssigned;
+        }
+
+        // Exportar a JSON
+        document.getElementById('export-btn').addEventListener('click', () => {
+            const config = [];
+            slots.forEach(slot => {
+                const slotContent = [];
+                slot.querySelectorAll('.item').forEach(item => {
+                    slotContent.push({
+                        id: item.id,
+                        text: item.textContent.includes("Gardas") ? "Gardas" : item.textContent,
+                        valL: item.dataset.valL,
+                        valC: item.dataset.valC,
+                        value: item.dataset.value,
+                        type: item.dataset.type
+                    });
+                });
+                config.push({
+                    name: slot.dataset.name,
+                    id: slot.id,
+                    items: slotContent
+                });
+            });
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'configuracion_reparto.json';
+            a.click();
+        });
+
+        // Importar desde JSON
+        document.getElementById('import-btn').addEventListener('click', () => {
+            document.getElementById('import-file').click();
+        });
+
+        document.getElementById('import-file').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const config = JSON.parse(event.target.result);
+                config.forEach(slotData => {
+                    const slot = document.getElementById(slotData.id) || Array.from(slots).find(s => s.dataset.name === slotData.name);
+                    if (!slot) return;
+                    const container = slot.querySelector('.slot-content') || slot; // handles unassigned with subcontainers if needed
+
+                    slotData.items.forEach(itemData => {
+                        const item = document.getElementById(itemData.id);
+                        if (item) {
+                            // Si el ítem es una guardia, actualizar su input si existe
+                            if (itemData.text === "Gardas") {
+                                const input = item.querySelector('.garda-input');
+                                if (input) input.value = itemData.valC || itemData.value;
+                                item.dataset.value = itemData.value;
+                                item.dataset.valC = itemData.valC;
+                            }
+
+                            // Mover ítem al contenedor correcto
+                            let target = container;
+                            if (slot.id === 'unassigned-slot') {
+                                target = document.getElementById(`items-container-${itemData.type}`);
+                            }
+                            target.appendChild(item);
+                        }
+                    });
+                });
+                updateAllCounts();
+            };
+            reader.readAsText(file);
+        });
+
+        // Lógica de los Modales
+        const helpModal = document.getElementById("help-modal");
+        const guideModal = document.getElementById("guide-modal");
+
+        const helpBtn = document.getElementById("help-btn");
+        const guideBtn = document.getElementById("guide-btn");
+
+        const closeHelp = helpModal.querySelector(".close-btn");
+        const closeGuide = document.getElementById("close-guide");
+
+        helpBtn.onclick = () => helpModal.style.display = "block";
+        guideBtn.onclick = () => guideModal.style.display = "block";
+
+        closeHelp.onclick = () => helpModal.style.display = "none";
+        closeGuide.onclick = () => guideModal.style.display = "none";
+
+        window.onclick = (event) => {
+            if (event.target == helpModal) helpModal.style.display = "none";
+            if (event.target == guideModal) guideModal.style.display = "none";
+        }
+
+        updateAllCounts();
+    </script>
+</body>
+
+</html>
