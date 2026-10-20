@@ -1,0 +1,48 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>F18 · Corriente y circuitos</title><style>
+:root{--ink:#17212e;--blue:#185a85;--muted:#4b5b68;--line:#aebdc8;--pale:#edf5fa}
+*{box-sizing:border-box}body{margin:0;padding:16px;background:#e9edf0;color:var(--ink);font:11.5px/1.32 Arial,Helvetica,sans-serif}
+.toolbar{max-width:210mm;margin:0 auto 12px;padding:9px 12px;background:white;display:flex;justify-content:space-between;align-items:center}
+.toolbar button{padding:7px 12px;border:0;background:var(--blue);color:white;font-weight:bold;cursor:pointer}
+.sheet{width:210mm;margin:auto;background:white;box-shadow:0 3px 14px #26374730}
+.page{width:210mm;height:297mm;padding:12mm 13mm 11mm;display:flex;flex-direction:column;break-after:page;overflow:hidden}
+.page:last-child{break-after:auto}header{border-bottom:2px solid var(--ink);padding-bottom:7px}
+.headrow{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}h1{margin:0;font-size:20px;line-height:1.1}
+.tag{font-size:10px;font-weight:bold;color:var(--blue);white-space:nowrap}.sub{margin:4px 0 0;color:var(--muted);font-size:11px}
+.identity{display:grid;grid-template-columns:2.2fr .7fr .8fr;gap:13px;margin-top:12px;font-size:11px}
+.line{display:inline-block;width:100%;border-bottom:1px solid var(--ink);height:16px;vertical-align:bottom}
+.box{margin-top:10px;padding:8px 10px;border-left:3px solid var(--blue);background:var(--pale)}.box p{margin:2px 0}
+h2{margin:12px 0 5px;font-size:14px;color:var(--blue)}p{margin:4px 0 6px}.hint{color:var(--muted);font-size:10.5px}
+table{width:100%;border-collapse:collapse;table-layout:fixed;margin:6px 0}th,td{border:1px solid var(--line);padding:6px;vertical-align:top}
+th{background:var(--pale);text-align:left;font-size:10.5px}.three th:first-child{width:22%}.three th:last-child{width:21%}
+.formula{margin:8px 0;padding:8px 10px;background:var(--pale);font-size:12px;font-weight:bold}
+.example{padding:7px 9px;border:1px solid var(--line);margin:7px 0;font-size:11px}
+.q{margin-top:10px}.q p{font-size:11.5px;margin:0 0 3px}.ruled{background:repeating-linear-gradient(to bottom,transparent 0,transparent 24px,#b8c3ca 25px,transparent 26px)}
+.r2{height:52px}.r3{height:78px}.r4{height:104px}.r5{height:130px}.r6{height:156px}.r7{height:182px}
+.steps{padding-left:18px;margin:5px 0 7px}.steps li{margin:3px 0}
+.check{margin-top:10px;padding:8px 10px;background:var(--pale);font-size:10.5px}.check p{margin:2px 0}.check.push-bottom{margin-top:auto}
+.bottom-block{margin-top:auto}.bottom-block h2{margin-top:0}
+.work{border:1px solid var(--line);height:105px;margin:5px 0}.work.tall{height:135px}
+.math-block{position:relative;min-height:84px;margin:8px 0;padding:3px 10px;background:var(--pale);text-align:center;font-size:15px;font-weight:bold}
+.mathjax-only{visibility:hidden}.math-ready .mathjax-only{visibility:visible}.math-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.7}.math-ready .math-fallback{display:none}
+.solution{background:#f3f9fc;color:#0d496d;border-left:2px solid var(--blue);padding:7px 9px;font-size:11px;line-height:1.35}
+.solution p{margin:0}
+footer{margin-top:auto;padding-top:7px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);font-size:9px}
+@media print{@page{size:A4 portrait;margin:0}body{padding:0;background:white}.toolbar{display:none}.sheet{box-shadow:none}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style></head><body>
+<div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <strong>F18 · Corriente y circuitos</strong><button onclick="window.print()">Imprimir a doble cara</button></div><main class="sheet">
+<section class="page"><header><div class="headrow"><div><h1>F18 · Tipos de corriente y circuito</h1><p class="sub">UD1 · Mi tienda sostenible de reparación informática</p></div><span class="tag">1 / 2 · ANVERSO</span></div><div class="identity"><span>Nombre y apellidos <i class="line"></i></span><span>Grupo <i class="line"></i></span><span>Fecha <i class="line"></i></span></div></header><div class="box"><p><b>Objetivo.</b> Explicar cómo circula la corriente y qué sucede cuando un circuito se abre o un elemento falla.</p><p><b>Necesitas:</b> lápiz. Lee los ejemplos antes de responder. Trabajamos con dibujos o simulaciones, sin manipular la red eléctrica.</p></div>
+<h2>1. Corriente continua y alterna</h2>
+<table><thead><tr><th>Tipo</th><th>Qué ocurre</th><th>Ejemplo</th></tr></thead><tbody>
+<tr><td><b>Continua (CC)</b></td><td>La corriente circula siempre en el mismo sentido.</td><td>Una pila o una batería alimenta un dispositivo.</td></tr>
+<tr><td><b>Alterna (CA)</b></td><td>La corriente cambia de sentido periódicamente.</td><td>La alimentación que llega a un enchufe.</td></tr></tbody></table>
+<p>Un <b>cargador</b> recibe alimentación de la red (CA) y entrega al dispositivo una salida de baja tensión en CC, adecuada a sus características. Comprueba siempre la salida indicada en su etiqueta.</p>
+<h2>2. Circuito abierto y cerrado</h2>
+<p>Para que una lámpara funcione, la corriente necesita un <b>camino cerrado</b> desde la fuente, a través de la lámpara, y de vuelta a la fuente. Un interruptor abierto corta ese camino; al cerrarlo, el camino se completa.</p>
+<div class="q"><p><b>1.</b> Explica la diferencia entre CC y CA. Pon un ejemplo de fuente o aparato relacionado con cada una.</p><div class="ruled r6"></div></div><div class="q"><p><b>2.</b> Una pila, un interruptor y una bombilla forman un circuito. ¿Qué ocurre con el interruptor abierto? ¿Y al cerrarlo? Explica la causa.</p><div class="ruled r7"></div></div><footer><span>F18 · Trabajo individual · Consulta las explicaciones de esta ficha</span><span>1 / 2</span></footer></section>
+<section class="page"><header><div class="headrow"><div><h1>F18 · Serie y paralelo</h1><p class="sub">UD1 · Mi tienda sostenible de reparación informática</p></div><span class="tag">2 / 2 · REVERSO</span></div></header><h2>3. Serie y paralelo</h2>
+<table><thead><tr><th>Conexión</th><th>Caminos para la corriente</th><th>Si una lámpara interrumpe su camino...</th></tr></thead><tbody>
+<tr><td><b>Serie</b></td><td>Un único camino que pasa por todas las lámparas.</td><td>Se interrumpe el camino y las demás se apagan.</td></tr>
+<tr><td><b>Paralelo</b></td><td>Una rama para cada lámpara.</td><td>Las otras ramas pueden seguir funcionando.</td></tr></tbody></table>
+<p class="hint">Estas son situaciones simplificadas con lámparas. Una instalación real tiene protecciones y más componentes.</p>
+<div class="q"><p><b>3.</b> Hay dos lámparas conectadas en serie y una deja de funcionar porque se abre su filamento. ¿Qué sucede con la otra? ¿Qué ocurriría si estuvieran en paralelo?</p><div class="ruled r6"></div></div><div class="q"><p><b>4.</b> ¿Por qué interesa que las lámparas de una casa puedan funcionar de forma independiente? Relaciónalo con la conexión en paralelo.</p><div class="ruled r5"></div></div><div class="q"><p><b>5.</b> Un móvil usa su batería y se carga mediante un adaptador conectado al enchufe. ¿Por qué necesita el adaptador? Usa las palabras CA, CC y tensión.</p><div class="ruled r5"></div></div><div class="check push-bottom"><p>□ He distinguido CC y CA. □ He explicado si existe un camino cerrado para la corriente.</p><p>□ He comparado serie y paralelo por sus caminos y por lo que sucede cuando una lámpara falla.</p><p><b>Si te atascas:</b> lee de nuevo las dos tablas de esta ficha.</p></div><footer><span>F18 · Electricidad básica</span><span>2 / 2</span></footer></section></main></body></html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>F14 · Necesidades y reparto del local</title>
+  <style>
+    :root { --ink:#17212e; --blue:#185a85; --muted:#4b5b68; --line:#aebdc8; --pale:#edf5fa; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:16px; background:#e9edf0; color:var(--ink); font:12px/1.35 Arial,Helvetica,sans-serif; }
+    .toolbar { max-width:210mm; margin:0 auto 12px; padding:9px 12px; background:white; display:flex; justify-content:space-between; align-items:center; }
+    .toolbar button { padding:7px 12px; border:0; background:var(--blue); color:white; font-weight:bold; cursor:pointer; }
+    .sheet { width:210mm; margin:auto; background:white; box-shadow:0 3px 14px #26374730; }
+    .page { width:210mm; height:297mm; padding:12mm 13mm 11mm; display:flex; flex-direction:column; break-after:page; overflow:hidden; }
+    .page:last-child { break-after:auto; }
+    header { border-bottom:2px solid var(--ink); padding-bottom:7px; }
+    .headrow { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+    h1 { margin:0; font-size:20px; line-height:1.1; color:var(--ink); }
+    .tag { font-size:10px; font-weight:bold; color:var(--blue); white-space:nowrap; }
+    .sub { margin:4px 0 0; color:var(--muted); font-size:11px; }
+    .identity { display:grid; grid-template-columns:2.2fr .7fr .8fr; gap:13px; margin-top:12px; font-size:11px; }
+    .line { display:inline-block; width:100%; border-bottom:1px solid var(--ink); height:16px; vertical-align:bottom; }
+    .box { margin-top:10px; padding:8px 10px; border-left:3px solid var(--blue); background:var(--pale); }
+    .box p { margin:2px 0; }
+    h2 { margin:15px 0 5px; font-size:14px; color:var(--blue); }
+    .hint { margin:0 0 8px; color:var(--muted); font-size:11px; }
+    .steps { margin:5px 0 8px; padding-left:18px; }
+    .steps li { margin:3px 0; }
+    table { width:100%; border-collapse:collapse; table-layout:fixed; }
+    th,td { border:1px solid var(--line); }
+    th { padding:7px 6px; background:var(--pale); color:var(--ink); text-align:left; font-size:11px; }
+    .brief th:first-child { width:25%; }
+    .brief th:nth-child(2) { width:39%; }
+    .brief td { height:49mm; padding:8px 8px 5px; vertical-align:top; }
+    .area { font-weight:bold; font-size:12px; }
+    .area small { display:block; margin-top:5px; font-weight:normal; font-size:10px; line-height:1.35; color:var(--muted); }
+    .write-lines { height:100%; background:repeating-linear-gradient(to bottom,transparent 0,transparent 25px,#b8c3ca 26px,transparent 27px); }
+    .mini-check { margin-top:12px; padding:8px 10px; border:1px solid var(--line); font-size:11px; }
+    .mini-check p { margin:2px 0; }
+    footer { margin-top:auto; padding-top:7px; border-top:1px solid var(--line); display:flex; justify-content:space-between; color:var(--muted); font-size:9px; }
+    .plan-task { margin-top:10px; padding:8px 10px; border:1px solid var(--line); }
+    .plan-task p { margin:2px 0 5px; }
+    .numbered { margin:0; padding-left:19px; }
+    .numbered li { margin:4px 0; }
+    .formula { margin:9px 0; padding:7px 10px; background:var(--pale); font-weight:bold; }
+    .calc th:first-child { width:21%; }
+    .calc th:nth-child(2) { width:36%; }
+    .calc th:nth-child(3) { width:19%; }
+    .calc td { height:29mm; padding:6px; vertical-align:top; }
+    .calc td:first-child { font-weight:bold; }
+    .calc td span { display:block; margin-top:4px; color:var(--muted); font-size:10px; font-weight:normal; }
+    .total { margin-top:9px; padding:8px 10px; border:1.5px solid var(--blue); }
+    .total p { margin:5px 0; }
+    .answer { display:inline-block; width:28mm; height:16px; border-bottom:1px solid var(--ink); vertical-align:bottom; }
+    .total .answer { width:20mm; }
+    .reason { margin-top:12px; }
+    .reason .ruled { height:29mm; background:repeating-linear-gradient(to bottom,transparent 0,transparent 25px,#b8c3ca 26px,transparent 27px); }
+    .last { margin-top:10px; padding:8px 10px; background:var(--pale); font-size:11px; }
+    .last p { margin:3px 0; }
+    @media print {
+      @page { size:A4 portrait; margin:0; }
+      body { padding:0; background:white; }
+      .toolbar { display:none; }
+      .sheet { box-shadow:none; }
+      * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <strong>F14 · Necesidades y reparto del local</strong><button onclick="window.print()">Imprimir a doble cara</button></div>
+  <main class="sheet">
+    <section class="page">
+      <header>
+        <div class="headrow"><div><h1>F14 · Necesidades de las tres zonas</h1><p class="sub">UD1 · Mi tienda sostenible de reparación informática</p></div><span class="tag">1 / 2 · ANVERSO</span></div>
+        <div class="identity"><span>Nombre y apellidos <i class="line"></i></span><span>Grupo <i class="line"></i></span><span>Fecha <i class="line"></i></span></div>
+      </header>
+      <div class="box"><p><b>Objetivo.</b> Decidir qué necesita cada zona y repartir la superficie de tu local.</p><p><b>Ten a mano:</b> F02, F13A, una copia de tu plano a escala 1:100, regla, lápiz y calculadora.</p></div>
+      <h2>1. Breve programa de necesidades</h2>
+      <p class="hint">Lee cada fila antes de escribir. Puedes recuperar ideas de F02 y de la guía F14.</p>
+      <ol class="steps"><li>Piensa qué trabajo se hará en esa zona.</li><li>Escribe en «Imprescindible» lo que debe estar para que pueda funcionar.</li><li>Escribe en «Deseable» lo que ayudaría, pero podría añadirse después.</li></ol>
+      <table class="brief">
+        <thead><tr><th>Zona y actividad</th><th>Imprescindible para funcionar</th><th>Deseable o mejora</th></tr></thead>
+        <tbody>
+          <tr><td class="area">Atención al público<small>Recibir, informar y entregar equipos.</small></td><td><div class="write-lines"></div></td><td><div class="write-lines"></div></td></tr>
+          <tr><td class="area">Taller técnico<small>Revisar y reparar los equipos.</small></td><td><div class="write-lines"></div></td><td><div class="write-lines"></div></td></tr>
+          <tr><td class="area">Almacén y RAEE<small>Guardar equipos, piezas y residuos separados.</small></td><td><div class="write-lines"></div></td><td><div class="write-lines"></div></td></tr>
+        </tbody>
+      </table>
+      <div class="mini-check"><p><b>Comprueba:</b> cada zona tiene al menos dos necesidades imprescindibles y una mejora deseable.</p><p><b>Si te atascas:</b> vuelve a F02 o a la guía F14. Señala la duda si no sabes dónde colocar una idea.</p></div>
+      <footer><span>F14 · Trabajo individual · El plano se grapa a esta hoja</span><span>1 / 2</span></footer>
+    </section>
+    <section class="page">
+      <header><div class="headrow"><div><h1>F14 · Reparto de la superficie</h1><p class="sub">Trabaja sobre la copia de tu propio plano. No dibujes el plano en esta ficha.</p></div><span class="tag">2 / 2 · REVERSO</span></div></header>
+      <div class="plan-task"><p><b>2. Dibuja las zonas en la copia de tu plano.</b></p><ol class="numbered"><li>Marca con tres colores las zonas de atención, taller y almacén/RAEE. Escribe el nombre dentro de cada una.</li><li>Incluye el espacio de paso en una de las tres zonas. No lo cuentes dos veces.</li><li>Si una zona tiene forma irregular, divídela en rectángulos y numéralos en el plano.</li></ol></div>
+      <h2>3. Mide y calcula</h2>
+      <p class="hint">Mide en centímetros sobre tu plano. Anota aquí las medidas y operaciones de cada zona. Puedes sumar varios rectángulos.</p>
+      <div class="formula">Escala 1:100: 1 cm del plano representa 1 m real.<br>Por eso, 1 cm² del plano representa 1 m² real: el número del área no cambia al pasar de cm² del plano a m² reales.</div>
+      <table class="calc">
+        <thead><tr><th>Zona</th><th>Medidas y operaciones en el plano</th><th>Área del plano<br>(cm²)</th><th>Área real<br>(m²)</th></tr></thead>
+        <tbody>
+          <tr><td>Atención al público<span>Si hay varios rectángulos, súmalos.</span></td><td></td><td></td><td></td></tr>
+          <tr><td>Taller técnico<span>Escribe las unidades.</span></td><td></td><td></td><td></td></tr>
+          <tr><td>Almacén y RAEE<span>Comprueba las medidas.</span></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      <div class="total"><p><b>4. Comprueba la suma (todo en m²).</b></p><p>Atención <span class="answer"></span> + taller <span class="answer"></span> + almacén <span class="answer"></span> = <span class="answer"></span> m².</p><p>Total de F13A, calculado a 1:100: <span class="answer"></span> m². Diferencia: <span class="answer"></span> m².</p></div>
+      <div class="reason"><h2>5. Explica tu reparto</h2><p class="hint">¿Por qué colocaste cada zona ahí? Escribe al menos dos razones relacionadas con sus necesidades.</p><div class="ruled"></div></div>
+      <div class="last"><p><b>Revisión final:</b> □ Hay tres zonas con nombre en el plano. □ He anotado áreas en cm² y m². □ La suma coincide aproximadamente con F13A. □ He grapado el plano a esta hoja.</p><p><b>Si no coincide:</b> revisa si falta un trozo del local, si has contado dos veces un paso o si has aplicado bien la escala. Si sigues sin encontrar el error, marca la duda.</p></div>
+      <footer><span>F14 · Reparto provisional · Podrás ajustarlo después</span><span>2 / 2</span></footer>
+    </section>
+  </main>
+</body>
+</html>

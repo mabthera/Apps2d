@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>F11 · Normas de dibujo y acotación</title>
+  <style>
+    :root { --navy:#0f172a; --navy-2:#334155; --petrol:#0369a1; --paper:#fff; --soft:#f8fafc; --line:#cbd5e1; --ink:#1e293b; --muted:#64748b; --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+    * { box-sizing:border-box; margin:0; padding:0; } body { font-family:var(--font); color:var(--ink); background:#e2e8f0; padding:20px 16px 40px; line-height:1.28; }
+    .toolbar { max-width:850px; margin:0 auto 14px; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid var(--line); border-radius:5px; box-shadow:0 1px 3px #0f172a18; font-size:.84rem; font-weight:700; color:var(--navy); } .badge { display:inline-block; padding:2px 7px; border-radius:3px; background:var(--navy); color:#fff; font-size:.74rem; letter-spacing:.05em; } button { border:0; border-radius:3px; padding:7px 12px; background:var(--navy); color:#fff; font:700 .8rem var(--font); cursor:pointer; }
+    .document { max-width:850px; margin:auto; background:var(--paper); border:1.5px solid var(--navy); box-shadow:0 4px 16px #0f172a18; } .page { min-height:1055px; padding:24px 28px 19px; display:flex; flex-direction:column; }
+    .header { border-bottom:2px solid var(--navy); padding-bottom:9px; margin-bottom:8px; } .header-top { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; } h1 { color:var(--navy); font-size:1.24rem; line-height:1.15; letter-spacing:.025em; text-transform:uppercase; } .subtitle { margin-top:3px; color:var(--muted); font-size:.82rem; } .tag { white-space:nowrap; border:1px solid var(--line); background:var(--soft); padding:3px 7px; border-radius:3px; color:var(--navy-2); font-size:.7rem; font-weight:800; text-transform:uppercase; }
+    .identity { margin-top:9px; display:grid; grid-template-columns:2.1fr .75fr .9fr; gap:13px; font-size:.77rem; font-weight:700; } .write { display:inline-block; width:100%; height:16px; border-bottom:1px solid var(--navy); vertical-align:bottom; }
+    .section-title { margin:7px 0 3px; padding-bottom:2px; border-bottom:1.5px solid var(--navy); color:var(--navy); font-size:.91rem; font-weight:800; text-transform:uppercase; letter-spacing:.025em; } .number { color:var(--petrol); margin-right:6px; } .instruction { font-size:.79rem; color:var(--navy-2); margin-bottom:5px; }
+    
+    .goal { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:6px; } .goal-box,.card { padding:6px 8px; border:1px solid var(--line); border-radius:3px; background:var(--soft); font-size:.75rem; } .goal-box strong,.card h3 { color:var(--navy); } .card h3 { font-size:.77rem; margin-bottom:2px; }
+    .prompt { border-left:3px solid var(--petrol); padding:6px 9px; background:#f0f9ff; color:var(--navy); font-size:.76rem; margin-bottom:6px; }
+    
+    /* Layouts visuales */
+    .theory-box { padding:8px 10px; border:1.5px solid var(--navy); border-radius:3px; background:#fff; margin-bottom:8px; display:flex; gap:12px; align-items:center; }
+    .theory-box svg { flex:1; max-width:65%; height:auto; }
+    .theory-text { flex:1; font-size:.75rem; color:var(--navy-2); }
+    .theory-text strong { color:var(--navy); }
+    .theory-text ul { margin-left:14px; margin-top:4px; }
+    .theory-text li { margin-bottom:3px; }
+
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:8px; }
+    .exercise-box { padding:8px; border:1px solid var(--line); border-radius:3px; background:var(--soft); display:flex; flex-direction:column; gap:6px; }
+    .exercise-box h4 { font-size:.74rem; color:var(--petrol); text-transform:uppercase; }
+    .draw-area { flex:1; min-height:80px; background:#fff; border:1px dashed var(--muted); border-radius:2px; display:grid; place-items:center; font-size:.65rem; color:var(--line); }
+
+    .large-draw-area { flex: 1 1 auto; min-height:100px; position:relative; border:1.5px solid var(--navy); border-radius:3px; background-image:linear-gradient(#f1f5f9 1px,transparent 1px),linear-gradient(90deg,#f1f5f9 1px,transparent 1px); background-size:10mm 10mm; margin-bottom:8px; }
+    .large-draw-area svg { display:block; width:100%; height:100%; position:absolute; inset:0; }
+    
+    .footer { display:flex; justify-content:space-between; margin-top:7px; padding-top:7px; border-top:1px solid var(--line); color:var(--muted); font-size:.66rem; }
+    .page-break { height:1px; background:var(--navy); }
+
+    .professional-close { margin-top:auto; padding-top:6px; display:grid; grid-template-columns:1.35fr 1fr; gap:7px; font-size:.72rem; } .sign-box { min-height:80px; padding:6px 8px; border:1px solid var(--line); border-radius:3px; background:var(--soft); } .sign-box h3 { margin-bottom:3px; color:var(--navy); font-size:.78rem; text-transform:uppercase; letter-spacing:.025em; } .sign-line { display:grid; grid-template-columns:1fr .48fr; gap:10px; margin-top:8px; font-size:.7rem; } .sign-line span { display:block; min-height:16px; border-bottom:1px solid var(--navy); } .approval { border-color:var(--navy); background:#fff; } .approval-status { margin:-6px -8px 5px; padding:4px 7px; background:var(--navy); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; }
+
+    @media print {
+      @page { size:A4 portrait; margin:7mm 8mm; }
+      body { padding:0; background:#fff; }
+      .toolbar { display:none; }
+      .document { max-width:none; border:0; box-shadow:none; }
+      .page { min-height:0; height:283mm; max-height:283mm; padding:0; page-break-inside:avoid; overflow:hidden; }
+      .page-break { height:0; background:transparent; break-after:page; page-break-after:always; }
+      .sign-box { min-height:auto; }
+      .footer { margin-top:auto; }
+      * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <span><span class="badge">F11</span> Ficha práctica · Sesión 13</span><button onclick="window.print()">Imprimir ficha A4 doble cara</button></div>
+  <main class="document">
+
+    <!-- ===== CARA A — SIMBOLOGÍA Y TRAZOS ===== -->
+    <section class="page">
+      <header class="header"><div class="header-top"><div><h1>Normas básicas de dibujo: símbolos y líneas</h1><p class="subtitle">UD1 · Mi tienda sostenible · Preparación para el plano final</p></div><span class="tag">Dossier A2 · F11 · Cara A</span></div><div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div></header>
+
+      <div class="prompt"><b>El alfabeto del plano.</b> Un plano arquitectónico no es un dibujo artístico. Es un documento técnico que usa un <b>lenguaje visual universal</b> para que cualquier profesional (electricista, carpintero, albañil) pueda entenderlo sin explicaciones.</div>
+
+      <!-- TEORÍA -->
+      <div class="theory-box">
+        <svg viewBox="0 0 400 120" aria-hidden="true">
+          <!-- Muro macizo -->
+          <rect x="10" y="10" width="80" height="30" fill="#cbd5e1" stroke="#0f172a" stroke-width="3"/>
+          <text x="50" y="55" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">Muro macizo</text>
+          <text x="50" y="68" text-anchor="middle" font-size="9" fill="#64748b">(línea gruesa)</text>
+          
+          <!-- Puerta -->
+          <rect x="120" y="10" width="30" height="10" fill="#cbd5e1" stroke="#0f172a" stroke-width="3"/>
+          <rect x="190" y="10" width="30" height="10" fill="#cbd5e1" stroke="#0f172a" stroke-width="3"/>
+          <rect x="146" y="20" width="4" height="40" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+          <path d="M150,60 A40,40 0 0,0 190,20" fill="none" stroke="#0f172a" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="170" y="75" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">Puerta abatible</text>
+          <text x="170" y="88" text-anchor="middle" font-size="9" fill="#64748b">(arco fino + muro grueso)</text>
+
+          <!-- Ventana -->
+          <rect x="250" y="10" width="20" height="15" fill="#cbd5e1" stroke="#0f172a" stroke-width="3"/>
+          <line x1="270" y1="10" x2="330" y2="10" stroke="#0f172a" stroke-width="1"/>
+          <line x1="270" y1="25" x2="330" y2="25" stroke="#0f172a" stroke-width="1"/>
+          <line x1="270" y1="15" x2="330" y2="15" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="270" y1="20" x2="330" y2="20" stroke="#0f172a" stroke-width="1.5"/>
+          <rect x="330" y="10" width="20" height="15" fill="#cbd5e1" stroke="#0f172a" stroke-width="3"/>
+          <text x="300" y="55" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">Ventana en muro</text>
+          <text x="300" y="68" text-anchor="middle" font-size="9" fill="#64748b">(vidrios finos)</text>
+        </svg>
+        <div class="theory-text">
+          <strong>Jerarquía de líneas:</strong>
+          <ul>
+            <li><b>Gruesa:</b> Elementos seccionados (muros, pilares).</li>
+            <li><b>Media:</b> Elementos vistos (muebles, hojas de puerta).</li>
+            <li><b>Fina:</b> Referencias (abatimiento de puertas, líneas de cota).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD 1 -->
+      <h2 class="section-title"><span class="number">Actividad 1</span>Traducir a plano (Dibuja los símbolos)</h2>
+      <p class="instruction">Fíjate en la descripción del elemento real y dibuja su <b>símbolo 2D</b> (visto desde arriba) en el recuadro. Presta atención al grosor de las líneas.</p>
+      
+      <div class="grid-3">
+        <div class="exercise-box">
+          <h4>A. Ventana ancha</h4>
+          <p style="font-size:.7rem; color:var(--navy-2); margin-bottom:4px;">Ventana de doble cristal empotrada en un muro grueso.</p>
+          <div class="draw-area">Dibuja el símbolo aquí</div>
+        </div>
+        <div class="exercise-box">
+          <h4>B. Puerta (abre a la izq.)</h4>
+          <p style="font-size:.7rem; color:var(--navy-2); margin-bottom:4px;">Puerta que se abre hacia el interior y a la izquierda.</p>
+          <div class="draw-area">Dibuja el símbolo aquí</div>
+        </div>
+        <div class="exercise-box">
+          <h4>C. Pilar cuadrado</h4>
+          <p style="font-size:.7rem; color:var(--navy-2); margin-bottom:4px;">Columna maciza en medio de una habitación.</p>
+          <div class="draw-area">Dibuja el símbolo aquí</div>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD 2 -->
+      <h2 class="section-title"><span class="number">Actividad 2</span>Completar el plano base</h2>
+      <p class="instruction">Al dibujante de este plano se le olvidó detallar los huecos. Usando tu lápiz, <b>dibuja la puerta</b> de acceso (arriba, abriendo hacia el interior y a la derecha) y <b>dos ventanas</b> correderas (a la derecha). Respeta los grosores de línea.</p>
+      
+      <div class="large-draw-area">
+        <svg viewBox="0 0 600 280">
+          <!-- Muro perimetral base (incompleto) -->
+          <path d="M50,50 L50,230 L450,230 L450,180" fill="none" stroke="#cbd5e1" stroke-width="12"/>
+          <path d="M450,100 L450,50 L180,50" fill="none" stroke="#cbd5e1" stroke-width="12"/>
+          <!-- Guías para que dibujen encima -->
+          <!-- Hueco puerta -->
+          <text x="135" y="40" font-size="11" fill="#0369a1" font-weight="700">DIBUJA PUERTA (ABRE HACIA DENTRO-DCHA)</text>
+          <rect x="90" y="44" width="90" height="12" fill="none" stroke="#0369a1" stroke-width="1" stroke-dasharray="4,4"/>
+          <!-- Huecos ventanas -->
+          <text x="470" y="130" font-size="12" fill="#0369a1" font-weight="700">VENTANAS</text>
+          <rect x="444" y="100" width="12" height="35" fill="none" stroke="#0369a1" stroke-width="1" stroke-dasharray="4,4"/>
+          <rect x="444" y="145" width="12" height="35" fill="none" stroke="#0369a1" stroke-width="1" stroke-dasharray="4,4"/>
+        </svg>
+      </div>
+
+      <footer class="footer"><span>F11 · Normas de dibujo y acotación · Cara A</span><span>1 / 2</span></footer>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- ===== CARA B — REGLAS DE ACOTACIÓN ===== -->
+    <section class="page">
+      <header class="header"><div class="header-top"><div><h1>Reglas de acotación: colocar medidas sin emborronar</h1><p class="subtitle">UD1 · Preparación para el plano final · Ciencias Aplicadas II</p></div><span class="tag">Dossier A2 · F11 · Cara B</span></div></header>
+
+      <div class="prompt"><b>Acotar no es poner números sueltos.</b> Es un sistema estandarizado para comunicar dimensiones con precisión, manteniendo el plano limpio y legible.</div>
+
+      <!-- TEORÍA ACOTACIÓN -->
+      <div class="theory-box" style="margin-bottom:12px;">
+        <svg viewBox="0 0 350 110" aria-hidden="true">
+          <!-- Objeto a acotar -->
+          <rect x="80" y="50" width="150" height="30" fill="#f8fafc" stroke="#0f172a" stroke-width="2"/>
+          
+          <!-- Líneas auxiliares -->
+          <line x1="80" y1="45" x2="80" y2="20" stroke="#64748b" stroke-width="1"/>
+          <line x1="230" y1="45" x2="230" y2="20" stroke="#64748b" stroke-width="1"/>
+          <text x="75" y="15" text-anchor="end" font-size="9" fill="#0369a1" font-weight="700">Líneas auxiliares</text>
+          
+          <!-- Línea de cota y flechas -->
+          <line x1="80" y1="30" x2="230" y2="30" stroke="#0f172a" stroke-width="1"/>
+          <path d="M80,30 L86,27 L86,33 z" fill="#0f172a"/>
+          <path d="M230,30 L224,27 L224,33 z" fill="#0f172a"/>
+          <text x="240" y="33" font-size="9" fill="#0369a1" font-weight="700">Línea de cota y flechas</text>
+          
+          <!-- Cifra -->
+          <text x="155" y="26" text-anchor="middle" font-size="12" font-weight="800" fill="#0f172a">1.50</text>
+          <text x="155" y="12" text-anchor="middle" font-size="9" fill="#0369a1" font-weight="700">Cifra (centrada y por encima)</text>
+        </svg>
+        <div class="theory-text">
+          <strong>Las 3 Reglas de Oro:</strong>
+          <ul>
+            <li><b>Por fuera:</b> Las cotas se sacan fuera del dibujo (separadas unos 8 mm) para no pisar el interior.</li>
+            <li><b>Legibles:</b> El número se coloca <b>centrado</b> y <b>por encima</b> de la línea (nunca partido). Se debe poder leer desde abajo o desde la derecha.</li>
+            <li><b>No se cruzan:</b> Las líneas de cota no deben cruzarse entre sí. Si hay varias cotas, la más pequeña va pegada al muro y la total va por fuera.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD 3 -->
+      <h2 class="section-title"><span class="number">Actividad 3</span>El Inspector de Planos (Corregir)</h2>
+      <p class="instruction">Este plano ha sido acotado por alguien que no conocía las normas. Hay multitud de fallos que dificultan la lectura. <b>Rodea con un círculo rojo al menos 4 errores</b> y anota debajo por qué están mal.</p>
+      
+      <div class="large-draw-area" style="background:#fff; border-color:var(--line);">
+        <svg viewBox="0 0 600 220">
+          <!-- Muro base -->
+          <path d="M150,50 L150,180 L450,180 L450,50 L150,50 Z" fill="none" stroke="#334155" stroke-width="4"/>
+          <!-- ERRORES INTENCIONADOS -->
+          <!-- Error 1: cota atravesando por dentro -->
+          <line x1="150" y1="115" x2="450" y2="115" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="300" y="112" text-anchor="middle" font-size="14" fill="#ef4444" font-weight="700">3.00</text>
+          
+          <!-- Error 2: número cortado por la línea y al revés -->
+          <line x1="120" y1="50" x2="120" y2="180" stroke="#0f172a" stroke-width="1"/>
+          <line x1="115" y1="50" x2="150" y2="50" stroke="#0f172a" stroke-width="1"/>
+          <line x1="115" y1="180" x2="150" y2="180" stroke="#0f172a" stroke-width="1"/>
+          <text x="120" y="115" text-anchor="middle" font-size="14" fill="#0f172a" font-weight="700" transform="rotate(90 120,115)">2.50</text>
+
+          <!-- Error 3: líneas de cota cruzándose (cota total por dentro de parcial) -->
+          <line x1="150" y1="195" x2="450" y2="195" stroke="#0f172a" stroke-width="1"/> <!-- Total -->
+          <line x1="150" y1="210" x2="300" y2="210" stroke="#0f172a" stroke-width="1"/> <!-- Parcial -->
+          <line x1="150" y1="180" x2="150" y2="215" stroke="#0f172a" stroke-width="1"/>
+          <line x1="450" y1="180" x2="450" y2="200" stroke="#0f172a" stroke-width="1"/>
+          <line x1="300" y1="180" x2="300" y2="215" stroke="#0f172a" stroke-width="1"/>
+          <text x="300" y="192" text-anchor="middle" font-size="12" fill="#0f172a">3.00</text>
+          <text x="225" y="207" text-anchor="middle" font-size="12" fill="#0f172a">1.50</text>
+        </svg>
+      </div>
+      <div style="font-size:.74rem; color:var(--navy); padding:5px 0;">Errores encontrados y justificación: ________________________________________________________________________________</div>
+
+      <!-- ACTIVIDAD 4 -->
+      <h2 class="section-title" style="margin-top:10px;"><span class="number">Actividad 4</span>Acota tú mismo (Resolver)</h2>
+      <p class="instruction">Aquí tienes el mismo plano, pero limpio. <b>Dibuja tú las cotas</b> aplicando las 3 Reglas de Oro. Acota: el largo total (3.00), el alto total (2.50) y un hueco parcial en la pared inferior (1.50).</p>
+      
+      <div class="large-draw-area">
+        <svg viewBox="0 0 600 220">
+          <path d="M150,50 L150,180 L450,180 L450,50 L150,50 Z" fill="none" stroke="#0f172a" stroke-width="6"/>
+          <path d="M250,180 L350,180" fill="none" stroke="#fff" stroke-width="8"/> <!-- Hueco para puerta/ventana -->
+          <path d="M250,177 L350,177" fill="none" stroke="#0f172a" stroke-width="1"/>
+          <path d="M250,183 L350,183" fill="none" stroke="#0f172a" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <!-- CIERRE PROFESIONAL -->
+      <div class="professional-close"><div class="sign-box"><h3>Compromiso del técnico o técnica júnior</h3>Declaro que he dibujado los símbolos respetando los grosores de línea y que he acotado el plano final cumpliendo las normas profesionales (por fuera, centrado y sin cruces).<div class="sign-line"><div>Firma <span></span></div><div>Fecha <span></span></div></div></div><div class="sign-box approval"><div class="approval-status">Visto bueno docente</div>☐ VALIDADO &nbsp; ☐ REVISIÓN REQUERIDA<br><br>☐ Símbolos 2D bien representados<br>☐ Errores de acotación identificados<br>☐ Plano final acotado correctamente<br><br>Firma docente: __________________</div></div>
+
+      <footer class="footer"><span>F11 · Normas de dibujo y acotación · Cara B</span><span>2 / 2</span></footer>
+    </section>
+
+  </main>
+</body>
+</html>

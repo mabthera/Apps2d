@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>F16 · Presupuesto del local</title>
+  <style>
+    :root{--ink:#17212e;--blue:#185a85;--muted:#4b5b68;--line:#aebdc8;--pale:#edf5fa}
+    *{box-sizing:border-box}
+    body{margin:0;padding:16px;background:#e9edf0;color:var(--ink);font:12px/1.33 Arial,Helvetica,sans-serif}
+    .toolbar{max-width:210mm;margin:0 auto 12px;padding:9px 12px;background:#fff;display:flex;justify-content:space-between;align-items:center}
+    .toolbar button{padding:7px 12px;border:0;background:var(--blue);color:#fff;font-weight:bold;cursor:pointer}
+    .sheet{width:210mm;margin:auto;background:#fff;box-shadow:0 3px 14px #26374730}
+    .page{width:210mm;height:297mm;padding:12mm 13mm 11mm;display:flex;flex-direction:column;break-after:page;overflow:hidden}
+    .page:last-child{break-after:auto}
+    header{border-bottom:2px solid var(--ink);padding-bottom:7px}
+    .headrow{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    h1{margin:0;font-size:20px;line-height:1.1;color:var(--ink)}
+    .tag{font-size:10px;font-weight:bold;color:var(--blue);white-space:nowrap}
+    .sub{margin:4px 0 0;color:var(--muted);font-size:11px}
+    .identity{display:grid;grid-template-columns:2.2fr .7fr .8fr;gap:13px;margin-top:12px;font-size:11px}
+    .line{display:inline-block;width:100%;border-bottom:1px solid var(--ink);height:16px;vertical-align:bottom}
+    .instruction{margin:8px 0 0;padding:7px 10px;border-left:3px solid var(--blue);background:var(--pale);font-size:12px}
+    h2{margin:9px 0 4px;font-size:14px;line-height:1.2;color:var(--blue)}
+    table{width:100%;border-collapse:collapse;table-layout:fixed}
+    th,td{border:1px solid var(--line)}
+    th{padding:6px;background:var(--pale);text-align:left;font-size:10.5px;line-height:1.2}
+    td{padding:5px;vertical-align:top}
+    .front-table td{height:15mm}
+    .furniture-table td{height:14.5mm}
+    .grand-total th,.grand-total td{height:16mm;background:#d7e4ec;font-weight:bold}
+    .total-col{width:15.5%}
+    footer{margin-top:auto;padding-top:7px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);font-size:9px}
+    @media screen and (max-width:800px){body{padding:8px}.sheet{width:100%;overflow-x:auto}.page{width:210mm;margin:0 auto}}
+    @media print{@page{size:A4 portrait;margin:0}body{padding:0;background:#fff}.toolbar{display:none}.sheet{box-shadow:none}.page{break-inside:avoid}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <strong>F16 · Presupuesto del local</strong><button onclick="window.print()">Imprimir a doble cara</button></div>
+  <main class="sheet">
+    <section class="page">
+      <header>
+        <div class="headrow"><div><h1>F16 · Presupuesto del local</h1><p class="sub">UD1 · Mi tienda sostenible de reparación informática</p></div><span class="tag">1 / 2 · ANVERSO</span></div>
+        <div class="identity"><span>Nombre y apellidos <i class="line"></i></span><span>Grupo <i class="line"></i></span><span>Fecha <i class="line"></i></span></div>
+      </header>
+      <p class="instruction">Escribe aquí los datos para tu presupuesto.</p>
+
+      <h2>1. Superficies y paramentos</h2>
+      <table class="front-table">
+        <colgroup><col style="width:19%"><col style="width:35%"><col style="width:14%"><col style="width:16.5%"><col class="total-col"></colgroup>
+        <thead><tr><th>Concepto</th><th>Material</th><th>Superficie</th><th>Precio/ud</th><th>Precio total</th></tr></thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <h2>2. Elementos de separación</h2>
+      <table class="front-table">
+        <colgroup><col style="width:38%"><col style="width:11%"><col style="width:17%"><col style="width:18.5%"><col class="total-col"></colgroup>
+        <thead><tr><th>Concepto</th><th>Unidades</th><th>Medidas</th><th>Precio unidad</th><th>Precio total</th></tr></thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      <footer><span>F16 · Presupuesto del local</span><span>1 / 2</span></footer>
+    </section>
+
+    <section class="page">
+      <header><div class="headrow"><div><h1>F16 · Presupuesto del local</h1><p class="sub">UD1 · Mi tienda sostenible de reparación informática</p></div><span class="tag">2 / 2 · REVERSO</span></div></header>
+      <h2>3. Mobiliario</h2>
+      <table class="furniture-table">
+        <colgroup><col style="width:38%"><col style="width:17%"><col style="width:11%"><col style="width:18.5%"><col class="total-col"></colgroup>
+        <thead><tr><th>Concepto</th><th>Medidas</th><th>Unidades</th><th>Precio unidad</th><th>Precio total</th></tr></thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      <h2>4. Precio final</h2>
+      <table>
+        <colgroup><col style="width:38%"><col style="width:17%"><col style="width:11%"><col style="width:18.5%"><col class="total-col"></colgroup>
+        <tbody><tr class="grand-total"><th colspan="4">PRECIO FINAL</th><td></td></tr></tbody>
+      </table>
+      <footer><span>F16 · Mobiliario</span><span>2 / 2</span></footer>
+    </section>
+  </main>
+</body>
+</html>

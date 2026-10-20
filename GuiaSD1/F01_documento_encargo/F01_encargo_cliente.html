@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>F01 · Encargo del Cliente · Tienda Sostenible EcoTech Teis</title>
+  <style>
+    /* ==========================================================================
+       VARIABLES DE DISEÑO: ESTÉTICA CORPORATIVA Y PROFESIONAL
+       ========================================================================== */
+    :root {
+      --bg-canvas: #f1f5f9;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --surface-muted: #e2e8f0;
+      
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --border-main: #cbd5e1;
+      --border-subtle: #e2e8f0;
+      --border-dark: #334155;
+
+      /* Tonos corporativos institucionales */
+      --navy-900: #0f172a;
+      --navy-800: #1e293b;
+      --navy-700: #334155;
+
+      --petrol-700: #0369a1;
+      --petrol-800: #075985;
+      --petrol-50: #f0f9ff;
+      --petrol-100: #e0f2fe;
+
+      --teal-700: #0f766e;
+      --teal-50: #f0fdf4;
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-stack);
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 24px 16px 40px;
+    }
+
+    /* ==========================================================================
+       BARRA DE CONTROL SUPERIOR (SOLO PANTALLA)
+       ========================================================================== */
+    .top-toolbar {
+      max-width: 900px;
+      margin: 0 auto 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .top-toolbar__meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy-800);
+    }
+
+    .doc-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      background: var(--navy-900);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .top-toolbar__actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn--primary {
+      background: var(--navy-900);
+      color: #ffffff;
+    }
+
+    .btn--primary:hover {
+      background: var(--navy-700);
+    }
+
+    .btn--secondary {
+      background: var(--surface-subtle);
+      border-color: var(--border-main);
+      color: var(--navy-800);
+    }
+
+    .btn--secondary:hover {
+      background: var(--surface-muted);
+    }
+
+    /* ==========================================================================
+       ESTRUCTURA DEL CORREO ELECTRÓNICO (WEBMAIL SOBRIO)
+       ========================================================================== */
+    .mail-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    /* Barra superior de cliente de correo */
+    .mail-client-bar {
+      background: var(--navy-900);
+      color: #f8fafc;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mail-client-bar__left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    .client-status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .mail-client-bar__right {
+      color: var(--text-light);
+      font-size: 0.78rem;
+    }
+
+    /* Cabecera del correo */
+    .mail-header {
+      padding: 22px 28px 18px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .mail-subject-group {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .mail-subject {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      line-height: 1.3;
+    }
+
+    .priority-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      border-radius: var(--radius-sm);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .mail-meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+
+    .mail-meta-table td {
+      padding: 4px 0;
+      vertical-align: top;
+    }
+
+    .mail-meta-label {
+      width: 85px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .mail-meta-value {
+      color: var(--navy-900);
+    }
+
+    .mail-meta-value strong {
+      font-weight: 700;
+    }
+
+    .mail-meta-date {
+      text-align: right;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    /* Barra de adjuntos sobria */
+    .attachments-row {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+    }
+
+    .attachments-title {
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-right: 6px;
+    }
+
+    .attachment-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      color: var(--navy-800);
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .attachment-chip .chip-ext {
+      font-weight: 800;
+      color: var(--petrol-700);
+      font-size: 0.72rem;
+    }
+
+    .attachment-chip .chip-size {
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       CUERPO DEL CORREO (DIVIDIDO EN DOS PÁGINAS LIMPIAS PARA IMPRESIÓN)
+       ========================================================================== */
+    .mail-body {
+      padding: 26px 28px 28px;
+      font-size: 0.94rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* PÁGINA 1: CONTEXTO Y LAS 3 ZONAS */
+    .print-page-1 {
+      /* Agrupa el contenido de la primera página */
+    }
+
+    .salutation {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 12px;
+    }
+
+    .intro-paragraph {
+      margin-bottom: 16px;
+      color: var(--text-secondary);
+    }
+
+    /* Caja institucional: El encargo del proyecto */
+    .project-brief-box {
+      background: var(--petrol-50);
+      border: 1px solid #bae6fd;
+      border-left: 4px solid var(--petrol-700);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin-bottom: 22px;
+    }
+
+    .project-brief-box h3 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 4px;
+    }
+
+    .project-brief-box p {
+      font-size: 0.88rem;
+      color: var(--navy-800);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* Títulos de sección numerados */
+    .block-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin: 20px 0 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--border-main);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .block-title__num {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--petrol-700);
+    }
+
+    .block-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    /* Grid de las 3 zonas (Sobrio, tarjetas equilibradas) */
+    .zones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .zone-box {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-main);
+      border-top: 3px solid var(--navy-700);
+      border-radius: var(--radius-sm);
+      padding: 14px 14px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .zone-box--atencion { border-top-color: var(--petrol-700); }
+    .zone-box--taller   { border-top-color: var(--navy-800); }
+    .zone-box--almacen  { border-top-color: var(--teal-700); }
+
+    .zone-box__title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 6px;
+    }
+
+    .zone-box__desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .zone-box__list {
+      list-style: none;
+      font-size: 0.8rem;
+      color: var(--navy-800);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: auto;
+    }
+
+    .zone-box__list li {
+      position: relative;
+      padding-left: 12px;
+      line-height: 1.35;
+    }
+
+    .zone-box__list li::before {
+      content: "▪";
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    /* MARCADOR DE SALTO DE PÁGINA PARA IMPRESIÓN */
+    .print-page-break {
+      display: none;
+    }
+
+    /* PÁGINA 2: HOJA DE RUTA SIMPLIFICADA, NORMAS Y MISIÓN */
+    .print-page-2 {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border-main);
+    }
+
+    /* Hoja de ruta simplificada para alumnado (sin número de sesiones ni tecnicismos) */
+    .roadmap-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .roadmap-step {
+      background: #ffffff;
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .step-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-sm);
+      background: var(--navy-800);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-body h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 2px;
+    }
+
+    .step-body p {
+      font-size: 0.81rem;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* Pautas de trabajo */
+    .work-guidelines {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .guideline-item {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+    }
+
+    .guideline-item h4 {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 3px;
+    }
+
+    .guideline-item p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* Despedida y firma corporativa seria */
+    .mail-close {
+      margin-bottom: 14px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .signature-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-main);
+      margin-bottom: 20px;
+    }
+
+    .signature-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--navy-900);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -0.05em;
+      border: 1px solid var(--border-dark);
+      flex-shrink: 0;
+    }
+
+    .signature-details h5 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 1px;
+    }
+
+    .signature-details p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    .signature-details .legal-note {
+      font-size: 0.74rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    /* Caja de instrucciones de trabajo para el alumno (Sesión 1) */
+    .student-task-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      page-break-inside: avoid;
+    }
+
+    .student-task-panel__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .task-badge {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--petrol-700);
+      background: var(--petrol-50);
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid #bae6fd;
+    }
+
+    .student-task-panel h3 {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .task-instructions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 8px 0 10px;
+      list-style: none;
+    }
+
+    .task-step {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 0.79rem;
+      color: var(--navy-800);
+      line-height: 1.3;
+    }
+
+    .task-step strong {
+      display: block;
+      color: var(--navy-900);
+      margin-bottom: 2px;
+      font-size: 0.81rem;
+    }
+
+    .task-checklist {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border-main);
+      font-size: 0.77rem;
+      color: var(--text-secondary);
+    }
+
+    .check-box-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .print-square {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 1px solid var(--navy-700);
+      border-radius: 2px;
+      background: #ffffff;
+    }
+
+    /* Pie de página de cortesía */
+    .mail-footer {
+      background: var(--surface-subtle);
+      border-top: 1px solid var(--border-subtle);
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       ESPECIFICACIONES DE IMPRESIÓN (A4 - EXACTAMENTE 2 PÁGINAS LIMPIAS)
+       ========================================================================== */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 15mm 12mm 15mm;
+      }
+
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        font-size: 9pt;
+        line-height: 1.35;
+      }
+
+      .top-toolbar,
+      .mail-client-bar {
+        display: none !important;
+      }
+
+      .mail-container {
+        border: none !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+      }
+
+      .mail-header {
+        padding: 0 0 10pt 0 !important;
+        border-bottom: 1.5pt solid #0f172a !important;
+      }
+
+      .mail-subject {
+        font-size: 13.5pt !important;
+        color: #0f172a !important;
+      }
+
+      .mail-body {
+        padding: 10pt 0 0 0 !important;
+      }
+
+      .project-brief-box {
+        padding: 8pt 12pt !important;
+        margin-bottom: 12pt !important;
+        border-left: 3pt solid #0369a1 !important;
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .block-title {
+        font-size: 10.5pt !important;
+        margin: 12pt 0 6pt !important;
+        padding-bottom: 3pt !important;
+        border-bottom: 1pt solid #94a3b8 !important;
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+
+      .zones-grid {
+        gap: 8pt !important;
+        margin-bottom: 0 !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .zone-box {
+        padding: 8pt 10pt !important;
+        border: 1pt solid #64748b !important;
+        border-top: 2.5pt solid #0f172a !important;
+        background: #fcfcfc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .zone-box--atencion { border-top-color: #0369a1 !important; }
+      .zone-box--taller   { border-top-color: #0f172a !important; }
+      .zone-box--almacen  { border-top-color: #0f766e !important; }
+
+      .zone-box__title {
+        font-size: 9.5pt !important;
+      }
+
+      .zone-box__desc {
+        font-size: 8pt !important;
+        margin-bottom: 6pt !important;
+      }
+
+      .zone-box__list {
+        font-size: 7.8pt !important;
+        gap: 3pt !important;
+      }
+
+      /* SALTO OBLIGATORIO Y LIMPIO ENTRE PÁGINA 1 Y PÁGINA 2 */
+      .print-page-break {
+        display: block !important;
+        page-break-before: always !important;
+        break-before: page !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .print-page-2 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+      }
+
+      .roadmap-list {
+        gap: 6pt !important;
+        margin-bottom: 10pt !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .roadmap-step {
+        padding: 6pt 9pt !important;
+        border: 1pt solid #cbd5e1 !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .step-badge {
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 7.5pt !important;
+        background: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .step-body h4 {
+        font-size: 8.8pt !important;
+      }
+
+      .step-body p {
+        font-size: 7.6pt !important;
+      }
+
+      .work-guidelines {
+        gap: 6pt !important;
+        margin-bottom: 10pt !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .guideline-item {
+        padding: 6pt 10pt !important;
+        border: 1pt solid #cbd5e1 !important;
+      }
+
+      .guideline-item h4 {
+        font-size: 8.5pt !important;
+      }
+
+      .guideline-item p {
+        font-size: 7.6pt !important;
+      }
+
+      .signature-container {
+        padding-top: 8pt !important;
+        margin-bottom: 10pt !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .signature-mark {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 8.5pt !important;
+        background: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .student-task-panel {
+        padding: 8pt 10pt !important;
+        border: 1.2pt solid #0f172a !important;
+        background: #fafafa !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .student-task-panel h3 {
+        font-size: 9pt !important;
+      }
+
+      .task-instructions {
+        gap: 6pt !important;
+        margin: 6pt 0 !important;
+      }
+
+      .task-step {
+        padding: 5pt 7pt !important;
+        font-size: 7.4pt !important;
+      }
+
+      .task-step strong {
+        font-size: 7.8pt !important;
+      }
+
+      .task-checklist {
+        font-size: 7.4pt !important;
+        gap: 10pt !important;
+        padding-top: 6pt !important;
+      }
+
+      .print-square {
+        border-color: #000000 !important;
+      }
+
+      .mail-footer {
+        padding: 8pt 0 0 0 !important;
+        border-top: 1pt solid #cbd5e1 !important;
+        font-size: 7pt !important;
+      }
+    }
+
+    /* Ajustes para pantallas pequeñas */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .mail-header,
+      .mail-body {
+        padding: 16px;
+      }
+      .zones-grid,
+      .roadmap-list,
+      .work-guidelines,
+      .task-instructions {
+        grid-template-columns: 1fr;
+      }
+      .mail-subject-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE CONTROL SUPERIOR (SOLO EN PANTALLA) -->
+  <header class="top-toolbar">
+    <div class="top-toolbar__meta">
+      <span class="doc-badge">F01</span>
+      <span>Ciencias Aplicadas II · UD1 · Sesión 1</span>
+      <span style="color: var(--border-main);">|</span>
+      <span style="font-weight: normal; color: var(--text-muted);">Encargo del Cliente (Documento de referencia para el alumnado)</span>
+    </div>
+    <div class="top-toolbar__actions"><a class="btn btn--secondary" href="guia.html">Cómo hacerla</a> 
+      <button class="btn btn--secondary" onclick="window.scrollTo({top: document.getElementById('panelMision').offsetTop - 20, behavior: 'smooth'})">
+        Misión de hoy
+      </button>
+      <button class="btn btn--primary" onclick="window.print()">
+        Imprimir encargo (A4)
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL: CORREO ELECTRÓNICO PROFESIONAL -->
+  <main class="mail-container">
+
+    <!-- Barra de ventana simulada -->
+    <div class="mail-client-bar">
+      <div class="mail-client-bar__left">
+        <span class="client-status-indicator" aria-hidden="true"></span>
+        <span>EcoDixital Galicia Mail · Bandeja de entrada</span>
+      </div>
+      <div class="mail-client-bar__right">
+        <span>Comunicación oficial verificada</span>
+      </div>
+    </div>
+
+    <!-- PÁGINA 1 DE IMPRESIÓN (CABECERA + CONTEXTO + 3 ZONAS) -->
+    <div class="print-page-1">
+
+      <!-- Cabecera del correo -->
+      <section class="mail-header">
+        <div class="mail-subject-group">
+          <h1 class="mail-subject">
+            ENCARGO TÉCNICO: Propuesta de distribución y adecuación para tienda-taller de informática sostenible («EcoTech Teis»)
+          </h1>
+          <span class="priority-badge">Prioridad Alta</span>
+        </div>
+
+        <table class="mail-meta-table">
+          <tr>
+            <td class="mail-meta-label">De:</td>
+            <td class="mail-meta-value">
+              <strong>Beatriz Mouriño Costas</strong> &lt;bmourino@ecodixital-galicia.gal&gt;
+              <span style="color: var(--text-muted); font-size: 0.8rem;">(Coordinación de Proyectos · EcoDixital Galicia)</span>
+            </td>
+            <td class="mail-meta-date" rowspan="2">
+              15 de septiembre de 2026<br>08:30 h
+            </td>
+          </tr>
+          <tr>
+            <td class="mail-meta-label">Para:</td>
+            <td class="mail-meta-value">
+              <strong>Equipo Técnico de FP Básica en Informática</strong> &lt;ciencias.fpb@iesteis.gal&gt;
+            </td>
+          </tr>
+        </table>
+
+        <!-- Archivos adjuntos del encargo -->
+        <div class="attachments-row">
+          <span class="attachments-title">Adjuntos (3):</span>
+          <div class="attachment-chip">
+            <span class="chip-ext">PDF</span>
+            <span>Pliego_Condiciones_EcoTech.pdf</span>
+            <span class="chip-size">(1.2 MB)</span>
+          </div>
+          <div class="attachment-chip">
+            <span class="chip-ext">CAD</span>
+            <span>Planta_Local_IES_Teis.dwg</span>
+            <span class="chip-size">(850 KB)</span>
+          </div>
+          <div class="attachment-chip">
+            <span class="chip-ext">XLS</span>
+            <span>Tarifas_Materiales_2026.xlsx</span>
+            <span class="chip-size">(340 KB)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cuerpo del mensaje: Saludo, motivo y 3 zonas -->
+      <article class="mail-body">
+        <p class="salutation">Estimado equipo técnico de FP Básica del IES de Teis:</p>
+
+        <p class="intro-paragraph">
+          Nos ponemos en contacto con vuestro departamento en nombre de la cooperativa <strong>EcoDixital Galicia</strong>. Nuestra actividad se centra en la economía circular: alargar la vida útil de equipos informáticos, reparar dispositivos para reducir la basura electrónica y facilitar tecnología reacondicionada a familias y centros de nuestra comarca.
+        </p>
+
+        <!-- El encargo -->
+        <div class="project-brief-box">
+          <h3>El encargo profesional</h3>
+          <p>
+            A través del convenio con vuestro instituto, disponemos de un <strong>local real en el propio centro</strong> para abrir la nueva tienda-taller <strong>«EcoTech Teis»</strong>. Os encomendamos la elaboración de la propuesta técnica completa de distribución, presupuesto y sostenibilidad que formará vuestro <strong>Dossier de Proyecto</strong>.
+          </p>
+        </div>
+
+        <!-- 1. Las 3 zonas indispensables -->
+        <h2 class="block-title">
+          <span class="block-title__num">1.</span>
+          <span>Las tres zonas obligatorias del espacio</span>
+        </h2>
+        <p class="block-subtitle">
+          El local debe responder a las necesidades reales de una tienda técnica en funcionamiento:
+        </p>
+
+        <div class="zones-grid">
+          <!-- Zona Atención -->
+          <div class="zone-box zone-box--atencion">
+            <h3 class="zone-box__title">Zona 1: Atención al Público</h3>
+            <p class="zone-box__desc">
+              Espacio accesible para recibir clientes y tramitar entradas de equipos.
+            </p>
+            <ul class="zone-box__list">
+              <li>Mostrador de recepción y caja.</li>
+              <li>Zona de espera y paso accesible.</li>
+              <li>Expositor de equipos recuperados.</li>
+            </ul>
+          </div>
+
+          <!-- Zona Taller -->
+          <div class="zone-box zone-box--taller">
+            <h3 class="zone-box__title">Zona 2: Taller de Reparación</h3>
+            <p class="zone-box__desc">
+              Área de trabajo técnico para desmontaje, diagnóstico y pruebas seguras.
+            </p>
+            <ul class="zone-box__list">
+              <li>Puestos con mesas antiestáticas.</li>
+              <li>Tomas eléctricas e iluminación directa.</li>
+              <li>Panel organizado para herramientas.</li>
+            </ul>
+          </div>
+
+          <!-- Zona Almacén -->
+          <div class="zone-box zone-box--almacen">
+            <h3 class="zone-box__title">Zona 3: Almacén y Residuos</h3>
+            <p class="zone-box__desc">
+              Organización interna de stock, repuestos y gestión ambiental de RAEE.
+            </p>
+            <ul class="zone-box__list">
+              <li>Estanterías para piezas y pedidos.</li>
+              <li>Punto de separación de componentes.</li>
+              <li>Almacén seguro de baterías y RAEE.</li>
+            </ul>
+          </div>
+        </div>
+
+      </article>
+    </div>
+
+    <!-- SALTO DE PÁGINA LIMPIO PARA IMPRESIÓN (SEPARA EXACTAMENTE EN 2 HOJAS A4) -->
+    <div class="print-page-break"></div>
+
+    <!-- PÁGINA 2 DE IMPRESIÓN (HOJA DE RUTA SIMPLE + NORMAS + FIRMA + MISIÓN SESIÓN 1) -->
+    <div class="print-page-2">
+      <article class="mail-body" style="padding-top: 0;">
+
+        <!-- 2. Hoja de ruta simplificada -->
+        <h2 class="block-title" style="margin-top: 0;">
+          <span class="block-title__num">2.</span>
+          <span>Hoja de ruta del proyecto</span>
+        </h2>
+        <p class="block-subtitle">
+          Pasos sucesivos que seguirá vuestro equipo para completar el encargo:
+        </p>
+
+        <div class="roadmap-list">
+          <!-- Paso 1 -->
+          <div class="roadmap-step">
+            <div class="step-badge">1</div>
+            <div class="step-body">
+              <h4>Visita al local y primera idea</h4>
+              <p>Observar el espacio real, ver sus posibilidades y redactar el primer brief de necesidades.</p>
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="roadmap-step">
+            <div class="step-badge">2</div>
+            <div class="step-body">
+              <h4>Medición y plano del espacio</h4>
+              <p>Tomar medidas reales con cinta métrica y dibujar el plano oficial a escala.</p>
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="roadmap-step">
+            <div class="step-badge">3</div>
+            <div class="step-body">
+              <h4>Distribución y mobiliario</h4>
+              <p>Repartir las 3 zonas, comprobar los pasos y colocar el mobiliario necesario.</p>
+            </div>
+          </div>
+
+          <!-- Paso 4 -->
+          <div class="roadmap-step">
+            <div class="step-badge">4</div>
+            <div class="step-body">
+              <h4>Presupuesto y materiales</h4>
+              <p>Elegir materiales en catálogos y calcular los costes con el 21% de IVA.</p>
+            </div>
+          </div>
+
+          <!-- Paso 5 -->
+          <div class="roadmap-step">
+            <div class="step-badge">5</div>
+            <div class="step-body">
+              <h4>Luz, enchufes y ahorro energético</h4>
+              <p>Diseñar los puntos de corriente y planificar el consumo eléctrico y el reciclaje.</p>
+            </div>
+          </div>
+
+          <!-- Paso 6 -->
+          <div class="roadmap-step">
+            <div class="step-badge">6</div>
+            <div class="step-body">
+              <h4>Dossier final y presentación</h4>
+              <p>Reunir todos los documentos revisados y presentar la propuesta técnica.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Criterios de trabajo -->
+        <h2 class="block-title">
+          <span class="block-title__num">3.</span>
+          <span>Criterios de trabajo</span>
+        </h2>
+
+        <div class="work-guidelines">
+          <div class="guideline-item">
+            <h4>Medición y comprobación compartida</h4>
+            <p>Podréis trabajar juntos para medir el local y contrastar datos para evitar fallos.</p>
+          </div>
+          <div class="guideline-item">
+            <h4>Decisiones y dossier individual</h4>
+            <p>Cada estudiante elegirá su propia distribución y elaborará su propuesta técnica.</p>
+          </div>
+        </div>
+
+        <p class="mail-close">
+          Agradecemos de antemano vuestra implicación y profesionalidad. Quedamos a la espera de vuestros avances.
+        </p>
+
+        <!-- Firma corporativa seria -->
+        <div class="signature-container">
+          <div class="signature-mark" aria-hidden="true">ED</div>
+          <div class="signature-details">
+            <h5>Beatriz Mouriño Costas</h5>
+            <p>Coordinación de Proyectos · <strong>EcoDixital Galicia S. Coop. Galega</strong></p>
+            <p>Sanjurjo Badía, Teis (Vigo) · Contacto: <em>bmourino@ecodixital-galicia.gal</em></p>
+            <p class="legal-note">Registro de Cooperativas de Galicia · CIF: F-36000000</p>
+          </div>
+        </div>
+
+        <!-- PANEL DE MISIÓN DE HOY (SESIÓN 1) -->
+        <section class="student-task-panel" id="panelMision">
+          <div class="student-task-panel__header">
+            <h3>Misión de trabajo para hoy (Sesión 1)</h3>
+            <span class="task-badge">Inicio de proyecto</span>
+          </div>
+
+          <ul class="task-instructions">
+            <li class="task-step">
+              <strong>1. Lectura atenta</strong>
+              Revisar el encargo para identificar qué pide el cliente y para qué local.
+            </li>
+            <li class="task-step">
+              <strong>2. Subrayado</strong>
+              Marcar las 3 zonas obligatorias y los 6 pasos principales del proyecto.
+            </li>
+            <li class="task-step">
+              <strong>3. Brief inicial (F02)</strong>
+              Comenzar a redactar cómo imaginas que debe ser tu tienda de reparación.
+            </li>
+          </ul>
+
+          <div class="task-checklist">
+            <span>Comprobación:</span>
+            <span class="check-box-item"><span class="print-square"></span> Cliente y encargo identificados</span>
+            <span class="check-box-item"><span class="print-square"></span> Las 3 zonas localizadas</span>
+            <span class="check-box-item"><span class="print-square"></span> Pasos del proyecto claros</span>
+            <span class="check-box-item"><span class="print-square"></span> Listo para el Brief (F02)</span>
+          </div>
+        </section>
+
+      </article>
+    </div>
+
+    <!-- Pie del cliente de correo -->
+    <footer class="mail-footer">
+      <span>Ciencias Aplicadas II · FP Básica · IES de Teis (Vigo)</span>
+      <span>Material F01 · Unidad Didáctica 1</span>
+    </footer>
+
+  </main>
+
+</body>
+</html>

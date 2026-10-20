@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>F02 · Brief Inicial del Proyecto · Mi Tienda Sostenible</title>
+  <style>
+    /* ==========================================================================
+       VARIABLES DE DISEÑO: ESTÉTICA PROFESIONAL Y SOBRIA
+       ========================================================================== */
+    :root {
+      --bg-canvas: #f1f5f9;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --surface-muted: #e2e8f0;
+
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --border-main: #cbd5e1;
+      --border-subtle: #e2e8f0;
+      --border-dark: #334155;
+
+      --navy-900: #0f172a;
+      --navy-800: #1e293b;
+      --navy-700: #334155;
+
+      --petrol-700: #0369a1;
+      --petrol-50: #f0f9ff;
+
+      --teal-700: #0f766e;
+      --teal-50: #f0fdf4;
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-stack);
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 24px 16px 40px;
+    }
+
+    /* ==========================================================================
+       BARRA DE CONTROL SUPERIOR (SOLO PANTALLA)
+       ========================================================================== */
+    .top-toolbar {
+      max-width: 900px;
+      margin: 0 auto 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .top-toolbar__meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy-800);
+    }
+
+    .doc-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      background: var(--navy-900);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .top-toolbar__actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn--primary {
+      background: var(--navy-900);
+      color: #ffffff;
+    }
+
+    .btn--primary:hover {
+      background: var(--navy-700);
+    }
+
+    .btn--secondary {
+      background: var(--surface-subtle);
+      border-color: var(--border-main);
+      color: var(--navy-800);
+    }
+
+    .btn--secondary:hover {
+      background: var(--surface-muted);
+    }
+
+    /* ==========================================================================
+       CONTENEDOR DEL DOCUMENTO TÉCNICO (FICHA DE TRABAJO A4)
+       ========================================================================== */
+    .document-sheet {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    /* Cabecera institucional de la ficha */
+    .sheet-header {
+      padding: 20px 28px 16px;
+      border-bottom: 2px solid var(--navy-900);
+      background: #ffffff;
+    }
+
+    .sheet-header__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .sheet-title-group h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .sheet-title-group .sub {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .dossier-tag {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      color: var(--navy-800);
+      white-space: nowrap;
+    }
+
+    /* Tabla de identificación del alumnado */
+    .student-id-grid {
+      display: flex;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+    }
+
+    .student-id-grid .id-field:nth-child(1) {
+      flex: 2.5;
+    }
+
+    .student-id-grid .id-field:nth-child(2) {
+      flex: 1.2;
+    }
+
+    .student-id-grid .id-field:nth-child(3) {
+      flex: 1;
+    }
+
+    .id-field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .id-field label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .id-field input {
+      border: none;
+      border-bottom: 1px solid var(--border-main);
+      background: transparent;
+      padding: 2px 0;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      outline: none;
+    }
+
+    .id-field input:focus {
+      border-bottom-color: var(--petrol-700);
+    }
+
+    /* Contenido de la ficha */
+    .sheet-body {
+      padding: 24px 28px;
+    }
+
+    /* PÁGINAS DE IMPRESIÓN DELIMITADAS */
+    .print-page-1 {
+      /* Bloques 1 y 2 */
+    }
+
+    .print-page-2 {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border-main);
+    }
+
+    /* Títulos de bloque */
+    .block-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin: 18px 0 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border-main);
+    }
+
+    .block-header:first-of-type {
+      margin-top: 0;
+    }
+
+    .block-header__num {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--petrol-700);
+    }
+
+    .block-instruction {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    /* Campos de respuesta de texto / líneas de escritura */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 4px;
+    }
+
+    .form-group .hint {
+      font-size: 0.77rem;
+      font-weight: normal;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    .text-input-line {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid var(--border-dark);
+      padding: 4px 0;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: var(--navy-900);
+      background: transparent;
+      outline: none;
+    }
+
+    .text-input-line:focus {
+      border-bottom-color: var(--petrol-700);
+    }
+
+    /* Cajas de texto editables con placeholder mediante data-placeholder */
+    .writing-lines-box {
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      background: var(--surface-subtle);
+      padding: 10px 12px;
+      min-height: 64px;
+      font-size: 0.86rem;
+      color: var(--navy-900);
+      line-height: 1.5;
+      outline: none;
+      position: relative;
+    }
+
+    .writing-lines-box:focus {
+      border-color: var(--petrol-700);
+      background: #ffffff;
+    }
+
+    .writing-lines-box:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-light);
+      font-style: italic;
+      font-size: 0.82rem;
+      pointer-events: none;
+    }
+
+    /* Tabla de las 3 zonas del espacio */
+    .zones-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+      font-size: 0.84rem;
+    }
+
+    .zones-table th,
+    .zones-table td {
+      border: 1px solid var(--border-main);
+      padding: 10px 12px;
+      vertical-align: top;
+    }
+
+    .zones-table th {
+      background: var(--navy-900);
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      font-size: 0.8rem;
+      letter-spacing: 0.03em;
+    }
+
+    .zones-table td.zone-header-col {
+      width: 28%;
+      background: var(--surface-subtle);
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .zone-header-col strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 0.86rem;
+      margin-bottom: 2px;
+    }
+
+    .zone-header-col span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: normal;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .zones-table td.zone-input-col {
+      width: 72%;
+    }
+
+    .checklist-items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .check-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: var(--navy-800);
+    }
+
+    .check-box {
+      width: 13px;
+      height: 13px;
+      border: 1px solid var(--navy-700);
+      border-radius: 2px;
+      display: inline-block;
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+
+    /* Cuadrícula de preguntas de reflexión (Página 2) */
+    .reflection-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .reflection-card {
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      background: var(--surface-subtle);
+    }
+
+    .reflection-card h4 {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 4px;
+    }
+
+    .reflection-card p {
+      font-size: 0.77rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .reflection-card .input-area {
+      border: 1px solid var(--border-main);
+      background: #ffffff;
+      border-radius: 2px;
+      padding: 8px 10px;
+      min-height: 64px;
+      font-size: 0.82rem;
+      color: var(--navy-900);
+      line-height: 1.45;
+      outline: none;
+      position: relative;
+    }
+
+    .reflection-card .input-area:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-light);
+      font-style: italic;
+      font-size: 0.8rem;
+      pointer-events: none;
+    }
+
+    /* Prioridad principal del alumno */
+    .priority-selector {
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      background: var(--petrol-50);
+      margin-bottom: 16px;
+    }
+
+    .priority-selector h4 {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 6px;
+    }
+
+    .priority-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    /* Cuadro de dudas iniciales */
+    .questions-box {
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 18px;
+    }
+
+    .questions-box h4 {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin-bottom: 4px;
+    }
+
+    .numbered-question-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 0.82rem;
+    }
+
+    .numbered-question-line span {
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .numbered-question-line input {
+      flex: 1;
+      border: none;
+      border-bottom: 1px solid var(--border-main);
+      background: transparent;
+      padding: 3px 0;
+      font-family: inherit;
+      font-size: 0.82rem;
+      color: var(--navy-900);
+      outline: none;
+    }
+
+    /* Pie de revisión y firma */
+    .sheet-footer-sign {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-main);
+      font-size: 0.8rem;
+    }
+
+    .sign-box {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      background: var(--surface-subtle);
+    }
+
+    .sign-box label {
+      display: block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .sign-line {
+      border-bottom: 1px dashed var(--border-main);
+      margin-bottom: 4px;
+    }
+
+    .sign-box span {
+      font-size: 0.72rem;
+      color: var(--text-light);
+    }
+
+    /* SALTO DE PÁGINA IMPRESIÓN */
+    .print-page-break {
+      display: none;
+    }
+
+    /* ==========================================================================
+       ESTILOS EXCLUSIVOS PARA IMPRESIÓN (A4 - EXACTAMENTE 2 PÁGINAS)
+       ========================================================================== */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm 12mm 10mm 12mm;
+      }
+
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        font-size: 8.8pt;
+        line-height: 1.35;
+      }
+
+      .top-toolbar {
+        display: none !important;
+      }
+
+      .document-sheet {
+        border: none !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+      }
+
+      .sheet-header {
+        padding: 0 0 8pt 0 !important;
+        border-bottom: 1.5pt solid #0f172a !important;
+      }
+
+      .sheet-title-group h1 {
+        font-size: 12.5pt !important;
+      }
+
+      .sheet-body {
+        padding: 8pt 0 0 0 !important;
+      }
+
+      .block-header {
+        font-size: 10pt !important;
+        margin: 10pt 0 4pt !important;
+        padding-bottom: 2pt !important;
+        border-bottom: 1pt solid #64748b !important;
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+
+      .block-instruction {
+        font-size: 7.8pt !important;
+        margin-bottom: 6pt !important;
+      }
+
+      /* ALINEACIÓN ROBUSTA DE CABECERA Y DATOS DEL ALUMNO EN PRINT */
+      .student-id-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 12pt !important;
+        padding: 6pt 10pt !important;
+        background: #f8fafc !important;
+        border: 1pt solid #cbd5e1 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .student-id-grid .id-field:nth-child(1) {
+        flex: 2.5 !important;
+      }
+
+      .student-id-grid .id-field:nth-child(2) {
+        flex: 1.2 !important;
+      }
+
+      .student-id-grid .id-field:nth-child(3) {
+        flex: 1 !important;
+      }
+
+      .id-field input {
+        border-bottom: 1pt solid #475569 !important;
+      }
+
+      /* OCULTAR COMPLETAMENTE LOS COMENTARIOS/TEXTOS GUÍA DENTRO DE LAS CAJAS */
+      [contenteditable="true"]:empty::before {
+        content: none !important;
+        display: none !important;
+      }
+
+      input::placeholder {
+        color: transparent !important;
+        opacity: 0 !important;
+      }
+
+      /* Asegurar que las cajas vacías tengan fondo limpio y espacio para escribir */
+      .writing-lines-box {
+        background: #ffffff !important;
+        border: 1pt solid #64748b !important;
+        min-height: 55pt !important;
+      }
+
+      .reflection-card .input-area {
+        background: #ffffff !important;
+        border: 1pt solid #64748b !important;
+        min-height: 70pt !important;
+      }
+
+      .zones-table {
+        width: 100% !important;
+        display: table !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+      }
+
+      .zones-table tr {
+        display: table-row !important;
+      }
+
+      .zones-table th,
+      .zones-table td {
+        display: table-cell !important;
+      }
+
+      .zones-table td.zone-header-col {
+        width: 28% !important;
+      }
+
+      .zones-table td.zone-input-col {
+        width: 72% !important;
+      }
+
+      .zones-table th {
+        background: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 5pt 7pt !important;
+      }
+
+      .zones-table td {
+        padding: 6pt 7pt !important;
+      }
+
+      .check-box {
+        border-color: #000000 !important;
+      }
+
+      /* SALTO LIMPIO ENTRE PÁGINA 1 Y PÁGINA 2 */
+      .print-page-break {
+        display: block !important;
+        page-break-before: always !important;
+        break-before: page !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .print-page-2 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+      }
+
+      .reflection-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 10pt !important;
+        margin-bottom: 10pt !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .reflection-card {
+        flex: 1 !important;
+        padding: 8pt 10pt !important;
+        border: 1pt solid #64748b !important;
+      }
+
+      .priority-selector {
+        padding: 8pt 10pt !important;
+        margin-bottom: 10pt !important;
+        background: #f8fafc !important;
+        border: 1pt solid #94a3b8 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .questions-box {
+        padding: 8pt 10pt !important;
+        margin-bottom: 10pt !important;
+        border: 1pt solid #94a3b8 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .numbered-question-line {
+        margin-top: 6pt !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .numbered-question-line input {
+        border-bottom: 1pt solid #64748b !important;
+        height: 16pt !important;
+      }
+
+      .sheet-footer-sign {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 12pt !important;
+        padding-top: 8pt !important;
+        margin-top: 6pt !important;
+        border-top: 1.5pt solid #0f172a !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .sign-box {
+        flex: 1 !important;
+        padding: 8pt 10pt !important;
+        border: 1pt solid #94a3b8 !important;
+        background: #f8fafc !important;
+      }
+
+      .sign-box label {
+        margin-bottom: 8pt !important;
+      }
+    }
+
+    /* SOLO PARA PANTALLAS MÓVILES (NO PARA IMPRESIÓN) */
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .sheet-header,
+      .sheet-body {
+        padding: 16px;
+      }
+      .student-id-grid,
+      .reflection-grid,
+      .sheet-footer-sign {
+        display: flex;
+        flex-direction: column;
+      }
+      .zones-table td.zone-header-col,
+      .zones-table td.zone-input-col {
+        display: block;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA SUPERIOR DE ACCIONES (SOLO PANTALLA) -->
+  <header class="top-toolbar">
+    <div class="top-toolbar__meta">
+      <span class="doc-badge">F02</span>
+      <span>Ciencias Aplicadas II · UD1 · Sesión 2</span>
+      <span style="color: var(--border-main);">|</span>
+      <span style="font-weight: normal; color: var(--text-muted);">Brief Inicial: «Qué necesita mi tienda / Cómo imagino mi tienda»</span>
+    </div>
+    <div class="top-toolbar__actions"><a class="btn btn--secondary" href="guia.html">Cómo hacerla</a> 
+      <button class="btn btn--secondary" onclick="window.print()">
+        Vista previa
+      </button>
+      <button class="btn btn--primary" onclick="window.print()">
+        Imprimir ficha (A4)
+      </button>
+    </div>
+  </header>
+
+  <!-- FICHA DE TRABAJO INDIVIDUAL -->
+  <main class="document-sheet">
+
+    <!-- CABECERA INSTITUCIONAL Y DATOS DEL ESTUDIANTE -->
+    <header class="sheet-header">
+      <div class="sheet-header__top">
+        <div class="sheet-title-group">
+          <h1>F02 · Brief Inicial del Proyecto</h1>
+          <div class="sub">Unidad Didáctica 1: Mi tienda sostenible de reparación informática («EcoTech Teis»)</div>
+        </div>
+        <div class="dossier-tag">Documento del Dossier Técnico · A1</div>
+      </div>
+
+      <div class="student-id-grid">
+        <div class="id-field">
+          <label for="alumnoNombre">Nombre y apellidos del técnico/a júnior:</label>
+          <input type="text" id="alumnoNombre" placeholder="Escribe tu nombre completo">
+        </div>
+        <div class="id-field">
+          <label for="grupo">Grupo:</label>
+          <input type="text" id="grupo" value="2º FP Básica · Informática">
+        </div>
+        <div class="id-field">
+          <label for="fecha">Fecha:</label>
+          <input type="text" id="fecha" value="Septiembre 2026">
+        </div>
+      </div>
+    </header>
+
+    <div class="sheet-body">
+
+      <!-- PÁGINA 1 DE IMPRESIÓN (BLOQUES 1 Y 2) -->
+      <div class="print-page-1">
+
+        <!-- BLOQUE 1: DEFINICIÓN GENERAL DEL PROYECTO -->
+        <h2 class="block-header">
+          <span class="block-header__num">1.</span>
+          <span>Definición general de tu propuesta de tienda</span>
+        </h2>
+        <p class="block-instruction">
+          Basándote en el encargo del cliente (F01), define la identidad inicial de tu propuesta para el local del IES de Teis.
+        </p>
+
+        <div class="form-group">
+          <label for="tiendaNombre">Nombre de tu propuesta de tienda: <span class="hint">(Ejemplo: EcoTech Teis · Soluciones Circulares)</span></label>
+          <input type="text" id="tiendaNombre" class="text-input-line" placeholder="Escribe aquí el nombre que propones para la tienda...">
+        </div>
+
+        <div class="form-group">
+          <label for="publicoObjetivo">¿A quién va dirigida principalmente la tienda? <span class="hint">(Vecindario de Teis, familias del centro, pequeños comercios, etc.)</span></label>
+          <input type="text" id="publicoObjetivo" class="text-input-line" placeholder="Describe brevemente a qué tipo de clientes prestará servicio...">
+        </div>
+
+        <div class="form-group">
+          <label>Propósito y valor principal: <span class="hint">(¿Qué aportará de positivo al barrio y al medio ambiente?)</span></label>
+          <div class="writing-lines-box" contenteditable="true" data-placeholder="Explica en 2 o 3 líneas por qué es importante una tienda de reparación y reutilización en Teis..."></div>
+        </div>
+
+        <!-- BLOQUE 2: PROGRAMA DE NECESIDADES POR ZONAS -->
+        <h2 class="block-header">
+          <span class="block-header__num">2.</span>
+          <span>Programa de necesidades: ¿Qué debe tener cada zona?</span>
+        </h2>
+        <p class="block-instruction">
+          Selecciona con una marca [X] los elementos imprescindibles en cada una de las 3 zonas obligatorias y añade lo que consideres necesario.
+        </p>
+
+        <table class="zones-table">
+          <thead>
+            <tr>
+              <th>Zona obligatoria</th>
+              <th>Elementos y requisitos indispensables</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Zona 1 -->
+            <tr>
+              <td class="zone-header-col">
+                <strong>Zona 1: Atención</strong>
+                <span>Recepción de clientes y averías</span>
+              </td>
+              <td class="zone-input-col">
+                <div class="checklist-items">
+                  <label class="check-option"><span class="check-box"></span> Mostrador para recibir clientes y tramitar entradas de equipos.</label>
+                  <label class="check-option"><span class="check-box"></span> Sillas o zona de espera cómoda para personas mientras son atendidas.</label>
+                  <label class="check-option"><span class="check-box"></span> Vitrina o estantería expositora de ordenadores reacondicionados.</label>
+                  <label class="check-option"><span class="check-box"></span> Paso ancho y despejado para garantizar la accesibilidad.</label>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Zona 2 -->
+            <tr>
+              <td class="zone-header-col">
+                <strong>Zona 2: Taller</strong>
+                <span>Reparación técnica y pruebas</span>
+              </td>
+              <td class="zone-input-col">
+                <div class="checklist-items">
+                  <label class="check-option"><span class="check-box"></span> Mesas técnicas de trabajo amplias con superficie antiestática.</label>
+                  <label class="check-option"><span class="check-box"></span> Puntos de corriente suficientes y seguros en cada puesto.</label>
+                  <label class="check-option"><span class="check-box"></span> Iluminación directa y clara sobre la zona de desmontaje de equipos.</label>
+                  <label class="check-option"><span class="check-box"></span> Panel mural organizado para destornilladores, alicates y herramientas.</label>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Zona 3 -->
+            <tr>
+              <td class="zone-header-col">
+                <strong>Zona 3: Almacén y RAEE</strong>
+                <span>Stock y reciclaje ambiental</span>
+              </td>
+              <td class="zone-input-col">
+                <div class="checklist-items">
+                  <label class="check-option"><span class="check-box"></span> Estanterías metálicas resistentes para piezas de repuesto y equipos terminados.</label>
+                  <label class="check-option"><span class="check-box"></span> Cajas clasificadas y rotuladas para cables, memorias y componentes.</label>
+                  <label class="check-option"><span class="check-box"></span> Contenedor seguro para baterías y componentes dañados (RAEE).</label>
+                  <label class="check-option"><span class="check-box"></span> Zona para embalajes de cartón reutilizados.</label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <!-- SALTO LIMPIO DE PÁGINA PARA IMPRESIÓN (EXACTAMENTE PÁGINA 2) -->
+      <div class="print-page-break"></div>
+
+      <!-- PÁGINA 2 DE IMPRESIÓN (BLOQUES 3, 4, 5 Y 6) -->
+      <div class="print-page-2">
+
+        <!-- BLOQUE 3: CÓMO IMAGINO MI TIENDA -->
+        <h2 class="block-header" style="margin-top: 0;">
+          <span class="block-header__num">3.</span>
+          <span>¿Cómo imaginas tu tienda? (Aspecto, circulación y ergonomía)</span>
+        </h2>
+        <p class="block-instruction">
+          Reflexiona sobre cómo debe funcionar el local en el día a día para que resulte atractivo al público, cómodo para trabajar y seguro para evitar accidentes.
+        </p>
+
+        <div class="reflection-grid">
+          <div class="reflection-card">
+            <h4>3.1. Ambiente, imagen visual e iluminación</h4>
+            <p>Describe cómo imaginas la estética general, la luz natural y artificial, los colores y los materiales (madera, tonos claros, plantas...) para transmitir profesionalidad y sostenibilidad:</p>
+            <div class="input-area" contenteditable="true" data-placeholder="Describe aquí cómo te imaginas el aspecto general, la luz y la imagen visual de tu tienda..."></div>
+          </div>
+
+          <div class="reflection-card">
+            <h4>3.2. Circulación y medidas de seguridad técnica</h4>
+            <p>Indica cómo evitarás que los clientes pasen a la zona de taller, cómo organizarás los cables para que no crucen por el suelo y qué medidas tomarás para trabajar seguros con herramientas:</p>
+            <div class="input-area" contenteditable="true" data-placeholder="Anota aquí las medidas de seguridad, orden de herramientas y delimitación entre público y taller..."></div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 4: PRIORIDAD TÉCNICA Y SOSTENIBILIDAD -->
+        <h2 class="block-header">
+          <span class="block-header__num">4.</span>
+          <span>Prioridad técnica y compromiso ambiental</span>
+        </h2>
+        <p class="block-instruction">
+          Selecciona con una marca [X] el enfoque prioritario que marcará tus decisiones en el diseño y explica tu justificación y una medida ecológica concreta.
+        </p>
+
+        <div class="priority-selector">
+          <div class="priority-options">
+            <label class="check-option">
+              <span class="check-box"></span> <strong>Opción A: Ergonomía y rendimiento del taller técnico.</strong> Mesas muy amplias, herramientas a mano, iluminación directa y máxima facilidad para reparar rápido y cómodo.
+            </label>
+            <label class="check-option">
+              <span class="check-box"></span> <strong>Opción B: Atención al público y accesibilidad universal.</strong> Entrada espaciosa, mostrador muy cómodo, vitrinas bien iluminadas y recorridos fluidos para cualquier persona.
+            </label>
+            <label class="check-option">
+              <span class="check-box"></span> <strong>Opción C: Sostenibilidad integral y gestión modélica de RAEE.</strong> Separación estricta de residuos, estanterías optimizadas, mínimo consumo energético y cero plásticos.
+            </label>
+          </div>
+
+          <div style="margin-top: 8px;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-900);">4.1. Justificación razonada de tu prioridad: <span class="hint">(¿Por qué consideras que esta debe ser la prioridad de tu propuesta?)</span></label>
+            <div class="writing-lines-box" style="min-height: 44px;" contenteditable="true" data-placeholder="Justifica aquí en 2 o 3 líneas por qué has elegido esta prioridad técnica..."></div>
+          </div>
+
+          <div style="margin-top: 8px;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--navy-900);">4.2. Medida concreta de sostenibilidad que aplicará tu tienda: <span class="hint">(Ej: embalajes reciclados, bombillas LED de bajo consumo, reutilización de piezas...)</span></label>
+            <input type="text" class="text-input-line" style="font-size: 0.82rem;" placeholder="Anota una acción concreta que aplicará tu tienda para cuidar el medio ambiente...">
+          </div>
+        </div>
+
+        <!-- BLOQUE 5: CUESTIONARIO PREVIO A LA VISITA AL LOCAL -->
+        <h2 class="block-header">
+          <span class="block-header__num">5.</span>
+          <span>Cuestionario previo a la visita y medición del local (Sesiones 3 y 4)</span>
+        </h2>
+        <p class="block-instruction">
+          En las próximas sesiones visitaremos y mediremos el espacio real del centro. Anota qué comprobaciones técnicas consideras indispensables realizar in situ:
+        </p>
+
+        <div class="questions-box">
+          <div class="numbered-question-line">
+            <span>1.</span>
+            <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); width: 155px; flex-shrink: 0;">Instalación eléctrica:</span>
+            <input type="text" placeholder="¿Dónde se ubica el cuadro general y cuántas tomas de corriente hay en las paredes?">
+          </div>
+          <div class="numbered-question-line">
+            <span>2.</span>
+            <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); width: 155px; flex-shrink: 0;">Accesos y pasos:</span>
+            <input type="text" placeholder="¿Qué anchura tienen las puertas y permiten el paso a sillas de ruedas y carritos?">
+          </div>
+          <div class="numbered-question-line">
+            <span>3.</span>
+            <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); width: 155px; flex-shrink: 0;">Luz y ventilación:</span>
+            <input type="text" placeholder="¿Qué ventanas existen, hacia dónde dan y cómo aprovechamos la luz natural en el taller?">
+          </div>
+          <div class="numbered-question-line">
+            <span>4.</span>
+            <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); width: 155px; flex-shrink: 0;">Obstáculos fijos:</span>
+            <input type="text" placeholder="¿Hay columnas, pilares, bajantes o radiadores que debamos esquivar con los muebles?">
+          </div>
+        </div>
+
+        <!-- BLOQUE 6: COMPROMISO Y FIRMAS -->
+        <div class="sheet-footer-sign">
+          <div class="sign-box">
+            <label>Firma del técnico/a júnior (Alumnado):</label>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.25;">
+              Declaro que este documento recoge mis ideas iniciales de partida y me comprometo a desarrollar con rigor mi dossier individual de proyecto.
+            </p>
+            <div class="sign-line"></div>
+            <span>Fecha de entrega: ____ / ____ / 2026</span>
+          </div>
+
+          <div class="sign-box">
+            <label>Revisión y visto bueno docente:</label>
+            <div style="margin-bottom: 12px; font-size: 0.74rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+              <label class="check-option"><span class="check-box" style="width: 10px; height: 10px;"></span> <strong>Apto:</strong> Documento validado para incorporar al Dossier A1.</label>
+              <label class="check-option"><span class="check-box" style="width: 10px; height: 10px;"></span> <strong>Revisar:</strong> Se sugiere concretar las zonas antes de medir.</label>
+            </div>
+            <div class="sign-line"></div>
+            <span>Firma del profesor/a: __________________________________</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

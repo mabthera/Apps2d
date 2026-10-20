@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>F12 · Dibujo del plano final</title>
+  <style>
+    :root { --navy:#0f172a; --navy-2:#334155; --petrol:#0369a1; --paper:#fff; --soft:#f8fafc; --line:#cbd5e1; --ink:#1e293b; --muted:#64748b; --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+    * { box-sizing:border-box; margin:0; padding:0; } body { font-family:var(--font); color:var(--ink); background:#e2e8f0; padding:20px 16px 40px; line-height:1.28; }
+    .toolbar { max-width:850px; margin:0 auto 14px; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid var(--line); border-radius:5px; box-shadow:0 1px 3px #0f172a18; font-size:.84rem; font-weight:700; color:var(--navy); } .badge { display:inline-block; padding:2px 7px; border-radius:3px; background:var(--navy); color:#fff; font-size:.74rem; letter-spacing:.05em; } button { border:0; border-radius:3px; padding:7px 12px; background:var(--navy); color:#fff; font:700 .8rem var(--font); cursor:pointer; }
+    .document { max-width:850px; margin:auto; background:var(--paper); border:1.5px solid var(--navy); box-shadow:0 4px 16px #0f172a18; } .page { min-height:1055px; padding:24px 28px 19px; display:flex; flex-direction:column; }
+    
+    /* Cara A Estilos */
+    .header { border-bottom:2px solid var(--navy); padding-bottom:9px; margin-bottom:12px; } .header-top { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; } h1 { color:var(--navy); font-size:1.24rem; line-height:1.15; letter-spacing:.025em; text-transform:uppercase; } .subtitle { margin-top:3px; color:var(--muted); font-size:.82rem; } .tag { white-space:nowrap; border:1px solid var(--line); background:var(--soft); padding:3px 7px; border-radius:3px; color:var(--navy-2); font-size:.7rem; font-weight:800; text-transform:uppercase; }
+    .identity { margin-top:9px; display:grid; grid-template-columns:2.1fr .75fr .9fr; gap:13px; font-size:.77rem; font-weight:700; } .write { display:inline-block; width:100%; height:16px; border-bottom:1px solid var(--navy); vertical-align:bottom; }
+    .section-title { margin:10px 0 5px; padding-bottom:2px; border-bottom:1.5px solid var(--navy); color:var(--navy); font-size:.95rem; font-weight:800; text-transform:uppercase; letter-spacing:.025em; } .number { color:var(--petrol); margin-right:6px; } .instruction { font-size:.79rem; color:var(--navy-2); margin-bottom:8px; }
+    
+    .prompt { border-left:3px solid var(--petrol); padding:6px 9px; background:#f0f9ff; color:var(--navy); font-size:.76rem; margin-bottom:10px; }
+    
+    .calc-box { border:1px solid var(--line); border-radius:3px; padding:10px 14px; background:var(--soft); margin-bottom:12px; }
+    .calc-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:10px; }
+    .calc-item { background:#fff; padding:8px 12px; border:1px solid var(--line); border-radius:2px; }
+    .calc-item label { display:block; font-size:.72rem; font-weight:700; color:var(--navy); margin-bottom:4px; text-transform:uppercase; }
+    .calc-line { border-bottom:1px solid var(--navy); height:22px; width:100%; display:block; }
+    
+    .checklist { display:grid; grid-template-columns:1fr 1fr; gap:8px 20px; font-size:.76rem; margin-bottom:15px; }
+    .checklist-item { display:flex; align-items:flex-start; gap:8px; }
+    .checklist-box { width:14px; height:14px; border:1.5px solid var(--navy); border-radius:2px; flex-shrink:0; margin-top:2px; background:#fff; }
+
+    .professional-close { margin-top:auto; padding-top:6px; display:grid; grid-template-columns:1.35fr 1fr; gap:7px; font-size:.72rem; } .sign-box { min-height:80px; padding:8px 12px; border:1px solid var(--line); border-radius:3px; background:var(--soft); } .sign-box h3 { margin-bottom:4px; color:var(--navy); font-size:.78rem; text-transform:uppercase; letter-spacing:.025em; } .sign-line { display:grid; grid-template-columns:1fr .48fr; gap:10px; margin-top:12px; font-size:.7rem; } .sign-line span { display:block; min-height:16px; border-bottom:1px solid var(--navy); } .approval { border-color:var(--navy); background:#fff; } .approval-status { margin:-8px -12px 6px; padding:5px 9px; background:var(--navy); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; }
+
+    .footer { display:flex; justify-content:space-between; margin-top:7px; padding-top:7px; border-top:1px solid var(--line); color:var(--muted); font-size:.66rem; }
+    .page-break { height:1px; background:var(--navy); }
+
+    /* Cara B Estilos (Lienzo de dibujo) */
+    .canvas-page { padding:12px; height:1055px; display:flex; flex-direction:column; position:relative; }
+    .drawing-area { flex:1; border:2px solid var(--navy); background-color:#fff; 
+      /* Cuadrícula suave de 5mm para facilitar el dibujo */
+      background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+      background-size: 5mm 5mm; 
+      position:relative; 
+    }
+    
+    /* Cajetín arquitectónico profesional abajo a la derecha */
+    .cajetin { position:absolute; bottom:0; right:0; width:100%; border-top:2px solid var(--navy); background:#fff; display:grid; grid-template-columns:2.5fr 1fr 1fr; font-size:.65rem; }
+    .cajetin-cell { border-right:2px solid var(--navy); padding:4px 6px; display:flex; flex-direction:column; justify-content:space-between; min-height:36px; }
+    .cajetin-cell:last-child { border-right:none; }
+    .cajetin-label { color:var(--petrol); font-weight:700; text-transform:uppercase; font-size:.55rem; letter-spacing:.03em; }
+    .cajetin-value { color:var(--navy); font-weight:800; font-size:.75rem; text-align:right; }
+
+    @media print {
+      @page { size:A4 portrait; margin:7mm 8mm; }
+      body { padding:0; background:#fff; }
+      .toolbar { display:none; }
+      .document { max-width:none; border:0; box-shadow:none; }
+      .page { min-height:0; height:283mm; max-height:283mm; padding:0; page-break-inside:avoid; overflow:hidden; }
+      .canvas-page { height:283mm; max-height:283mm; padding:0; overflow:hidden; }
+      .drawing-area { border:2px solid var(--navy); }
+      .page-break { height:0; background:transparent; break-after:page; page-break-after:always; }
+      .sign-box { min-height:auto; }
+      .footer { margin-top:auto; }
+      * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <span><span class="badge">F12</span> Dibujo del plano final · Sesión 14</span><button onclick="window.print()">Imprimir ficha A4 doble cara</button></div>
+  <main class="document">
+
+    <!-- ===== CARA A — PLANIFICACIÓN Y CIERRE ===== -->
+    <section class="page">
+      <header class="header"><div class="header-top"><div><h1>Cálculos y validación del plano base</h1><p class="subtitle">UD1 · Mi tienda sostenible · Ciencias Aplicadas II</p></div><span class="tag">Dossier A2 · F12 · Cara A</span></div><div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div></header>
+
+      <div class="prompt"><b>Antes de dibujar en la Cara B.</b> Un plano técnico no se dibuja "a ojo". Primero debemos conocer el ancho y largo total del local real para elegir una escala que nos permita encajar el dibujo centrado en el folio A4, sin salirnos ni quedarnos diminutos.</div>
+
+      <!-- SECCIÓN CÁLCULO DE ESCALA -->
+      <h2 class="section-title"><span class="number">1</span>Encaje y elección de escala</h2>
+      <p class="instruction">Revisa los datos de tu ficha de mediciones (F10) y determina las dimensiones máximas. El área útil de dibujo en el reverso es de aproximadamente <b>18 cm de ancho × 26 cm de alto</b>.</p>
+      
+      <div class="calc-box">
+        <div class="calc-row">
+          <div class="calc-item"><label>Largo real máximo del local</label><span class="calc-line"></span><span style="display:block; text-align:right; font-size:.65rem; color:var(--muted); margin-top:2px;">(en metros)</span></div>
+          <div class="calc-item"><label>Ancho real máximo del local</label><span class="calc-line"></span><span style="display:block; text-align:right; font-size:.65rem; color:var(--muted); margin-top:2px;">(en metros)</span></div>
+        </div>
+        <p style="font-size:.72rem; margin-bottom:6px;">Calcula a qué tamaño (en centímetros) quedarían el largo y ancho máximos usando las 3 escalas habituales (valor real en cm ÷ escala):</p>
+        <ul style="font-size:.75rem; line-height:2; margin-left:18px; margin-bottom:12px; margin-top:8px; color:var(--navy-2);">
+          <li style="margin-bottom:10px;"><b>A escala 1:50</b> (÷ 50) → Largo: _________ cm <i>(¿cabe en 26?)</i> &nbsp;|&nbsp; Ancho: _________ cm <i>(¿cabe en 18?)</i></li>
+          <li style="margin-bottom:10px;"><b>A escala 1:75</b> (÷ 75) → Largo: _________ cm <i>(¿cabe en 26?)</i> &nbsp;|&nbsp; Ancho: _________ cm <i>(¿cabe en 18?)</i></li>
+          <li style="margin-bottom:10px;"><b>A escala 1:100</b> (÷ 100) → Largo: _________ cm <i>(¿cabe en 26?)</i> &nbsp;|&nbsp; Ancho: _________ cm <i>(¿cabe en 18?)</i></li>
+        </ul>
+        <div class="calc-item" style="background:#e0f2fe; border-color:var(--petrol); border-width:2px;"><label style="color:var(--petrol);">Escala definitiva elegida para el dibujo:</label><span class="calc-line" style="border-color:var(--petrol);"></span></div>
+      </div>
+
+      <!-- SECCIÓN CHECKLIST -->
+      <h2 class="section-title"><span class="number">2</span>Lista de comprobación antes de entregar</h2>
+      <p class="instruction">Una vez hayas terminado el dibujo en el reverso, marca estas casillas para asegurar la calidad profesional de tu plano.</p>
+      
+      <div class="checklist">
+        <div class="checklist-item"><div class="checklist-box"></div><div>El dibujo está **centrado** en el folio.</div></div>
+        <div class="checklist-item"><div class="checklist-box"></div><div>Los **símbolos** de puertas y ventanas son correctos.</div></div>
+        <div class="checklist-item"><div class="checklist-box"></div><div>Se distingue la **línea gruesa** (muros) de la fina (cotas).</div></div>
+        <div class="checklist-item"><div class="checklist-box"></div><div>Las cotas están **por fuera** del dibujo.</div></div>
+        <div class="checklist-item"><div class="checklist-box"></div><div>La regla y la escuadra se han usado para conseguir **líneas rectas**.</div></div>
+        <div class="checklist-item"><div class="checklist-box"></div><div>Los números de cota están **centrados y por encima** de su línea.</div></div>
+        <div class="checklist-item"><div class="checklist-box"></div><div>El cajetín (título) inferior está **cumplimentado**.</div></div>
+        <div class="checklist-item"><div class="checklist-box"></div><div>No hay **tachones** ni manchas de goma.</div></div>
+      </div>
+
+      <!-- CIERRE PROFESIONAL -->
+      <div class="professional-close">
+        <div class="sign-box">
+          <h3>Compromiso del técnico o técnica júnior</h3>
+          Declaro que el plano dibujado en el reverso es fiel a las medidas reales registradas, está dibujado a la escala declarada y cumple las normativas básicas de acotación.
+          <div class="sign-line"><div>Firma <span></span></div><div>Fecha <span></span></div></div>
+        </div>
+        <div class="sign-box approval">
+          <div class="approval-status">Visto bueno docente</div>
+          ☐ VALIDADO &nbsp; ☐ REVISIÓN REQUERIDA<br><br>
+          ☐ Escala correcta y bien aplicada<br>
+          ☐ Acotación profesional (normas cumplidas)<br>
+          ☐ Limpieza y calidad del trazo<br><br>
+          Firma docente: __________________
+        </div>
+      </div>
+
+      <footer class="footer"><span>F12 · Dibujo del plano final · Cara A</span><span>1 / 2</span></footer>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- ===== CARA B — LIENZO DE DIBUJO ===== -->
+    <section class="canvas-page">
+      <div class="drawing-area">
+        <!-- CAJETÍN ARQUITECTÓNICO INFERIOR -->
+        <div class="cajetin">
+          <div class="cajetin-cell">
+            <span class="cajetin-label">PROYECTO: Mi tienda sostenible</span>
+            <span class="cajetin-value" style="text-align:left; font-size:.85rem; font-weight:700;">PLANO ESTADO ACTUAL</span>
+          </div>
+          <div class="cajetin-cell" style="background:#f0f9ff;">
+            <span class="cajetin-label">ESCALA</span>
+            <span class="cajetin-value">1 : ____</span>
+          </div>
+          <div class="cajetin-cell">
+            <span class="cajetin-label">DIBUJADO POR</span>
+            <span class="cajetin-value" style="font-weight:400; color:var(--muted);">Firma</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

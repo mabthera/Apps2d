@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FZZ · Pausa del proyecto: cuerpos, áreas, volúmenes y escalas</title>
+  <style>
+    :root{--navy:#0f172a;--blue:#0369a1;--ink:#1e293b;--muted:#64748b;--line:#cbd5e1;--soft:#f8fafc;--pale:#f0f9ff}
+    *{box-sizing:border-box}body{margin:0;padding:18px;background:#e2e8f0;color:var(--ink);font:14px/1.32 Arial,Helvetica,sans-serif}
+    .toolbar{max-width:794px;margin:0 auto 12px;padding:9px 12px;background:#fff;border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-weight:bold;color:var(--navy)}button{border:0;border-radius:3px;background:var(--navy);color:#fff;padding:8px 12px;font-weight:bold;cursor:pointer}
+    .document{width:794px;margin:auto;background:#fff;box-shadow:0 4px 15px #0f172a22}.page{height:1123px;padding:30px 32px 23px;display:flex;flex-direction:column;background:#fff;border-bottom:1px solid var(--navy)}
+    header{padding-bottom:9px;margin-bottom:10px;border-bottom:2px solid var(--navy)}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}h1{margin:0;color:var(--navy);font-size:22px;line-height:1.15;text-transform:uppercase;letter-spacing:.02em}.subtitle{margin:4px 0 0;color:var(--muted);font-size:12px}.tag{border:1px solid var(--line);background:var(--soft);padding:4px 7px;color:var(--navy);font-size:11px;font-weight:bold;white-space:nowrap}.identity{display:grid;grid-template-columns:2fr .7fr .8fr;gap:12px;margin-top:10px;font-size:12px;font-weight:bold}.write{display:inline-block;width:100%;height:18px;border-bottom:1px solid var(--navy);vertical-align:bottom}
+    h2{margin:13px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--navy);color:var(--navy);font-size:16px;text-transform:uppercase}.num{color:var(--blue);margin-right:5px}h3{margin:0;color:var(--navy);font-size:14px}p{margin:5px 0 7px}.callout{padding:9px 11px;background:var(--pale);border-left:3px solid var(--blue);font-size:13px}.small{font-size:12px;color:var(--muted)}.check{border:1px solid var(--line);background:var(--soft);padding:10px 12px;font-size:13px}.footer{display:flex;justify-content:space-between;margin-top:auto;padding-top:7px;border-top:1px solid var(--line);color:var(--muted);font-size:10px}
+    .choices{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin:8px 0}.choice{padding:8px 10px;border:1px solid var(--line);background:var(--soft);font-size:13px}.line{display:inline-block;min-width:130px;height:19px;border-bottom:1px solid var(--navy);vertical-align:bottom}.line.short{min-width:56px}.one-line{margin:8px 0;display:flex;gap:22px;flex-wrap:wrap;align-items:center;font-size:13px}
+    table{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:7px;font-size:13px}th{background:var(--navy);color:#fff;border:1px solid var(--navy);padding:7px;text-align:left}td{border:1px solid var(--line);padding:7px;vertical-align:top}tbody tr:nth-child(even) td{background:var(--soft)}.measure th:first-child{width:63%}.measure td{height:35px}.measure tr.extra td{background:#f8fafc;color:#64748b}.measure tr.extra td:last-child{color:var(--ink)}
+    .sketch{height:150px;margin-top:8px;border:1px solid var(--line);padding:8px 10px;background:linear-gradient(#fff,#fff) padding-box,repeating-linear-gradient(to right,#e2e8f0 0 1px,transparent 1px 19px) border-box;position:relative}.sketch b{display:block;color:var(--navy);font-size:13px}.sketch span{color:var(--muted);font-size:12px}
+    .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:8px}.calc-card{border:1px solid var(--line);height:248px;padding:11px 12px;position:relative}.calc-card h3{font-size:15px}.writing{height:177px;margin-top:7px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 32px,#b8c4d0 33px)}.result{position:absolute;left:12px;right:12px;bottom:11px;font-weight:bold;font-size:13px}.extra-work{margin-top:14px;border:1px solid var(--line);padding:10px 12px;height:245px}.extra-work h3{margin-bottom:6px}.extra-work .writing{height:190px}
+    .scale-choice{border:1px solid var(--line);background:var(--soft);padding:11px 12px;font-size:13px}.scale-choice .one-line{margin:4px 0}.scale-table th:nth-child(1){width:30%}.scale-table th:nth-child(2){width:22%}.scale-table th:nth-child(3){width:48%}.scale-table td{height:43px}.draw-head{display:flex;justify-content:space-between;gap:8px;background:var(--navy);color:#fff;padding:8px 10px;font-size:12px;font-weight:bold}.drawing{border:1.5px solid var(--navy);margin-top:8px}.grid{height:450px;position:relative;background-image:linear-gradient(#d6e0e9 1px,transparent 1px),linear-gradient(90deg,#d6e0e9 1px,transparent 1px),linear-gradient(#aebdcc 1px,transparent 1px),linear-gradient(90deg,#aebdcc 1px,transparent 1px);background-size:5mm 5mm,5mm 5mm,25mm 25mm,25mm 25mm}.grid-note{position:absolute;right:7px;bottom:6px;padding:3px 5px;background:#ffffffdd;color:var(--muted);font-size:10px}
+    .area-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:9px 0}.area-card{height:155px;border:1px solid var(--line);padding:10px 12px;position:relative}.area-card h3{font-size:14px}.area-card .writing{height:95px}.area-card .result{font-size:13px}.reflection{border:1px solid var(--line);padding:10px 12px;margin-top:10px}.answer-lines{height:80px;margin-top:7px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 28px,#b8c4d0 29px)}.answer-lines.shorter{height:50px}.test{margin-top:11px;border:1.5px solid var(--navy)}.test-head{background:var(--navy);color:#fff;padding:7px 10px;font-weight:bold}.test-item{padding:9px 11px;border-top:1px solid var(--line);min-height:65px;font-size:13px}.test-item .line{min-width:165px}
+    @media print{@page{size:A4 portrait;margin:8mm}body{padding:0;background:#fff}.toolbar{display:none}.document{width:auto;box-shadow:none}.page{height:281mm;padding:0;border:0;break-after:page;page-break-after:always}.page:last-child{break-after:auto;page-break-after:auto}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <span>FZZ · Pausa del proyecto · Trabajo individual</span><button onclick="window.print()">Imprimir · 4 páginas A4</button></div>
+  <main class="document">
+    <section class="page">
+      <header><div class="top"><div><h1>Pausa del proyecto: mide y comprueba</h1><p class="subtitle">UD1 · Mi tienda sostenible de reparación informática · Ciencias Aplicadas II</p></div><span class="tag">FZZ · 1 / 4</span></div><div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div></header>
+      <div class="callout"><b>Pausa del proyecto · 50 minutos.</b> Comprueba lo que sabes: mide un cuerpo real, calcula sus áreas y volumen, y dibújalo ampliado. Consulta las fórmulas de la guía FZZ.</div>
+      <h2><span class="num">1.</span>Elige un cuerpo</h2>
+      <p>Marca uno. Localiza la base y comprueba en la guía FZZ qué medidas necesitas para esa figura.</p>
+      <div class="choices"><div class="choice">☐ Prisma de base cuadrada</div><div class="choice">☐ Prisma de base hexagonal</div><div class="choice">☐ Cilindro</div><div class="choice">☐ Tetraedro</div><div class="choice">☐ Pirámide de base cuadrada</div><div class="choice">☐ Cono</div></div>
+      <div class="one-line"><span>Forma de la base: <span class="line"></span></span><span>¿Cumple las condiciones? ☐ Sí ☐ No</span></div>
+      <h2><span class="num">2.</span>Mide el cuerpo real</h2>
+      <p>Busca qué medidas necesitas. Escribe su nombre y su valor en cm.</p>
+      <table class="measure"><thead><tr><th>Medida: letra y nombre</th><th>Valor real</th></tr></thead><tbody>
+        <tr><td>1.</td><td>__________ cm</td></tr><tr><td>2.</td><td>__________ cm</td></tr><tr><td>3.</td><td>__________ cm</td></tr><tr><td>4.</td><td>__________ cm</td></tr>
+        <tr class="extra"><td>5. Si necesitas más datos</td><td>__________ cm</td></tr><tr class="extra"><td>6.</td><td>__________ cm</td></tr><tr class="extra"><td>7.</td><td>__________ cm</td></tr><tr class="extra"><td>8.</td><td>__________ cm</td></tr><tr class="extra"><td>9.</td><td>__________ cm</td></tr><tr class="extra"><td>10.</td><td>__________ cm</td></tr>
+      </tbody></table>
+      <div class="sketch"><b>Croquis de tus medidas</b><span>Señala en la figura qué longitud representa cada letra.</span></div>
+      <footer class="footer"><span>FZZ · Cuerpo real: elección y medidas</span><span>1 / 4</span></footer>
+    </section>
+
+    <section class="page">
+      <header><div class="top"><div><h1>Calcula con tus medidas</h1><p class="subtitle">Consulta las fórmulas de tu cuerpo · muestra las operaciones</p></div><span class="tag">FZZ · 2 / 4</span></div><div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div></header>
+      <h2><span class="num">3.</span>Áreas y volumen del cuerpo real</h2>
+      <p>Escribe los datos que sustituyes en cada fórmula y cada paso del cálculo.</p>
+      <div class="calc-grid">
+        <div class="calc-card"><h3>A · Área de la base</h3><div class="writing"></div><div class="result">Resultado: ______________ cm²</div></div>
+        <div class="calc-card"><h3>B · Área lateral / otras caras</h3><div class="writing"></div><div class="result">Resultado: ______________ cm²</div></div>
+        <div class="calc-card"><h3>C · Superficie total</h3><div class="writing"></div><div class="result">Resultado: ______________ cm²</div></div>
+        <div class="calc-card"><h3>D · Volumen</h3><div class="writing"></div><div class="result">Resultado: ______________ cm³</div></div>
+      </div>
+      <div class="extra-work"><h3>Más espacio para operaciones</h3><div class="writing"></div></div>
+      <footer class="footer"><span>FZZ · Cuerpo real: cálculos</span><span>2 / 4</span></footer>
+    </section>
+
+    <section class="page">
+      <header><div class="top"><div><h1>Del cuerpo real al dibujo</h1><p class="subtitle">Elige una ampliación y dibuja una vista</p></div><span class="tag">FZZ · 3 / 4</span></div><div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div></header>
+      <div class="check"><b>Antes de dibujar:</b> ☐ He usado medidas reales. &nbsp; ☐ Las áreas están en cm². &nbsp; ☐ El volumen está en cm³.</div>
+      <h2><span class="num">4.</span>Decide la ampliación</h2>
+      <div class="scale-choice"><div class="one-line"><span>Voy a ampliar el dibujo: ☐ 2 veces &nbsp; ☐ 3 veces</span><span>Mi escala es <span class="line short"></span> : <span class="line short"></span></span></div><div>Elige una vista: ☐ superior &nbsp; ☐ frontal. Calcula las medidas del dibujo.</div></div>
+      <table class="scale-table"><thead><tr><th>Longitud visible</th><th>Medida real</th><th>Operación → medida para dibujar</th></tr></thead><tbody><tr><td>1.</td><td>_____ cm</td><td>________________ → __________ cm</td></tr><tr><td>2.</td><td>_____ cm</td><td>________________ → __________ cm</td></tr><tr><td>3. Si hace falta</td><td>_____ cm</td><td>________________ → __________ cm</td></tr></tbody></table>
+      <h2><span class="num">5.</span>Dibuja una vista</h2>
+      <p>Usa regla. Escribe el nombre del cuerpo, la vista, la escala y las cotas <b>reales</b>.</p>
+      <div class="drawing"><div class="draw-head"><span>Cuerpo: __________________________</span><span>Vista: ______________</span><span>Escala: _____ : _____</span></div><div class="grid"><span class="grid-note">Cuadrícula de 5 mm · imprime al 100 %</span></div></div>
+      <footer class="footer"><span>FZZ · Dibujo ampliado</span><span>3 / 4</span></footer>
+    </section>
+
+    <section class="page">
+      <header><div class="top"><div><h1>¿Qué cambia al ampliar?</h1><p class="subtitle">Compara la vista real y la vista dibujada · transfiere lo aprendido</p></div><span class="tag">FZZ · 4 / 4</span></div><div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div></header>
+      <h2><span class="num">6.</span>Compara las áreas de la vista</h2>
+      <p>Calcula el área de la forma que has dibujado. Compara esa área con la de la misma vista en el objeto real.</p>
+      <div class="area-grid"><div class="area-card"><h3>Área de la vista real</h3><div class="writing"></div><div class="result">A<sub>real</sub> = ______________ cm²</div></div><div class="area-card"><h3>Área de la vista dibujada</h3><div class="writing"></div><div class="result">A<sub>dibujo</sub> = ______________ cm²</div></div></div>
+      <div class="reflection"><b>Compara:</b> amplié las longitudes <span class="line short"></span> veces. El área del dibujo es <span class="line short"></span> veces el área real.<br><b>¿Qué relación encuentras? Explícala.</b><div class="answer-lines shorter"></div></div>
+      <h2><span class="num">7.</span>Piensa en el volumen</h2>
+      <div class="reflection"><b>Pregunta abierta.</b> Imagina que fabricas un cuerpo nuevo ampliando <b>todas</b> las longitudes del original igual que en tu dibujo. ¿Qué volumen tendría? Escribe tus cálculos y explica tu respuesta.<div class="answer-lines"></div></div>
+      <h2><span class="num">8.</span>Comprueba si puedes aplicar lo aprendido</h2>
+      <div class="test"><div class="test-head">Test breve · responde sin copiar las fórmulas</div>
+        <div class="test-item"><b>1.</b> Una arista mide 2 cm y en el dibujo mide 6 cm. ¿Qué escala se ha usado? <span class="line"></span></div>
+        <div class="test-item"><b>2.</b> Una cara mide 5 cm². Se duplican sus longitudes. ¿Qué área tendrá? Explica: <span class="line"></span></div>
+        <div class="test-item"><b>3.</b> Alguien escribe «superficie total = 48 cm³». ¿Qué corregirías? <span class="line"></span></div>
+      </div>
+      <p class="small">Si te atascas, consulta la guía FZZ y marca la duda para preguntarla. Si terminas antes, prueba con un segundo cuerpo en otra hoja.</p>
+      <footer class="footer"><span>FZZ · Compruebo y transfiero lo aprendido</span><span>4 / 4</span></footer>
+    </section>
+  </main>
+</body>
+</html>

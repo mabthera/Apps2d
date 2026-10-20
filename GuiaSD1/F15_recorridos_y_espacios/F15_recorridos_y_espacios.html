@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>F15 · Recorridos y espacios de paso</title>
+  <style>
+    :root{--ink:#17212e;--blue:#185a85;--muted:#4b5b68;--line:#aebdc8;--pale:#edf5fa;--warm:#fff7ed}
+    *{box-sizing:border-box}
+    body{margin:0;padding:16px;background:#e9edf0;color:var(--ink);font:12px/1.33 Arial,Helvetica,sans-serif}
+    .toolbar{max-width:210mm;margin:0 auto 12px;padding:9px 12px;background:white;display:flex;justify-content:space-between;align-items:center}
+    .toolbar button{padding:7px 12px;border:0;background:var(--blue);color:white;font-weight:bold;cursor:pointer}
+    .sheet{width:210mm;margin:auto;background:white;box-shadow:0 3px 14px #26374730}
+    .page{width:210mm;height:297mm;padding:12mm 13mm 11mm;display:flex;flex-direction:column;break-after:page;overflow:hidden}
+    .page:last-child{break-after:auto}
+    header{border-bottom:2px solid var(--ink);padding-bottom:7px}
+    .headrow{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    h1{margin:0;font-size:20px;line-height:1.1;color:var(--ink)}
+    .tag{font-size:10px;font-weight:bold;color:var(--blue);white-space:nowrap}
+    .sub{margin:4px 0 0;color:var(--muted);font-size:11px}
+    .identity{display:grid;grid-template-columns:2.2fr .7fr .8fr;gap:13px;margin-top:12px;font-size:11px}
+    .line{display:inline-block;width:100%;border-bottom:1px solid var(--ink);height:16px;vertical-align:bottom}
+    .box{margin-top:10px;padding:8px 10px;border-left:3px solid var(--blue);background:var(--pale)}
+    .box p{margin:2px 0}
+    h2{margin:13px 0 5px;font-size:14px;color:var(--blue)}
+    .hint{margin:0 0 7px;color:var(--muted);font-size:11px}
+    ol{margin:4px 0 8px;padding-left:18px}
+    li{margin:3px 0}
+    .formula{margin:7px 0;padding:7px 10px;background:var(--pale);font-weight:bold}
+    table{width:100%;border-collapse:collapse;table-layout:fixed}
+    th,td{border:1px solid var(--line)}
+    th{padding:6px;background:var(--pale);text-align:left;font-size:10.5px}
+    td{padding:6px;vertical-align:top}
+    .measures th:first-child{width:32%}
+    .measures th:nth-child(2){width:20%}
+    .measures th:nth-child(3){width:23%}
+    .measures td{height:22mm}
+    .measures td:first-child{font-weight:bold}
+    .measures small{display:block;margin-top:3px;font-weight:normal;color:var(--muted);font-size:10px}
+    .reference{margin-top:8px;padding:7px 9px;border:1px solid #dec59e;background:var(--warm);font-size:10.5px}
+    .routes th:first-child{width:28%}
+    .routes th:nth-child(2){width:36%}
+    .routes td{height:16mm}
+    .routes td:first-child{font-weight:bold}
+    .task{margin-top:11px;padding:8px 10px;border:1px solid var(--line)}
+    .task p{margin:2px 0 5px}
+    .task ol{margin-bottom:2px}
+    .band{margin:9px 0 10px;padding:8px 10px;border:2px solid var(--blue);background:#e2f2fb;text-align:center;font-weight:bold;color:#0d496d}
+    .band small{display:block;font-weight:normal;color:var(--muted)}
+    .check-table th:first-child{width:37%}
+    .check-table th:nth-child(2){width:18%}
+    .check-table th:nth-child(3){width:18%}
+    .check-table td{height:29mm}
+    .check-table td:first-child{font-weight:bold}
+    .final{margin-top:10px;padding:8px 10px;background:var(--pale);font-size:11px}
+    .final p{margin:3px 0}
+    footer{margin-top:auto;padding-top:7px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);font-size:9px}
+    @media print{@page{size:A4 portrait;margin:0}body{padding:0;background:white}.toolbar{display:none}.sheet{box-shadow:none}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <strong>F15 · Recorridos y espacios de paso</strong><button onclick="window.print()">Imprimir a doble cara</button></div>
+  <main class="sheet">
+    <section class="page">
+      <header><div class="headrow"><div><h1>F15 · Medidas para los recorridos</h1><p class="sub">UD1 · Mi tienda sostenible de reparación informática</p></div><span class="tag">1 / 2 · ANVERSO</span></div><div class="identity"><span>Nombre y apellidos <i class="line"></i></span><span>Grupo <i class="line"></i></span><span>Fecha <i class="line"></i></span></div></header>
+      <div class="box"><p><b>Objetivo.</b> Comprobar que los recorridos ocupan un espacio suficiente en tu local.</p><p><b>Ten a mano:</b> F14, la guía F15, una copia adicional de tu plano zonificado a 1:100, regla, lápiz y tres colores.</p></div>
+      <h2>1. Anota las medidas y pásalas al plano</h2>
+      <p class="hint">Lee las referencias de esta ficha. Copia la medida real de cada una y escribe cuánto ocupará en tu plano.</p>
+      <ol><li>Escribe la medida en metros en la segunda columna.</li><li>Convierte a centímetros del plano: a 1:100, <b>1 m real = 1 cm en el plano</b>.</li><li>Anota dónde tendrás que comprobarla.</li></ol>
+      <table class="measures"><thead><tr><th>Referencia de paso libre</th><th>Medida real<br>(m)</th><th>En el plano<br>(cm)</th><th>¿Dónde la comprobaré?</th></tr></thead><tbody>
+        <tr><td>Anchura de pasillo<small>Espacio libre entre obstáculos.</small></td><td></td><td></td><td></td></tr>
+        <tr><td>Anchura libre de puerta<small>Mide el hueco por el que se pasa.</small></td><td></td><td></td><td></td></tr>
+        <tr><td>Espacio libre junto a puerta<small>Diámetro a cada lado; fuera del barrido.</small></td><td></td><td></td><td></td></tr>
+        <tr><td>Giro en la entrada<small>Diámetro libre de obstáculos.</small></td><td></td><td></td><td></td></tr>
+      </tbody></table>
+      <div class="reference"><b>Usa estas referencias para el ejercicio:</b> pasillo ≥ 1,20 m; puerta ≥ 0,80 m; espacio junto a puerta Ø 1,20 m; giro en la entrada Ø 1,50 m. <b>Ejemplo de conversión:</b> 2 m reales ocupan 2 cm en un plano 1:100.</div>
+      <h2>2. Decide qué recorridos vas a dibujar</h2>
+      <p class="hint">Escribe el inicio y el final de cada recorrido. Puedes usar distintos colores o tramas si coinciden en una zona.</p>
+      <table class="routes"><thead><tr><th>Recorrido</th><th>Inicio y destino</th><th>Color o trama</th><th>Ancho elegido en el plano (cm)</th></tr></thead><tbody>
+        <tr><td>Público</td><td></td><td></td><td></td></tr>
+        <tr><td>Equipo en reparación</td><td></td><td></td><td></td></tr>
+        <tr><td>Materiales y RAEE</td><td></td><td></td><td></td></tr>
+      </tbody></table>
+      <footer><span>F15 · Trabajo individual · El plano terminado se grapa a esta hoja</span><span>1 / 2</span></footer>
+    </section>
+    <section class="page">
+      <header><div class="headrow"><div><h1>F15 · Franjas de circulación</h1><p class="sub">Dibuja sobre la copia adicional de tu plano zonificado. En esta cara solo anota comprobaciones.</p></div><span class="tag">2 / 2 · REVERSO</span></div></header>
+      <div class="task"><p><b>3. Dibuja los recorridos sobre tu plano.</b></p><ol><li>Empieza por el público: entrada, atención y salida. Usa una franja de <b>1,20 cm</b> de ancho en el plano cuando puedas reservar 1,20 m reales.</li><li>Traza <b>dos bordes</b> separados por el ancho elegido y colorea suavemente el espacio entre ellos. Una flecha o una línea sola no representa el paso.</li><li>Repite para los equipos y para materiales/RAEE. Etiqueta cada recorrido y explica los colores en una leyenda.</li><li>En cada puerta, marca el hueco libre y el barrido de la hoja. Comprueba el espacio a ambos lados y un giro en la entrada.</li></ol></div>
+      <div class="band">BORDE · ESPACIO PARA PASAR · BORDE<small>La anchura se mide de borde a borde, perpendicularmente al recorrido.</small></div>
+      <h2>4. Comprueba los puntos estrechos</h2>
+      <p class="hint">Mide en tu plano la parte más estrecha de cada tramo. Si una referencia no cabe, marca una X en el plano y explica qué cambiarías.</p>
+      <table class="check-table"><thead><tr><th>Lugar del plano</th><th>Ancho libre que dibujé (cm)</th><th>Referencia en el plano (cm)</th><th>Conflicto y cambio propuesto</th></tr></thead><tbody>
+        <tr><td>Pasillo principal</td><td></td><td></td><td></td></tr>
+        <tr><td>Puerta o paso más estrecho</td><td></td><td></td><td></td></tr>
+        <tr><td>Otro punto que quieras revisar</td><td></td><td></td><td></td></tr>
+      </tbody></table>
+      <h2>5. Comprueba el resultado</h2>
+      <div class="final"><p>□ Mi copia del plano muestra <b>todos los recorridos como franjas con anchura</b>. □ Hay cotas de ancho y una leyenda. □ He marcado puertas, espacios de giro y obstáculos.</p><p>□ He señalado con una X los conflictos que no puedo resolver todavía. □ He grapado la copia del plano a F15.</p><p><b>Si te atascas:</b> vuelve a la guía F15 y a la tabla de la primera cara. Si una medida no cabe, no la inventes: marca el problema y anota la duda.</p></div>
+      <footer><span>F15 · Recorridos con anchura · Plano a escala 1:100</span><span>2 / 2</span></footer>
+    </section>
+  </main>
+</body>
+</html>

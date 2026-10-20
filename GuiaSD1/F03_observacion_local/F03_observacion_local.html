@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>F03 · Protocolo de Inspección y Observación Sistemática del Local</title>
+  <style>
+    /* ==========================================================================
+       VARIABLES DE DISEÑO: ESTÉTICA TÉCNICA PROFESIONAL Y CORPORATIVA
+       ========================================================================== */
+    :root {
+      --bg-canvas: #f1f5f9;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --surface-muted: #e2e8f0;
+
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --border-main: #cbd5e1;
+      --border-subtle: #e2e8f0;
+      --border-dark: #334155;
+      --border-hairline: #e2e8f0;
+
+      --navy-900: #0f172a;
+      --navy-800: #1e293b;
+      --navy-700: #334155;
+
+      --petrol-800: #075985;
+      --petrol-700: #0369a1;
+      --petrol-50: #f0f9ff;
+      --petrol-100: #e0f2fe;
+
+      --teal-800: #115e59;
+      --teal-700: #0f766e;
+      --teal-50: #f0fdf4;
+
+      --radius-sm: 4px;
+      --radius-md: 6px;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-stack);
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      line-height: 1.38;
+      -webkit-font-smoothing: antialiased;
+      padding: 24px 16px 40px;
+    }
+
+    /* ==========================================================================
+       BARRA DE CONTROL SUPERIOR (SOLO EN PANTALLA)
+       ========================================================================== */
+    .top-toolbar {
+      max-width: 900px;
+      margin: 0 auto 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .top-toolbar__meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy-800);
+    }
+
+    .doc-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      background: var(--navy-900);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .top-toolbar__actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn--primary {
+      background: var(--navy-900);
+      color: #ffffff;
+    }
+
+    .btn--primary:hover {
+      background: var(--navy-700);
+    }
+
+    .btn--secondary {
+      background: var(--surface-subtle);
+      border-color: var(--border-main);
+      color: var(--navy-800);
+    }
+
+    .btn--secondary:hover {
+      background: var(--surface-muted);
+    }
+
+    /* ==========================================================================
+       CONTENEDOR DEL DOCUMENTO TÉCNICO DE CAMPO
+       ========================================================================== */
+    .document-sheet {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    /* Cabecera técnica del anverso */
+    .sheet-header {
+      padding: 18px 24px 14px;
+      border-bottom: 2px solid var(--navy-900);
+      background: #ffffff;
+    }
+
+    .sheet-header__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .sheet-title-group h1 {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .sheet-title-group .sub {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .dossier-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      color: var(--navy-800);
+      white-space: nowrap;
+    }
+
+    /* Datos del técnico/a (flex nativo indeformable) */
+    .student-id-grid {
+      display: flex;
+      gap: 12px;
+      padding: 8px 12px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 0.83rem;
+    }
+
+    .student-id-grid .id-field:nth-child(1) {
+      flex: 2.5;
+    }
+
+    .student-id-grid .id-field:nth-child(2) {
+      flex: 1.2;
+    }
+
+    .student-id-grid .id-field:nth-child(3) {
+      flex: 1;
+    }
+
+    .id-field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .id-field label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .id-field input {
+      border: none;
+      border-bottom: 1px solid var(--border-dark);
+      background: transparent;
+      padding: 2px 0;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      outline: none;
+    }
+
+    /* Subcabecera técnica para el reverso */
+    .sheet-subheader-p2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: var(--navy-900);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+    }
+
+    /* Contenido general de la ficha */
+    .sheet-body {
+      padding: 20px 24px;
+    }
+
+    /* Títulos de bloque técnico */
+    .block-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      margin: 14px 0 6px;
+      padding-bottom: 3px;
+      border-bottom: 1.5px solid var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .block-header:first-of-type {
+      margin-top: 0;
+    }
+
+    .block-header__num {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--petrol-700);
+    }
+
+    .block-instruction {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    /* Tablas técnicas de campo */
+    .field-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      font-size: 0.82rem;
+      border: 1px solid var(--border-main);
+    }
+
+    .field-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    .field-table td.col-label {
+      width: 28%;
+      background: var(--surface-subtle);
+      font-weight: 700;
+      color: var(--navy-900);
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .field-table td.col-label strong {
+      display: block;
+      font-size: 0.82rem;
+    }
+
+    .field-table td.col-label span {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+
+    .field-table td.col-content {
+      width: 72%;
+    }
+
+    /* Casillas de verificación (Checkboxes técnicos) */
+    .check-grid-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      align-items: center;
+    }
+
+    .check-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.80rem;
+      color: var(--navy-900);
+      cursor: pointer;
+    }
+
+    .check-box {
+      width: 12px;
+      height: 12px;
+      border: 1.5px solid var(--border-dark);
+      border-radius: 2px;
+      display: inline-block;
+      flex-shrink: 0;
+      background: #ffffff;
+    }
+
+    /* Campos de una línea rotulados */
+    .inline-data-entry {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 0.80rem;
+      margin-top: 4px;
+    }
+
+    .inline-data-entry span {
+      font-weight: 700;
+      color: var(--navy-800);
+      flex-shrink: 0;
+    }
+
+    .inline-data-entry input {
+      flex: 1;
+      border: none;
+      border-bottom: 1px solid var(--border-main);
+      background: transparent;
+      padding: 1px 0;
+      font-family: inherit;
+      font-size: 0.81rem;
+      color: var(--navy-900);
+      outline: none;
+    }
+
+    /* ==========================================================================
+       ESPACIOS DE RESPUESTA Y ESCRITURA MANUSCRITA AMPLIADOS (LÍNEAS PAUTADAS)
+       ========================================================================== */
+    .handwriting-box {
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      background: var(--surface-subtle);
+      padding: 8px 10px 6px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    .handwriting-box__title {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--petrol-800);
+      letter-spacing: 0.03em;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .handwriting-box__title span.hint {
+      font-size: 0.71rem;
+      color: var(--text-muted);
+      font-weight: normal;
+      text-transform: none;
+    }
+
+    /* Área de escritura interactiva en pantalla y con líneas pautadas */
+    .writing-lines-area {
+      min-height: 48px;
+      font-size: 0.82rem;
+      color: var(--navy-900);
+      line-height: 1.6;
+      outline: none;
+      position: relative;
+    }
+
+    .writing-lines-area:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-light);
+      font-style: italic;
+      font-size: 0.78rem;
+    }
+
+    /* Líneas pautadas estáticas impresas para dar amplio espacio físico */
+    .hw-ruled-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 4px;
+    }
+
+    .hw-line {
+      display: flex;
+      align-items: flex-end;
+      border-bottom: 1px dashed var(--border-main);
+      min-height: 18px;
+      font-size: 0.80rem;
+      color: var(--navy-900);
+    }
+
+    .hw-line span.label-prefix {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-right: 6px;
+      flex-shrink: 0;
+    }
+
+    .hw-line input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: inherit;
+      font-size: 0.81rem;
+      color: var(--navy-900);
+      padding: 0;
+    }
+
+    /* ==========================================================================
+       FICHAS TÉCNICAS DE HUECOS Y VANOS (PUERTAS Y VENTANAS)
+       ========================================================================== */
+    .openings-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .opening-card {
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      position: relative;
+    }
+
+    .opening-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.5px solid var(--border-dark);
+      padding-bottom: 3px;
+    }
+
+    .opening-code {
+      display: inline-block;
+      background: var(--navy-900);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.76rem;
+      padding: 1px 6px;
+      border-radius: 2px;
+      letter-spacing: 0.03em;
+    }
+
+    .opening-card__type {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .opening-name-input {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 0.79rem;
+      background: var(--surface-subtle);
+      padding: 3px 6px;
+      border-radius: 2px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .opening-name-input strong {
+      color: var(--petrol-800);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .opening-name-input input {
+      flex: 1;
+      border: none;
+      border-bottom: 1px solid var(--border-dark);
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.81rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      outline: none;
+      padding: 1px 0;
+    }
+
+    .opening-card .checks-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      font-size: 0.76rem;
+      margin-top: 2px;
+    }
+
+    .opening-card .dim-row {
+      display: flex;
+      gap: 8px;
+      font-size: 0.77rem;
+      background: #ffffff;
+      padding: 3px 0;
+    }
+
+    .dim-item {
+      flex: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .dim-item span {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dim-item input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid var(--border-dark);
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.79rem;
+      text-align: center;
+      outline: none;
+    }
+
+    .opening-card .notes-area {
+      border: 1px dashed var(--border-main);
+      border-radius: 2px;
+      background: var(--surface-subtle);
+      padding: 4px 6px;
+      min-height: 38px;
+      font-size: 0.77rem;
+      line-height: 1.4;
+      outline: none;
+      position: relative;
+    }
+
+    .opening-card .notes-area:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-light);
+      font-style: italic;
+      font-size: 0.74rem;
+    }
+
+    /* ==========================================================================
+       PÁGINA 2: PANELES DE INSTALACIONES (ELECTRICIDAD, LUZ Y DATOS)
+       ========================================================================== */
+    .two-cols-section {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .panel-col {
+      flex: 1;
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      background: var(--surface-subtle);
+    }
+
+    .panel-col h4 {
+      font-size: 0.81rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      border-bottom: 1.5px solid var(--navy-900);
+      padding-bottom: 3px;
+      margin-bottom: 6px;
+    }
+
+    /* Censo numérico de enchufes por pared */
+    .wall-tally-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 0.78rem;
+    }
+
+    .wall-tally-table td {
+      padding: 3px 4px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .wall-tally-table td:first-child {
+      font-weight: 700;
+      color: var(--navy-900);
+      width: 60%;
+    }
+
+    .wall-tally-table td:last-child {
+      text-align: right;
+    }
+
+    .wall-tally-table input {
+      width: 50px;
+      text-align: center;
+      border: 1px solid var(--border-dark);
+      border-radius: 2px;
+      padding: 1px;
+      font-weight: 700;
+      background: #ffffff;
+      font-size: 0.80rem;
+    }
+
+    /* ==========================================================================
+       BLOQUE 5: CUADRÍCULA DE TARJETAS PARA ASIGNAR NOMBRES A LAS PAREDES
+       ========================================================================== */
+    .walls-naming-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .wall-card {
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .wall-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid var(--navy-900);
+      padding-bottom: 3px;
+    }
+
+    .wall-badge {
+      background: var(--petrol-800);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.76rem;
+      padding: 1px 7px;
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    .wall-card__hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .wall-name-field {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      font-size: 0.79rem;
+      background: var(--surface-subtle);
+      padding: 3px 6px;
+      border-radius: 2px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .wall-name-field strong {
+      font-size: 0.74rem;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .wall-name-field input {
+      flex: 1;
+      border: none;
+      border-bottom: 1px solid var(--border-dark);
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.81rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      outline: none;
+      padding: 1px 0;
+    }
+
+    .wall-elements-box {
+      border: 1px dashed var(--border-main);
+      border-radius: 2px;
+      background: var(--surface-subtle);
+      padding: 5px 6px;
+      min-height: 44px;
+      font-size: 0.77rem;
+      line-height: 1.45;
+      outline: none;
+      position: relative;
+    }
+
+    .wall-elements-box:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-light);
+      font-style: italic;
+      font-size: 0.74rem;
+    }
+
+    /* Franja inferior de esquinas y diagonales de control */
+    .corners-control-strip {
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      background: var(--petrol-50);
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.76rem;
+      color: var(--navy-900);
+      margin-bottom: 10px;
+    }
+
+    .corners-control-strip strong {
+      color: var(--petrol-800);
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    /* ==========================================================================
+       BLOQUE 6: HIPÓTESIS PRELIMINAR DE ZONIFICACIÓN (3 ZONAS OBLIGATORIAS)
+       ========================================================================== */
+    .zoning-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .zone-card {
+      border: 1px solid var(--border-main);
+      border-left: 3.5px solid var(--navy-900);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      background: #ffffff;
+    }
+
+    .zone-card--z1 {
+      border-left-color: #0284c7; /* Azul público */
+    }
+
+    .zone-card--z2 {
+      border-left-color: #0f766e; /* Verde taller */
+    }
+
+    .zone-card--z3 {
+      border-left-color: #d97706; /* Ámbar RAEE */
+    }
+
+    .zone-card__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+
+    .zone-badge-tag {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .zone-loc-field {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      font-size: 0.78rem;
+      flex: 1;
+      margin-left: 10px;
+    }
+
+    .zone-loc-field span {
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .zone-loc-field input {
+      flex: 1;
+      border: none;
+      border-bottom: 1px solid var(--border-dark);
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.80rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      outline: none;
+    }
+
+    .zone-justification-area {
+      border: 1px dashed var(--border-main);
+      border-radius: 2px;
+      background: var(--surface-subtle);
+      padding: 4px 6px;
+      min-height: 38px;
+      font-size: 0.77rem;
+      line-height: 1.45;
+      outline: none;
+      position: relative;
+    }
+
+    .zone-justification-area:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-light);
+      font-style: italic;
+      font-size: 0.74rem;
+    }
+
+    /* ==========================================================================
+       BLOQUE 7: CONTROL DE SEGURIDAD Y FIRMAS
+       ========================================================================== */
+    .sheet-footer-sign {
+      display: flex;
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1.5px solid var(--navy-900);
+      font-size: 0.78rem;
+    }
+
+    .sign-box {
+      flex: 1;
+      border: 1px solid var(--border-main);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      background: var(--surface-subtle);
+    }
+
+    .sign-box label {
+      display: block;
+      font-size: 0.70rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--navy-900);
+      margin-bottom: 4px;
+      letter-spacing: 0.03em;
+    }
+
+    .sign-line {
+      border-bottom: 1px dashed var(--border-dark);
+      margin: 6px 0 3px;
+    }
+
+    .sign-box span.sign-meta {
+      font-size: 0.71rem;
+      color: var(--text-muted);
+    }
+
+    /* Elemento delimitador de salto de página */
+    .print-page-break {
+      display: none;
+    }
+
+    /* ==========================================================================
+       ESTILOS EXCLUSIVOS PARA IMPRESIÓN (A4 - EXACTAMENTE 2 PÁGINAS COMPLETAS)
+       ========================================================================== */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 7mm 9mm 7mm 9mm;
+      }
+
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        font-size: 7.7pt !important;
+        line-height: 1.22 !important;
+      }
+
+      .top-toolbar {
+        display: none !important;
+      }
+
+      .document-sheet {
+        border: none !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+      }
+
+      .print-page-1,
+      .print-page-2 {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .sheet-header {
+        padding: 0 0 3pt 0 !important;
+        border-bottom: 1.2pt solid #0f172a !important;
+      }
+
+      .sheet-header__top {
+        margin-bottom: 3pt !important;
+      }
+
+      .sheet-title-group h1 {
+        font-size: 10.8pt !important;
+      }
+
+      .sheet-title-group .sub {
+        font-size: 7.3pt !important;
+      }
+
+      .dossier-tag {
+        font-size: 6.5pt !important;
+        padding: 1.5pt 4pt !important;
+        background: #f1f5f9 !important;
+        border: 1pt solid #94a3b8 !important;
+        color: #0f172a !important;
+      }
+
+      .sheet-body {
+        padding: 3pt 0 0 0 !important;
+      }
+
+      .print-page-2 .sheet-body {
+        padding: 0 !important;
+      }
+
+      .block-header {
+        font-size: 8.5pt !important;
+        margin: 4.5pt 0 1.5pt !important;
+        padding-bottom: 1pt !important;
+        border-bottom: 1pt solid #0f172a !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+
+      .block-instruction {
+        font-size: 6.9pt !important;
+        margin-bottom: 2.5pt !important;
+        line-height: 1.18 !important;
+      }
+
+      /* CABECERA ROBUSTA E INDEFORMABLE EN IMPRESIÓN */
+      .student-id-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 8pt !important;
+        padding: 2.5pt 6pt !important;
+        background: #f8fafc !important;
+        border: 1pt solid #94a3b8 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .student-id-grid .id-field:nth-child(1) {
+        flex: 2.5 !important;
+      }
+
+      .student-id-grid .id-field:nth-child(2) {
+        flex: 1.2 !important;
+      }
+
+      .student-id-grid .id-field:nth-child(3) {
+        flex: 1 !important;
+      }
+
+      .id-field label {
+        font-size: 6.2pt !important;
+      }
+
+      .id-field input {
+        border-bottom: 1pt solid #334155 !important;
+        font-size: 7.8pt !important;
+        padding: 0 !important;
+      }
+
+      /* SUBCABECERA DEL REVERSO (FOLIO 2) */
+      .sheet-subheader-p2 {
+        background: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 2.5pt 5pt !important;
+        font-size: 6.8pt !important;
+        margin-bottom: 3.5pt !important;
+      }
+
+      /* OCULTACIÓN TOTAL DE PLACEHOLDERS Y GUÍAS EN PAPEL / PDF */
+      input::placeholder {
+        color: transparent !important;
+        opacity: 0 !important;
+      }
+
+      .writing-lines-area:empty::before,
+      .opening-card .notes-area:empty::before,
+      .wall-elements-box:empty::before,
+      .zone-justification-area:empty::before {
+        content: none !important;
+        display: none !important;
+      }
+
+      /* LÍNEAS PAUTADAS PARA ESCRITURA A MANO EN PAPEL */
+      .writing-lines-area {
+        min-height: 24pt !important;
+        background-image: repeating-linear-gradient(to bottom, transparent, transparent 11.5pt, #cbd5e1 12pt, #cbd5e1 12.5pt) !important;
+        border: none !important;
+      }
+
+      .opening-card .notes-area {
+        min-height: 20pt !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 1.5pt 3pt !important;
+        font-size: 6.9pt !important;
+        background-image: repeating-linear-gradient(to bottom, transparent, transparent 10pt, #cbd5e1 10.5pt, #cbd5e1 11pt) !important;
+      }
+
+      .wall-elements-box {
+        min-height: 22pt !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 1.5pt 3pt !important;
+        font-size: 6.9pt !important;
+        background-image: repeating-linear-gradient(to bottom, transparent, transparent 11pt, #cbd5e1 11.5pt, #cbd5e1 12pt) !important;
+      }
+
+      .zone-justification-area {
+        min-height: 20pt !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 1.5pt 3pt !important;
+        font-size: 6.9pt !important;
+        background-image: repeating-linear-gradient(to bottom, transparent, transparent 10pt, #cbd5e1 10.5pt, #cbd5e1 11pt) !important;
+      }
+
+      /* TABLAS Y CUADRÍCULAS TÉCNICAS */
+      .field-table {
+        margin-bottom: 3.5pt !important;
+        border: 1pt solid #94a3b8 !important;
+      }
+
+      .field-table td {
+        padding: 2.2pt 4.5pt !important;
+        font-size: 7.1pt !important;
+      }
+
+      .field-table td.col-label {
+        background: #f1f5f9 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .openings-cards-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 4.5pt !important;
+        margin-bottom: 3.5pt !important;
+      }
+
+      .opening-card {
+        border: 1pt solid #94a3b8 !important;
+        padding: 3.5pt 5.5pt !important;
+        gap: 2pt !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .opening-code {
+        background: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 6.8pt !important;
+        padding: 1pt 3.5pt !important;
+      }
+
+      .opening-name-input {
+        padding: 1.5pt 4pt !important;
+        font-size: 7.1pt !important;
+        gap: 4pt !important;
+      }
+
+      .opening-card .checks-row {
+        gap: 3pt 6pt !important;
+        font-size: 6.9pt !important;
+        margin-top: 1pt !important;
+      }
+
+      .opening-card .dim-row {
+        gap: 5pt !important;
+        padding: 1pt 0 !important;
+        font-size: 7pt !important;
+      }
+
+      .handwriting-box {
+        padding: 3pt 6pt 2.5pt !important;
+        margin-top: 2.5pt !important;
+        margin-bottom: 3.5pt !important;
+        border: 1pt solid #94a3b8 !important;
+        background: #f8fafc !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .handwriting-box__title {
+        font-size: 6.8pt !important;
+        margin-bottom: 2pt !important;
+      }
+
+      /* SALTO EXACTO ENTRE FOLIO 1 Y FOLIO 2 */
+      .print-page-break {
+        display: block !important;
+        page-break-before: always !important;
+        break-before: page !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+      }
+
+      .print-page-2 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+      }
+
+      .two-cols-section {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 6pt !important;
+        margin-bottom: 3.5pt !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .panel-col {
+        flex: 1 !important;
+        padding: 3.5pt 5.5pt !important;
+        border: 1pt solid #94a3b8 !important;
+      }
+
+      .panel-col h4 {
+        font-size: 7.2pt !important;
+        margin-bottom: 2.5pt !important;
+        padding-bottom: 1.5pt !important;
+        border-bottom: 1pt solid #0f172a !important;
+      }
+
+      .wall-tally-table td {
+        padding: 1.2pt 2.5pt !important;
+        font-size: 6.9pt !important;
+      }
+
+      .walls-naming-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 4.5pt !important;
+        margin-bottom: 3.5pt !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .wall-card {
+        border: 1pt solid #94a3b8 !important;
+        padding: 3.5pt 5.5pt !important;
+        gap: 2pt !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .wall-badge {
+        background: #075985 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 6.8pt !important;
+        padding: 1pt 4pt !important;
+      }
+
+      .wall-name-field {
+        padding: 1.5pt 4pt !important;
+        font-size: 7.1pt !important;
+        gap: 4pt !important;
+      }
+
+      .corners-control-strip {
+        padding: 2.5pt 5pt !important;
+        margin-bottom: 3.5pt !important;
+        background: #f0f9ff !important;
+        border: 1pt solid #94a3b8 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 6.8pt !important;
+      }
+
+      .zoning-cards-container {
+        gap: 3.5pt !important;
+        margin-bottom: 3.5pt !important;
+      }
+
+      .zone-card {
+        padding: 3pt 5.5pt !important;
+        border: 1pt solid #94a3b8 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .zone-card--z1 {
+        border-left: 2.5pt solid #0284c7 !important;
+      }
+
+      .zone-card--z2 {
+        border-left: 2.5pt solid #0f766e !important;
+      }
+
+      .zone-card--z3 {
+        border-left: 2.5pt solid #d97706 !important;
+      }
+
+      .zone-badge-tag {
+        font-size: 7.1pt !important;
+      }
+
+      .zone-loc-field {
+        font-size: 7.1pt !important;
+      }
+
+      .sheet-footer-sign {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 8pt !important;
+        padding-top: 3pt !important;
+        margin-top: 2pt !important;
+        border-top: 1.2pt solid #0f172a !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .sign-box {
+        flex: 1 !important;
+        padding: 3pt 5.5pt !important;
+        border: 1pt solid #94a3b8 !important;
+        background: #f8fafc !important;
+      }
+
+      .sign-box label {
+        font-size: 6.6pt !important;
+        margin-bottom: 2pt !important;
+      }
+
+      .sign-meta {
+        font-size: 6.7pt !important;
+      }
+
+      .check-box {
+        border-color: #000000 !important;
+      }
+    }
+
+    /* ESTILOS EXCLUSIVOS PARA PANTALLAS MÓVILES (NUNCA PARA IMPRESIÓN) */
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .sheet-header,
+      .sheet-body {
+        padding: 14px;
+      }
+      .student-id-grid,
+      .openings-cards-grid,
+      .two-cols-section,
+      .walls-naming-grid,
+      .sheet-footer-sign {
+        display: flex;
+        flex-direction: column;
+      }
+      .field-table td.col-label,
+      .field-table td.col-content {
+        display: block;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA SUPERIOR DE ACCIONES (SOLO VISIBLE EN PANTALLA) -->
+  <header class="top-toolbar">
+    <div class="top-toolbar__meta">
+      <span class="doc-badge">F03</span>
+      <span>Ciencias Aplicadas II · UD1 · Sesión 3</span>
+      <span style="color: var(--border-main);">|</span>
+      <span style="font-weight: normal; color: var(--text-muted);">Protocolo de Inspección y Observación Sistemática del Local</span>
+    </div>
+    <div class="top-toolbar__actions"><a class="btn btn--secondary" href="guia.html">Cómo hacerla</a> 
+      <button class="btn btn--secondary" onclick="window.print()">
+        Vista previa
+      </button>
+      <button class="btn btn--primary" onclick="window.print()">
+        Imprimir ficha (2 folios A4)
+      </button>
+    </div>
+  </header>
+
+  <!-- DOCUMENTO TÉCNICO DE TRABAJO DE CAMPO -->
+  <main class="document-sheet">
+
+    <!-- ====================================================================
+         FOLIO 1 / PÁGINA 1 DE IMPRESIÓN (ANVERSO COMPLETO)
+         ==================================================================== -->
+    <div class="print-page-1">
+
+      <!-- CABECERA INSTITUCIONAL Y DATOS DEL TÉCNICO/A -->
+      <header class="sheet-header">
+        <div class="sheet-header__top">
+          <div class="sheet-title-group">
+            <h1>F03 · Protocolo de Inspección del Local</h1>
+            <div class="sub">Toma de datos sobre el terreno y codificación técnica · Tienda-Taller «EcoTech Teis»</div>
+          </div>
+          <div class="dossier-tag">Dossier Técnico · Actividad A1 · Sesión 3</div>
+        </div>
+
+        <div class="student-id-grid">
+          <div class="id-field">
+            <label for="alumnoNombre">Nombre y apellidos del técnico/a júnior:</label>
+            <input type="text" id="alumnoNombre" placeholder="Escribe tu nombre completo">
+          </div>
+          <div class="id-field">
+            <label for="grupo">Grupo:</label>
+            <input type="text" id="grupo" value="2º FP Básica · Informática">
+          </div>
+          <div class="id-field">
+            <label for="fecha">Fecha de visita in situ:</label>
+            <input type="text" id="fecha" value="Septiembre 2026">
+          </div>
+        </div>
+      </header>
+
+      <div class="sheet-body">
+
+        <!-- BLOQUE 1: DIAGNÓSTICO CONSTRUCTIVO DEL ESPACIO -->
+        <h2 class="block-header">
+          <span class="block-header__num">1.</span>
+          <span>Diagnóstico constructivo y estado físico del espacio</span>
+        </h2>
+        <p class="block-instruction">
+          Recorre el perímetro del local con tu portapapeles y registra el estado real de la envolvente del aula/taller:
+        </p>
+
+        <table class="field-table">
+          <tbody>
+            <tr>
+              <td class="col-label">
+                <strong>Ubicación en el IES</strong>
+                <span>Edificio y planta</span>
+              </td>
+              <td class="col-content">
+                <div class="inline-data-entry" style="margin-top: 0;">
+                  <span>Edificio / Zona / Planta:</span>
+                  <input type="text" placeholder="Ej: Planta baja, ala norte, junto al taller de informática...">
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-label">
+                <strong>Forma de la planta</strong>
+                <span>Geometría general del suelo</span>
+              </td>
+              <td class="col-content">
+                <div class="check-grid-options">
+                  <label class="check-item"><span class="check-box"></span> Rectangular regular</label>
+                  <label class="check-item"><span class="check-box"></span> Cuadrada</label>
+                  <label class="check-item"><span class="check-box"></span> En forma de «L»</label>
+                  <label class="check-item"><span class="check-box"></span> Con recovecos / irregular</label>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-label">
+                <strong>Altura libre y techos</strong>
+                <span>De pavimento a techo</span>
+              </td>
+              <td class="col-content">
+                <div class="check-grid-options">
+                  <label class="check-item"><span class="check-box"></span> Altura estándar (~2,60 - 2,80 m)</label>
+                  <label class="check-item"><span class="check-box"></span> Techo alto (&gt; 3,00 m)</label>
+                  <label class="check-item"><span class="check-box"></span> Falso techo registrable</label>
+                  <label class="check-item"><span class="check-box"></span> Forjado continuo / viguetas</label>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-label">
+                <strong>Pavimento y paredes</strong>
+                <span>Tipo de suelo y muros</span>
+              </td>
+              <td class="col-content">
+                <div class="check-grid-options">
+                  <label class="check-item"><span class="check-box"></span> Terrazo continuo</label>
+                  <label class="check-item"><span class="check-box"></span> Baldosa</label>
+                  <label class="check-item"><span class="check-box"></span> Cemento</label>
+                  <label class="check-item"><span class="check-box"></span> Limpio / Buen estado</label>
+                  <label class="check-item"><span class="check-box"></span> Manchas / Humedades</label>
+                  <label class="check-item"><span class="check-box"></span> Precisa repintar</label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Espacio amplio de respuesta para diagnóstico general -->
+        <div class="handwriting-box">
+          <div class="handwriting-box__title">
+            <span>Notas de diagnóstico constructivo y acondicionamiento inicial:</span>
+            <span class="hint">Indica desperfectos visibles, humedades o elementos que el centro deba retirar o limpiar antes de montar la tienda</span>
+          </div>
+          <div class="writing-lines-area" contenteditable="true" data-placeholder="Anota aquí las observaciones generales sobre el estado del suelo, rodapiés, estado de la pintura o elementos que molestan..."></div>
+        </div>
+
+        <!-- BLOQUE 2: INVENTARIO Y ASIGNACIÓN DE NOMBRES/CÓDIGOS A HUECOS Y VANOS -->
+        <h2 class="block-header">
+          <span class="block-header__num">2.</span>
+          <span>Inventario y asignación de códigos a vanos (Puertas y Ventanas)</span>
+        </h2>
+        <p class="block-instruction">
+          Asigna un código técnico, nombre descriptivo y medidas estimadas a cada hueco exterior o interior (se trasladarán a F04):
+        </p>
+
+        <div class="openings-cards-grid">
+
+          <!-- VANO 1: PUERTA PRINCIPAL -->
+          <div class="opening-card">
+            <div class="opening-card__header">
+              <span class="opening-code">P-01</span>
+              <span class="opening-card__type">Puerta principal de acceso</span>
+            </div>
+            <div class="opening-name-input">
+              <strong>Nombre / Función:</strong>
+              <input type="text" placeholder="Ej: Puerta principal de acceso desde pasillo central...">
+            </div>
+            <div class="checks-row">
+              <label class="check-item"><span class="check-box"></span> 1 hoja</label>
+              <label class="check-item"><span class="check-box"></span> 2 hojas</label>
+              <label class="check-item"><span class="check-box"></span> Hacia dentro</label>
+              <label class="check-item"><span class="check-box"></span> Hacia fuera</label>
+              <label class="check-item"><span class="check-box"></span> Cota cero</label>
+              <label class="check-item"><span class="check-box"></span> Con resalte</label>
+            </div>
+            <div class="dim-row">
+              <div class="dim-item">
+                <span>Paso libre:</span>
+                <input type="text" placeholder="~0,90 m">
+              </div>
+              <div class="dim-item">
+                <span>Altura:</span>
+                <input type="text" placeholder="~2,10 m">
+              </div>
+              <div class="dim-item">
+                <span>Pared:</span>
+                <input type="text" placeholder="P-1">
+              </div>
+            </div>
+            <div class="notes-area" contenteditable="true" data-placeholder="Material (madera, aluminio, cristal), cerradura, necesidad de rampa para acceso universal..."></div>
+          </div>
+
+          <!-- VANO 2: PUERTA SECUNDARIA / ALMACÉN -->
+          <div class="opening-card">
+            <div class="opening-card__header">
+              <span class="opening-code">P-02</span>
+              <span class="opening-card__type">Puerta secundaria / Almacén / Salida</span>
+            </div>
+            <div class="opening-name-input">
+              <strong>Nombre / Función:</strong>
+              <input type="text" placeholder="Ej: Acceso a almacén interior / Salida a patio / No existe...">
+            </div>
+            <div class="checks-row">
+              <label class="check-item"><span class="check-box"></span> Existe puerta P-02</label>
+              <label class="check-item"><span class="check-box"></span> No existe (solo P-01)</label>
+              <label class="check-item"><span class="check-box"></span> Hacia almacén</label>
+              <label class="check-item"><span class="check-box"></span> Emergencia</label>
+            </div>
+            <div class="dim-row">
+              <div class="dim-item">
+                <span>Paso libre:</span>
+                <input type="text" placeholder="~0,80 m">
+              </div>
+              <div class="dim-item">
+                <span>Altura:</span>
+                <input type="text" placeholder="~2,05 m">
+              </div>
+              <div class="dim-item">
+                <span>Pared:</span>
+                <input type="text" placeholder="P-3 o P-4">
+              </div>
+            </div>
+            <div class="notes-area" contenteditable="true" data-placeholder="Comunica con almacén de componentes, ventilación o salida auxiliar..."></div>
+          </div>
+
+          <!-- VANO 3: VENTANA PRINCIPAL -->
+          <div class="opening-card">
+            <div class="opening-card__header">
+              <span class="opening-code">V-01</span>
+              <span class="opening-card__type">Ventanal exterior principal</span>
+            </div>
+            <div class="opening-name-input">
+              <strong>Nombre / Fachada:</strong>
+              <input type="text" placeholder="Ej: Ventanal corrido exterior hacia patio norte...">
+            </div>
+            <div class="checks-row">
+              <label class="check-item"><span class="check-box"></span> Corredera</label>
+              <label class="check-item"><span class="check-box"></span> Abatible</label>
+              <label class="check-item"><span class="check-box"></span> Rejas ext.</label>
+              <label class="check-item"><span class="check-box"></span> Persiana</label>
+              <label class="check-item"><span class="check-box"></span> Luz natural óptima</label>
+            </div>
+            <div class="dim-row">
+              <div class="dim-item">
+                <span>Ancho est.:</span>
+                <input type="text" placeholder="~2,40 m">
+              </div>
+              <div class="dim-item">
+                <span>Antepecho:</span>
+                <input type="text" placeholder="~0,95 m">
+              </div>
+              <div class="dim-item">
+                <span>Pared:</span>
+                <input type="text" placeholder="P-3">
+              </div>
+            </div>
+            <div class="notes-area" contenteditable="true" data-placeholder="Número de hojas, orientación de luz diurna, idónea para ubicar el banco de trabajo de taller..."></div>
+          </div>
+
+          <!-- VANO 4: VENTANA SECUNDARIA O VENTILACIÓN -->
+          <div class="opening-card">
+            <div class="opening-card__header">
+              <span class="opening-code">V-02</span>
+              <span class="opening-card__type">Ventana secundaria / Hueco auxiliar</span>
+            </div>
+            <div class="opening-name-input">
+              <strong>Nombre / Fachada:</strong>
+              <input type="text" placeholder="Ej: Ventana alta lateral / Fijo de ventilación...">
+            </div>
+            <div class="checks-row">
+              <label class="check-item"><span class="check-box"></span> Existe ventana V-02</label>
+              <label class="check-item"><span class="check-box"></span> No existe</label>
+              <label class="check-item"><span class="check-box"></span> Ventana alta</label>
+              <label class="check-item"><span class="check-box"></span> Ventilación cruzada</label>
+            </div>
+            <div class="dim-row">
+              <div class="dim-item">
+                <span>Ancho est.:</span>
+                <input type="text" placeholder="~1,20 m">
+              </div>
+              <div class="dim-item">
+                <span>Antepecho:</span>
+                <input type="text" placeholder="~1,50 m">
+              </div>
+              <div class="dim-item">
+                <span>Pared:</span>
+                <input type="text" placeholder="P-2 o P-4">
+              </div>
+            </div>
+            <div class="notes-area" contenteditable="true" data-placeholder="Aportación de ventilación y renovación de aire para el taller de soldadura y disolventes..."></div>
+          </div>
+
+        </div>
+
+        <!-- BLOQUE 3: ELEMENTOS CONSTRUCTIVOS INAMOVIBLES Y OBSTÁCULOS -->
+        <h2 class="block-header">
+          <span class="block-header__num">3.</span>
+          <span>Elementos estructurales fijos y obstáculos inamovibles</span>
+        </h2>
+        <p class="block-instruction">
+          Comprueba y anota los elementos fijos que condicionarán la colocación de mesas, vitrinas y estanterías:
+        </p>
+
+        <table class="field-table">
+          <tbody>
+            <tr>
+              <td class="col-label">
+                <strong>Pilares y columnas</strong>
+                <span>Estructura portante</span>
+              </td>
+              <td class="col-content">
+                <div class="check-grid-options">
+                  <label class="check-item"><span class="check-box"></span> Local diáfano (sin pilares)</label>
+                  <label class="check-item"><span class="check-box"></span> Pilar adosado a pared</label>
+                  <label class="check-item"><span class="check-box"></span> Pilar exento exento en medio</label>
+                </div>
+                <div class="inline-data-entry">
+                  <span>Situación y dimensiones estimadas:</span>
+                  <input type="text" placeholder="Ej: 1 pilar cuadrado (~35x35 cm) adosado a la Pared P-2 a 2 m de la esquina...">
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-label">
+                <strong>Calefacción y bajantes</strong>
+                <span>Instalaciones fijas</span>
+              </td>
+              <td class="col-content">
+                <div class="check-grid-options">
+                  <label class="check-item"><span class="check-box"></span> Radiador bajo ventana</label>
+                  <label class="check-item"><span class="check-box"></span> Tuberías vistas en pared</label>
+                  <label class="check-item"><span class="check-box"></span> Bajante vertical en esquina</label>
+                  <label class="check-item"><span class="check-box"></span> Arquetas en suelo</label>
+                </div>
+                <div class="inline-data-entry">
+                  <span>Pared ocupada e interferencia:</span>
+                  <input type="text" placeholder="Ej: Radiador de 12 elementos en Pared P-3 bajo V-01 (impide arrimar mesas a la pared)...">
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-label">
+                <strong>Protección y emergencia</strong>
+                <span>Elementos reglamentarios</span>
+              </td>
+              <td class="col-content">
+                <div class="check-grid-options">
+                  <label class="check-item"><span class="check-box"></span> Extintor (no tapar)</label>
+                  <label class="check-item"><span class="check-box"></span> Alumbrado emergencia</label>
+                  <label class="check-item"><span class="check-box"></span> Pulsador de alarma</label>
+                  <label class="check-item"><span class="check-box"></span> Rejilla de ventilación</label>
+                </div>
+                <div class="inline-data-entry">
+                  <span>Pared en la que se ubican:</span>
+                  <input type="text" placeholder="Ej: Extintor de polvo ABC colgado en Pared P-1 junto a la puerta principal P-01...">
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Espacio amplio de respuesta para interferencias de obstáculos -->
+        <div class="handwriting-box">
+          <div class="handwriting-box__title">
+            <span>Interferencias detectadas para la distribución del mobiliario:</span>
+            <span class="hint">¿Qué zonas quedan inutilizadas o exigen dejar pasillos libres de paso?</span>
+          </div>
+          <div class="writing-lines-area" contenteditable="true" data-placeholder="Explica qué obstáculos condicionan el montaje de las mesas de trabajo o el paso de clientes en silla de ruedas..."></div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ====================================================================
+         SALTO DE PÁGINA EXACTO PARA IMPRESIÓN (A4 FOLIO 2 - REVERSO)
+         ==================================================================== -->
+    <div class="print-page-break"></div>
+
+    <!-- ====================================================================
+         FOLIO 2 / PÁGINA 2 DE IMPRESIÓN (REVERSO COMPLETO)
+         ==================================================================== -->
+    <div class="print-page-2">
+
+      <div class="sheet-body sheet-body--p2">
+
+        <!-- SUBCABECERA IDENTIFICATIVA DE REVERSO -->
+        <div class="sheet-subheader-p2">
+          <span>F03 · Protocolo de Inspección (Reverso) · Ciencias Aplicadas II</span>
+          <span>IES de Teis · Tienda «EcoTech Teis»</span>
+        </div>
+
+        <!-- BLOQUE 4: CENSO DE INSTALACIONES EXISTENTES -->
+        <h2 class="block-header" style="margin-top: 0;">
+          <span class="block-header__num">4.</span>
+          <span>Censo de instalaciones existentes (Electricidad, iluminación y datos)</span>
+        </h2>
+        <p class="block-instruction">
+          Realiza un inventario cuantitativo y objetivo de los suministros disponibles antes de proyectar la instalación:
+        </p>
+
+        <div class="two-cols-section">
+          <!-- Cuadro eléctrico y tomas -->
+          <div class="panel-col">
+            <h4>4.1. Cuadro eléctrico y recuento de tomas</h4>
+            <div class="check-grid-options" style="margin-bottom: 6px;">
+              <label class="check-item"><span class="check-box"></span> Cuadro en local (Pared P-____)</label>
+              <label class="check-item"><span class="check-box"></span> Cuadro en pasillo exterior</label>
+              <label class="check-item"><span class="check-box"></span> Acceso libre</label>
+            </div>
+            <table class="wall-tally-table">
+              <tr>
+                <td>Tomas de enchufe en <strong>Pared 1 (P-1)</strong>:</td>
+                <td><input type="text" placeholder="0"> uds.</td>
+              </tr>
+              <tr>
+                <td>Tomas de enchufe en <strong>Pared 2 (P-2)</strong>:</td>
+                <td><input type="text" placeholder="0"> uds.</td>
+              </tr>
+              <tr>
+                <td>Tomas de enchufe en <strong>Pared 3 (P-3)</strong>:</td>
+                <td><input type="text" placeholder="0"> uds.</td>
+              </tr>
+              <tr>
+                <td>Tomas de enchufe en <strong>Pared 4 (P-4)</strong>:</td>
+                <td><input type="text" placeholder="0"> uds.</td>
+              </tr>
+            </table>
+            <div class="inline-data-entry" style="margin-top: 4px;">
+              <span>Estado / Tomas de tierra:</span>
+              <input type="text" placeholder="Ej: Clavijas Schuko en buen estado con toma de tierra...">
+            </div>
+          </div>
+
+          <!-- Iluminación y datos -->
+          <div class="panel-col">
+            <h4>4.2. Iluminación y telecomunicaciones</h4>
+            <div class="check-grid-options" style="margin-bottom: 6px;">
+              <label class="check-item"><span class="check-box"></span> Tubos fluorescentes</label>
+              <label class="check-item"><span class="check-box"></span> Paneles LED</label>
+              <label class="check-item"><span class="check-box"></span> Tomas red RJ45</label>
+              <label class="check-item"><span class="check-box"></span> Canaleta técnica</label>
+            </div>
+            <div class="inline-data-entry">
+              <span>Nº de luminarias en techo:</span>
+              <input type="text" placeholder="Ej: 4 pantallas dobles en techo (8 tubos)...">
+            </div>
+            <div class="inline-data-entry">
+              <span>Tomas de red internet RJ45:</span>
+              <input type="text" placeholder="Ej: 2 tomas dobles en Pared P-3...">
+            </div>
+            <div class="inline-data-entry">
+              <span>Zonas oscuras a reforzar:</span>
+              <input type="text" placeholder="Ej: Rincón de taller necesitará flexos / focos LED directos...">
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 5: ASIGNACIÓN DE NOMBRES Y CÓDIGOS A PAREDES Y ESQUINAS -->
+        <h2 class="block-header">
+          <span class="block-header__num">5.</span>
+          <span>Nomenclatura técnica de paredes y esquinas (Para el Croquis F04)</span>
+        </h2>
+        <p class="block-instruction">
+          Asigna un nombre descriptivo a cada una de las 4 paredes y describe qué vanos, tomas u obstáculos contiene:
+        </p>
+
+        <!-- Cuadrícula de 4 tarjetas amplias para bautizar y detallar cada pared -->
+        <div class="walls-naming-grid">
+
+          <!-- PARED 1 -->
+          <div class="wall-card">
+            <div class="wall-card__header">
+              <span class="wall-badge">PARED 1 · P-1</span>
+              <span class="wall-card__hint">Frontal / Acceso</span>
+            </div>
+            <div class="wall-name-field">
+              <strong>Nombre:</strong>
+              <input type="text" placeholder="Ej: Fachada de acceso desde pasillo general...">
+            </div>
+            <div class="wall-name-field">
+              <strong>Situación:</strong>
+              <input type="text" placeholder="Ej: Pared con la puerta principal P-01...">
+            </div>
+            <div class="wall-elements-box" contenteditable="true" data-placeholder="Vanos y elementos presentes: Puerta principal P-01, cuadro general eléctrico, extintor ABC y 2 enchufes..."></div>
+          </div>
+
+          <!-- PARED 2 -->
+          <div class="wall-card">
+            <div class="wall-card__header">
+              <span class="wall-badge">PARED 2 · P-2</span>
+              <span class="wall-card__hint">Lateral Derecha</span>
+            </div>
+            <div class="wall-name-field">
+              <strong>Nombre:</strong>
+              <input type="text" placeholder="Ej: Pared medianera derecha con aula contigua...">
+            </div>
+            <div class="wall-name-field">
+              <strong>Situación:</strong>
+              <input type="text" placeholder="Ej: Queda a mano derecha nada más entrar...">
+            </div>
+            <div class="wall-elements-box" contenteditable="true" data-placeholder="Vanos y elementos presentes: Pared ciega continua, 1 pilar adosado a 2 m, canaleta técnica con 4 enchufes..."></div>
+          </div>
+
+          <!-- PARED 3 -->
+          <div class="wall-card">
+            <div class="wall-card__header">
+              <span class="wall-badge">PARED 3 · P-3</span>
+              <span class="wall-card__hint">Fondo / Testero</span>
+            </div>
+            <div class="wall-name-field">
+              <strong>Nombre:</strong>
+              <input type="text" placeholder="Ej: Pared de fachada exterior de fondo...">
+            </div>
+            <div class="wall-name-field">
+              <strong>Situación:</strong>
+              <input type="text" placeholder="Ej: Frente a la puerta de acceso P-01...">
+            </div>
+            <div class="wall-elements-box" contenteditable="true" data-placeholder="Vanos y elementos presentes: Ventanal exterior V-01, radiador de calefacción bajo ventana y tomas de red RJ45..."></div>
+          </div>
+
+          <!-- PARED 4 -->
+          <div class="wall-card">
+            <div class="wall-card__header">
+              <span class="wall-badge">PARED 4 · P-4</span>
+              <span class="wall-card__hint">Lateral Izquierda</span>
+            </div>
+            <div class="wall-name-field">
+              <strong>Nombre:</strong>
+              <input type="text" placeholder="Ej: Pared lateral izquierda hacia almacén...">
+            </div>
+            <div class="wall-name-field">
+              <strong>Situación:</strong>
+              <input type="text" placeholder="Ej: Queda a mano izquierda al entrar...">
+            </div>
+            <div class="wall-elements-box" contenteditable="true" data-placeholder="Vanos y elementos presentes: Puerta secundaria P-02, bajante vertical en esquina E-4, espacio para estanterías RAEE..."></div>
+          </div>
+
+        </div>
+
+        <!-- Banda de esquinas y diagonales -->
+        <div class="corners-control-strip">
+          <div>
+            <strong>Esquinas perimetrales:</strong>
+            <span>E-1 (P1-P4) · E-2 (P1-P2) · E-3 (P2-P3) · E-4 (P3-P4)</span>
+          </div>
+          <div>
+            <strong>Diagonales para escuadras (F05):</strong>
+            <span>D-1 (E-1 a E-3) · D-2 (E-2 a E-4)</span>
+          </div>
+        </div>
+
+        <!-- BLOQUE 6: HIPÓTESIS PRELIMINAR DE ZONIFICACIÓN SOBRE EL TERRENO -->
+        <h2 class="block-header">
+          <span class="block-header__num">6.</span>
+          <span>Primera hipótesis de zonificación in situ (3 Zonas obligatorias)</span>
+        </h2>
+        <p class="block-instruction">
+          Tras la inspección visual, razona dónde ubicarás cada zona obligatoria según los vanos e instalaciones:
+        </p>
+
+        <div class="zoning-cards-container">
+
+          <!-- ZONA 1 -->
+          <div class="zone-card zone-card--z1">
+            <div class="zone-card__header">
+              <span class="zone-badge-tag">Zona 1 · Atención al público y recepción</span>
+              <div class="zone-loc-field">
+                <span>Ubicación in situ:</span>
+                <input type="text" placeholder="Ej: En Pared P-1 junto a puerta P-01...">
+              </div>
+            </div>
+            <div class="zone-justification-area" contenteditable="true" data-placeholder="Justificación técnica: Es la zona visible nada más entrar; facilita el acceso directo a clientes sin invadir el taller y permite controlar la entrada..."></div>
+          </div>
+
+          <!-- ZONA 2 -->
+          <div class="zone-card zone-card--z2">
+            <div class="zone-card__header">
+              <span class="zone-badge-tag">Zona 2 · Taller de reparación y banco técnico</span>
+              <div class="zone-loc-field">
+                <span>Ubicación in situ:</span>
+                <input type="text" placeholder="Ej: En Pared P-3 / P-2 junto a ventana V-01...">
+              </div>
+            </div>
+            <div class="zone-justification-area" contenteditable="true" data-placeholder="Justificación técnica: Aprovecha la iluminación natural del ventanal V-01 para trabajo de precisión y la proximidad a las tomas de corriente para soldadores e instrumental..."></div>
+          </div>
+
+          <!-- ZONA 3 -->
+          <div class="zone-card zone-card--z3">
+            <div class="zone-card__header">
+              <span class="zone-badge-tag">Zona 3 · Almacén cerrado y gestión de RAEE</span>
+              <div class="zone-loc-field">
+                <span>Ubicación in situ:</span>
+                <input type="text" placeholder="Ej: En rincón de Pared P-4 junto a puerta P-02...">
+              </div>
+            </div>
+            <div class="zone-justification-area" contenteditable="true" data-placeholder="Justificación técnica: Rincón reservado y seguro fuera del paso de clientes, ideal para estanterías de componentes y contenedores estancos para residuos de baterías y placas..."></div>
+          </div>
+
+        </div>
+
+        <!-- BLOQUE 7: CONTROL DE SEGURIDAD Y VISTO BUENO DOCENTE -->
+        <h2 class="block-header">
+          <span class="block-header__num">7.</span>
+          <span>Control de incidencias in situ y visto bueno docente</span>
+        </h2>
+
+        <div class="sheet-footer-sign">
+          <div class="sign-box">
+            <label>Incidencias de seguridad detectadas en el local:</label>
+            <div class="check-grid-options" style="margin-bottom: 4px;">
+              <label class="check-item"><span class="check-box"></span> Cables descubiertos</label>
+              <label class="check-item"><span class="check-box"></span> Vidrios rotos</label>
+              <label class="check-item"><span class="check-box"></span> Humedad en suelo</label>
+              <label class="check-item"><span class="check-box"></span> Sin incidencias</label>
+            </div>
+            <div class="sign-line"></div>
+            <span class="sign-meta">Firma del técnico/a júnior: ____________________________________</span>
+          </div>
+
+          <div class="sign-box">
+            <label>Visto bueno docente para iniciar el croquis a mano alzada (F04):</label>
+            <div style="margin-bottom: 4px; font-size: 0.74rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 2px;">
+              <label class="check-item"><span class="check-box"></span> <strong>Validado:</strong> Datos completos. Listo para dibujar croquis en F04.</label>
+              <label class="check-item"><span class="check-box"></span> <strong>Revisar:</strong> Faltan vanos, enchufes u obstáculos por registrar.</label>
+            </div>
+            <div class="sign-line"></div>
+            <span class="sign-meta">Firma del profesor/a: ____________________________________</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

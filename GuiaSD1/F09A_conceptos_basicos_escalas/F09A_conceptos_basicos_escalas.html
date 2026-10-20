@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>F09A · Conceptos básicos de escalas</title>
+  <style>
+    :root { --navy:#0f172a; --navy-2:#334155; --petrol:#0369a1; --paper:#fff; --soft:#f8fafc; --line:#cbd5e1; --ink:#1e293b; --muted:#64748b; --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+    * { box-sizing:border-box; margin:0; padding:0; } body { font-family:var(--font); color:var(--ink); background:#e2e8f0; padding:20px 16px 40px; line-height:1.28; }
+    .toolbar { max-width:850px; margin:0 auto 14px; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid var(--line); border-radius:5px; box-shadow:0 1px 3px #0f172a18; font-size:.84rem; font-weight:700; color:var(--navy); } .badge { display:inline-block; padding:2px 7px; border-radius:3px; background:var(--navy); color:#fff; font-size:.74rem; letter-spacing:.05em; } button { border:0; border-radius:3px; padding:7px 12px; background:var(--navy); color:#fff; font:700 .8rem var(--font); cursor:pointer; }
+    .document { max-width:850px; margin:auto; background:var(--paper); border:1.5px solid var(--navy); box-shadow:0 4px 16px #0f172a18; } .page { min-height:1055px; padding:24px 28px 19px; display:flex; flex-direction:column; }
+    .header { border-bottom:2px solid var(--navy); padding-bottom:9px; margin-bottom:10px; } .header-top { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; } h1 { color:var(--navy); font-size:1.24rem; line-height:1.15; letter-spacing:.025em; text-transform:uppercase; } .subtitle { margin-top:3px; color:var(--muted); font-size:.82rem; } .tag { white-space:nowrap; border:1px solid var(--line); background:var(--soft); padding:3px 7px; border-radius:3px; color:var(--navy-2); font-size:.7rem; font-weight:800; text-transform:uppercase; }
+    .identity { margin-top:9px; display:grid; grid-template-columns:2.1fr .75fr .9fr; gap:13px; font-size:.77rem; font-weight:700; } .write { display:inline-block; width:100%; height:16px; border-bottom:1px solid var(--navy); vertical-align:bottom; }
+    .section-title { margin:7px 0 3px; padding-bottom:2px; border-bottom:1.5px solid var(--navy); color:var(--navy); font-size:.91rem; font-weight:800; text-transform:uppercase; letter-spacing:.025em; } .number { color:var(--petrol); margin-right:6px; } .instruction { font-size:.79rem; color:var(--navy-2); margin-bottom:5px; }
+    .goal { display:grid; grid-template-columns:1.45fr 1fr; gap:6px; margin-bottom:6px; } .goal-box,.card { padding:6px 8px; border:1px solid var(--line); border-radius:3px; background:var(--soft); font-size:.75rem; } .goal-box strong,.card h3 { color:var(--navy); } .card h3 { font-size:.77rem; margin-bottom:2px; } .prompt { border-left:3px solid var(--petrol); padding:5px 9px; background:#f0f9ff; color:var(--navy); font-size:.75rem; margin-bottom:5px; }
+    .choice-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-bottom:5px; } .choice { min-height:62px; padding:5px 7px; border:1px solid var(--line); border-radius:3px; font-size:.73rem; } .choice strong { display:block; color:var(--navy); font-size:.76rem; margin-bottom:2px; } .mini-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+    table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:.74rem; } th { padding:4px 4px; border:1px solid var(--navy); background:var(--navy); color:#fff; text-align:left; font-size:.69rem; text-transform:uppercase; letter-spacing:.02em; } td { height:36px; padding:4px 5px; border:1px solid var(--line); vertical-align:top; } tr:nth-child(even) td { background:#f8fafc; } .center { text-align:center; } .formula-table td { height:42px; } .formula-table th { background:#075985; border-color:#075985; } .formula-table td:last-child { background:#f0f9ff; }
+    .draw-box { margin-top:8px; border:1px solid var(--line); border-radius:3px; overflow:hidden; } .draw-head { padding:5px 9px; background:#e0f2fe; color:var(--navy); font-size:.74rem; font-weight:800; } .draw-body { height:96px; padding:7px 10px; background-image:linear-gradient(#e2e8f0 1px,transparent 1px),linear-gradient(90deg,#e2e8f0 1px,transparent 1px); background-size:18px 18px; color:var(--muted); font-size:.73rem; }
+    .scale-diagram { margin:8px 0; border:1.5px solid var(--navy); border-radius:3px; overflow:hidden; background:#fff; } .scale-diagram__head { padding:5px 9px; background:var(--navy); color:#fff; font-size:.75rem; font-weight:800; text-transform:uppercase; letter-spacing:.02em; } .scale-diagram svg { display:block; width:100%; height:auto; }
+    .ticket { margin-top:6px; padding:7px 9px; border:1.5px solid var(--navy); background:#fff; } .ticket-head { margin:-7px -9px 6px; padding:4px 8px; background:var(--navy); color:#fff; font-size:.77rem; font-weight:800; text-transform:uppercase; letter-spacing:.03em; } .ticket-grid { display:grid; grid-template-columns:1fr 1fr 1.1fr; gap:7px; } .question { min-height:56px; padding-right:8px; border-right:1px solid var(--line); font-size:.74rem; } .question:last-child { padding:0; border:0; } .answer { height:22px; margin-top:3px; background:repeating-linear-gradient(to bottom,transparent 0,transparent 14px,#94a3b8 15px); }
+    .professional-close { margin-top:auto; padding-top:6px; display:grid; grid-template-columns:1.35fr 1fr; gap:7px; font-size:.72rem; } .sign-box { min-height:86px; padding:6px 8px; border:1px solid var(--line); border-radius:3px; background:var(--soft); } .sign-box h3 { margin-bottom:3px; color:var(--navy); font-size:.78rem; text-transform:uppercase; letter-spacing:.025em; } .sign-line { display:grid; grid-template-columns:1fr .48fr; gap:10px; margin-top:8px; font-size:.7rem; } .sign-line span { display:block; min-height:16px; border-bottom:1px solid var(--navy); } .approval { border-color:var(--navy); background:#fff; } .approval-status { margin:-6px -8px 5px; padding:4px 7px; background:var(--navy); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; }
+    .footer { display:flex; justify-content:space-between; margin-top:7px; padding-top:7px; border-top:1px solid var(--line); color:var(--muted); font-size:.66rem; } .page-break { height:1px; background:var(--navy); }
+    .formula-highlight { display:inline-block; margin:2px 0; padding:3px 8px; background:#e0f2fe; border:1px solid #7dd3fc; border-radius:3px; font-size:.8rem; font-weight:700; color:var(--navy); letter-spacing:.02em; }
+    @media print { @page { size:A4 portrait; margin:7mm 8mm; } body { padding:0; background:#fff; } .toolbar { display:none; } .document { max-width:none; border:0; box-shadow:none; } .page { min-height:0; height:283mm; padding:0; page-break-inside:avoid; } .page-break { height:0; background:transparent; break-after:page; page-break-after:always; } .formula-table td { height:13mm; } .document > .page:nth-of-type(2) .formula-table td { height:11mm; } .choice { min-height:auto; } .sign-box { min-height:auto; } .question { min-height:auto; } .scale-diagram svg { max-height:28mm; } .footer { margin-top:auto; } * { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <span><span class="badge">F09A</span> Práctica individual · Sesión 8</span><button onclick="window.print()">Imprimir ficha A4</button></div>
+  <main class="document">
+
+    <!-- ===== PÁGINA 1 ===== -->
+    <section class="page">
+      <header class="header"><div class="header-top"><div><h1>Conceptos básicos de escalas</h1><p class="subtitle">UD1 · Mi tienda sostenible de reparación informática · Ciencias Aplicadas II</p></div><span class="tag">Dossier A2 · F09A</span></div><div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div></header>
+
+      <div class="goal"><div class="goal-box"><strong>Hoy voy a aprender a:</strong> entender qué es una <b>escala</b>, distinguir entre <b>reducción</b> y <b>ampliación</b>, interpretar la expresión E = 1 : N y calcular medidas reales a partir de un plano.</div><div class="goal-box"><strong>Material:</strong><br>regla graduada en cm y mm · calculadora · lápiz · goma</div></div>
+
+      <!-- SECCIÓN 1 -->
+      <h2 class="section-title"><span class="number">1.</span>¿Qué es una escala y para qué sirve?</h2>
+      <p class="instruction">Los objetos reales no caben en un papel. Para representarlos, usamos una <b>escala</b>: una relación entre la medida en el dibujo y la medida real. Lee, completa y reflexiona.</p>
+
+      <div class="prompt"><b>Definición.</b> La escala es la relación entre una medida en el <b>dibujo</b> (o plano) y la medida <b>real</b> correspondiente. Se escribe como <b>E = 1 : N</b>, donde 1 representa la medida en el dibujo y N indica cuántas veces mayor es la realidad.<br><br><span class="formula-highlight">Escala = Medida en el dibujo ÷ Medida real</span> &nbsp;&nbsp;→&nbsp;&nbsp; <span class="formula-highlight">Medida real = Medida en el dibujo × N</span></div>
+
+      <div class="choice-grid">
+        <div class="choice"><strong>a) Escala 1 : 100</strong>Significa que cada <b>1 cm</b> en el plano representa <b>________ cm</b> en la realidad.<br><br>Es decir, <b>________ m</b> reales.</div>
+        <div class="choice"><strong>b) Escala 1 : 50</strong>Significa que cada <b>1 cm</b> en el plano representa <b>________ cm</b> en la realidad.<br><br>Es decir, <b>________ m</b> reales.</div>
+        <div class="choice"><strong>c) Escala 1 : 75</strong>Significa que cada <b>1 cm</b> en el plano representa <b>________ cm</b> en la realidad.<br><br>Es decir, <b>________ m</b> reales.</div>
+      </div>
+
+      <div class="mini-grid" style="margin-bottom:8px;">
+        <div class="card"><h3>Tipos de escala</h3>
+          <b>Reducción</b> (1 : N con N &gt; 1): el dibujo es <b>más pequeño</b> que la realidad. Ejemplo: plano de una casa.<br>
+          <b>Ampliación</b> (N : 1 con N &gt; 1): el dibujo es <b>más grande</b> que la realidad. Ejemplo: esquema de un microchip.<br>
+          <b>Natural</b> (1 : 1): dibujo y realidad tienen el <b>mismo tamaño</b>.
+        </div>
+        <div class="card"><h3>Clasifica estas escalas</h3>
+          1 : 200 → ☐ reducción ☐ ampliación ☐ natural<br>
+          5 : 1 → ☐ reducción ☐ ampliación ☐ natural<br>
+          1 : 1 → ☐ reducción ☐ ampliación ☐ natural<br>
+          1 : 75 → ☐ reducción ☐ ampliación ☐ natural
+        </div>
+      </div>
+
+      <!-- SECCIÓN 2 -->
+      <h2 class="section-title"><span class="number">2.</span>Del plano a la realidad: calcula la medida real</h2>
+      <p class="instruction">En un plano a <b>escala 1 : 100</b> mides con la regla las siguientes longitudes. Multiplica por N para obtener la medida real. Convierte siempre a metros al final.</p>
+
+      <table class="formula-table"><colgroup><col style="width:28%"><col style="width:19%"><col style="width:22%"><col style="width:31%"></colgroup><thead><tr><th>Elemento del plano</th><th>Medida en el plano</th><th>Operación (× N)</th><th>Medida real</th></tr></thead>
+        <tbody>
+          <tr><td>Largo de la fachada</td><td class="center">8,5 cm</td><td>8,5 × 100 =</td><td>__________ cm = __________ m</td></tr>
+          <tr><td>Ancho de la puerta</td><td class="center">0,9 cm</td><td>0,9 × 100 =</td><td>__________ cm = __________ m</td></tr>
+          <tr><td>Profundidad del local</td><td class="center">6,2 cm</td><td>6,2 × 100 =</td><td>__________ cm = __________ m</td></tr>
+          <tr><td>Alto de la ventana</td><td class="center">1,2 cm</td><td>1,2 × 100 =</td><td>__________ cm = __________ m</td></tr>
+        </tbody>
+      </table>
+
+      <!-- DIAGRAMA VISUAL DE ESCALA -->
+      <div class="scale-diagram">
+        <div class="scale-diagram__head">Ejemplo visual · Escala 1 : 100</div>
+        <svg viewBox="0 0 780 105" role="img" aria-label="Diagrama comparativo que muestra 1 cm en el plano equivale a 100 cm (1 m) en la realidad">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#0369a1"/></marker>
+          </defs>
+          <!-- Segmento plano -->
+          <rect x="40" y="22" width="60" height="18" rx="2" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+          <line x1="40" y1="50" x2="100" y2="50" stroke="#0369a1" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+          <text x="70" y="35" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700">PLANO</text>
+          <text x="70" y="65" text-anchor="middle" fill="#075985" font-size="12" font-weight="700">1 cm</text>
+
+          <!-- Flecha de equivalencia -->
+          <text x="150" y="38" fill="#334155" font-size="16" font-weight="800">⟶</text>
+          <text x="135" y="60" fill="#64748b" font-size="10">equivale a</text>
+
+          <!-- Segmento real -->
+          <rect x="210" y="15" width="520" height="30" rx="2" fill="#f0fdf4" stroke="#0f766e" stroke-width="2"/>
+          <line x1="210" y1="58" x2="730" y2="58" stroke="#0f766e" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+          <text x="470" y="35" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="700">REALIDAD</text>
+          <text x="470" y="73" text-anchor="middle" fill="#0f766e" font-size="13" font-weight="700">100 cm = 1 m</text>
+
+          <!-- Escala -->
+          <rect x="260" y="82" width="200" height="22" rx="4" fill="#0f172a"/>
+          <text x="360" y="97" text-anchor="middle" fill="#fff" font-size="12" font-weight="800" letter-spacing="1">ESCALA 1 : 100</text>
+        </svg>
+      </div>
+
+      <footer class="footer"><span>F09A · Conceptos básicos de escalas · Trabajo individual</span><span>1 / 2</span></footer>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- ===== PÁGINA 2 ===== -->
+    <section class="page">
+      <header class="header"><div class="header-top"><div><h1>Conceptos básicos de escalas</h1><p class="subtitle">De la realidad al plano, aplicación al proyecto y comprobación individual</p></div><span class="tag">Dossier A2 · F09A</span></div><div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div></header>
+
+      <!-- SECCIÓN 3 -->
+      <h2 class="section-title"><span class="number">3.</span>De la realidad al plano: calcula la medida en el dibujo</h2>
+      <p class="instruction">Ahora el camino es inverso. Conoces la medida real y necesitas saber cuánto debes dibujar. Divide la medida real entre N.</p>
+
+      <div class="prompt"><b>Fórmula inversa.</b> <span class="formula-highlight">Medida en el dibujo = Medida real ÷ N</span><br>Recuerda: trabaja siempre en la misma unidad (cm o mm) antes de dividir. Luego puedes convertir el resultado.</div>
+
+      <table class="formula-table"><colgroup><col style="width:28%"><col style="width:19%"><col style="width:22%"><col style="width:31%"></colgroup><thead><tr><th>Elemento real</th><th>Medida real</th><th>Operación (÷ N)</th><th>Medida en el plano</th></tr></thead>
+        <tbody>
+          <tr><td>Pared lateral del local<br><span style="color:var(--muted);font-size:.68rem">Escala 1 : 50</span></td><td class="center">6 m = _____ cm</td><td>_______ ÷ 50 =</td><td>__________ cm</td></tr>
+          <tr><td>Mesa de atención<br><span style="color:var(--muted);font-size:.68rem">Escala 1 : 50</span></td><td class="center">1,20 m = _____ cm</td><td>_______ ÷ 50 =</td><td>__________ cm</td></tr>
+          <tr><td>Ancho del escaparate<br><span style="color:var(--muted);font-size:.68rem">Escala 1 : 75</span></td><td class="center">3 m = _____ cm</td><td>_______ ÷ 75 =</td><td>__________ cm</td></tr>
+          <tr><td>Altura de la puerta<br><span style="color:var(--muted);font-size:.68rem">Escala 1 : 75</span></td><td class="center">2,10 m = _____ cm</td><td>_______ ÷ 75 =</td><td>__________ cm</td></tr>
+        </tbody>
+      </table>
+
+      <!-- SECCIÓN 4 -->
+      <h2 class="section-title"><span class="number">4.</span>Compara escalas: el mismo objeto, distinto tamaño en el plano</h2>
+      <p class="instruction">Una estantería mide <b>1,50 m</b> de largo en la realidad. Calcula cuánto mediría en el dibujo con cada escala. ¿En cuál queda más grande?</p>
+
+      <table class="formula-table"><colgroup><col style="width:20%"><col style="width:20%"><col style="width:30%"><col style="width:30%"></colgroup><thead><tr><th>Escala</th><th>Medida real (cm)</th><th>Operación</th><th>Medida en el plano</th></tr></thead>
+        <tbody>
+          <tr><td class="center"><b>1 : 50</b></td><td class="center">150 cm</td><td>150 ÷ 50 =</td><td>__________ cm</td></tr>
+          <tr><td class="center"><b>1 : 75</b></td><td class="center">150 cm</td><td>150 ÷ 75 =</td><td>__________ cm</td></tr>
+          <tr><td class="center"><b>1 : 100</b></td><td class="center">150 cm</td><td>150 ÷ 100 =</td><td>__________ cm</td></tr>
+        </tbody>
+      </table>
+
+      <div class="mini-grid" style="margin-top:8px;">
+        <div class="card"><h3>Conclusión</h3>Cuanto <b>mayor</b> es el número N de la escala, la representación en el plano es ☐ más grande ☐ más pequeña.<br><br>La escala que da más detalle de las tres es: <b>____________</b></div>
+        <div class="card"><h3>Conexión con el proyecto</h3>En la sesión 9 utilizaremos la escala <b>1 : 75</b> para dibujar el plano de nuestra tienda.<br><br>¿Por qué no usamos 1 : 10? __________________________<br>¿Por qué no usamos 1 : 500? _________________________</div>
+      </div>
+
+      <!-- TICKET DE SALIDA -->
+      <section class="ticket"><div class="ticket-head">Ticket de salida · evidencia individual</div><div class="ticket-grid">
+        <div class="question"><b>1.</b> Un dibujo de <b>4 cm</b> representa <b>3 m</b> reales. Convierte las unidades y escribe la escala simplificada.<div class="answer"></div></div>
+        <div class="question"><b>2.</b> Un armario mide <b>240 cm</b>. Debe ocupar como máximo 4 cm y verse lo más grande posible. Elige: 1:50, 1:75 o 1:100. Justifica.<div class="answer"></div></div>
+        <div class="question"><b>3.</b> Antes de dividir una medida real entre 75, ¿qué debes comprobar sobre las unidades? Explícalo con una frase.<div class="answer"></div></div>
+      </div></section>
+
+      <!-- CIERRE PROFESIONAL -->
+      <div class="professional-close"><div class="sign-box"><h3>Compromiso del técnico o técnica júnior</h3>Declaro que he realizado los cálculos de esta ficha de forma individual, comprobando que las operaciones de multiplicar y dividir por la escala producen resultados razonables.<div class="sign-line"><div>Firma <span></span></div><div>Fecha <span></span></div></div></div><div class="sign-box approval"><div class="approval-status">Visto bueno docente</div>☐ VALIDADO &nbsp; ☐ REVISIÓN REQUERIDA<br><br>☐ Interpreta la expresión de escala<br>☐ Calcula del plano a la realidad<br>☐ Calcula de la realidad al plano<br><br>Firma docente: __________________</div></div>
+
+      <footer class="footer"><span>F09A · Conceptos básicos de escalas · Trabajo individual</span><span>2 / 2</span></footer>
+    </section>
+
+  </main>
+</body>
+</html>

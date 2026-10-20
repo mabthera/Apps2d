@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F13A · Área total del suelo del local</title>
+  <style>
+    :root { --navy:#0f172a; --navy2:#334155; --blue:#0369a1; --ink:#1e293b; --muted:#64748b; --line:#cbd5e1; --soft:#f8fafc; --pale:#f0f9ff; --font:Arial,Helvetica,sans-serif; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:18px; color:var(--ink); background:#e2e8f0; font:14px/1.35 var(--font); }
+    .toolbar { max-width:800px; margin:0 auto 12px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; background:white; border:1px solid var(--line); border-radius:4px; color:var(--navy); font-weight:bold; }
+    button { border:0; border-radius:3px; padding:8px 12px; color:#fff; background:var(--navy); font-weight:bold; cursor:pointer; }
+    .document { max-width:800px; margin:auto; background:#fff; box-shadow:0 3px 14px #0f172a20; }
+    .page { min-height:1120px; padding:28px 34px 22px; display:flex; flex-direction:column; background:#fff; }
+    .page-break { height:1px; background:var(--navy); }
+    header { border-bottom:2px solid var(--navy); padding-bottom:9px; margin-bottom:10px; }
+    .top { display:flex; justify-content:space-between; gap:12px; align-items:start; }
+    h1 { margin:0; color:var(--navy); font-size:20px; line-height:1.14; text-transform:uppercase; letter-spacing:.02em; }
+    .subtitle { margin:4px 0 0; color:var(--muted); font-size:12px; }
+    .tag { padding:4px 7px; border:1px solid var(--line); border-radius:3px; background:var(--soft); color:var(--navy2); font-size:10px; font-weight:bold; white-space:nowrap; }
+    .identity { display:grid; grid-template-columns:2fr .7fr .8fr; gap:12px; margin-top:10px; font-size:11px; font-weight:bold; }
+    .write { display:inline-block; height:17px; width:100%; vertical-align:bottom; border-bottom:1px solid var(--navy); }
+    h2 { margin:10px 0 5px; padding-bottom:3px; border-bottom:1px solid var(--navy); color:var(--navy); font-size:14px; text-transform:uppercase; }
+    .num { color:var(--blue); margin-right:5px; }
+    p { margin:4px 0 7px; }
+    .instruction { color:var(--navy2); font-size:11.5px; }
+    .callout { margin:5px 0 8px; padding:7px 10px; border-left:3px solid var(--blue); background:var(--pale); font-size:11.5px; }
+    .formula { display:inline-block; padding:4px 9px; margin:2px 0; border:1px solid #7dd3fc; background:#f0f9ff; color:#0c4a6e; font-size:15px; font-weight:bold; }
+    .practice { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:3px 0 6px; }
+    .card { padding:8px 10px; border:1px solid var(--line); border-radius:3px; background:var(--soft); font-size:11.5px; }
+    .card strong { color:var(--navy); }
+    .answerline { display:inline-block; min-width:82px; height:17px; border-bottom:1px solid var(--navy); vertical-align:bottom; }
+    .worked { display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:stretch; margin-top:3px; }
+    .guided, .challenge { min-width:0; }
+    .challenge { padding:8px 10px; border:1px solid var(--line); border-radius:3px; background:#fff; }
+    .challenge h3 { margin:0 0 4px; color:var(--navy); font-size:13px; text-transform:uppercase; }
+    .challenge p { font-size:10.5px; margin:3px 0 5px; }
+    .challenge svg { width:100%; height:190px; border:1px solid var(--line); background:#fff; display:block; }
+    .challenge-work { margin-top:5px; font-size:10px; line-height:1.8; }
+    .challenge-work b { color:var(--navy); }
+    .challenge-total { margin-top:3px; padding:4px 6px; border:1px solid var(--blue); background:var(--pale); font-size:10.5px; font-weight:bold; }
+    .worked svg { width:100%; height:148px; border:1px solid var(--line); background:#fff; display:block; }
+    .figure-note { margin-top:4px; color:var(--muted); font-size:10px; text-align:center; }
+    .steps { padding:8px 10px; border:1px solid var(--line); background:var(--soft); font-size:11px; }
+    .steps ol { margin:4px 0 0; padding-left:20px; }
+    .steps li { margin:3px 0; }
+    .result { margin-top:5px; padding:6px 8px; border:1.5px solid var(--blue); background:#f0f9ff; text-align:center; font-weight:bold; color:#0c4a6e; }
+    .check { margin-top:7px; font-size:10.5px; color:var(--navy2); }
+    .own-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; margin:4px 0 7px; }
+    .own-steps div { padding:6px; border:1px solid var(--line); background:var(--soft); font-size:10px; }
+    .own-steps b { color:var(--blue); }
+    .sketch { height:265px; border:1.5px solid var(--navy); position:relative; background-image:linear-gradient(#e2e8f0 1px,transparent 1px),linear-gradient(90deg,#e2e8f0 1px,transparent 1px); background-size:5mm 5mm; }
+    .sketch-label { position:absolute; left:8px; top:6px; padding:2px 5px; background:#fff; color:var(--muted); font-size:9px; }
+    table { width:100%; border-collapse:collapse; margin-top:5px; font-size:10.5px; }
+    th,td { border:1px solid var(--line); padding:5px 6px; text-align:center; }
+    th { background:var(--navy); color:white; font-size:9.5px; }
+    td:first-child { font-weight:bold; }
+    .row-space { height:29px; }
+    .conversion { display:grid; grid-template-columns:1.08fr .92fr; gap:8px; margin-top:7px; }
+    .conversion .card { min-height:68px; }
+    .conversion strong { display:block; margin-bottom:4px; }
+    .final { margin-top:7px; padding:8px 10px; border:2px solid var(--navy); display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:center; }
+    .final .answerline { min-width:110px; }
+    .footer { display:flex; justify-content:space-between; margin-top:auto; padding-top:7px; border-top:1px solid var(--line); color:var(--muted); font-size:9px; }
+    @media print {
+      @page { size:A4 portrait; margin:8mm; }
+      body { padding:0; background:#fff; }
+      .toolbar { display:none; }
+      .document { max-width:none; box-shadow:none; }
+      .page { height:281mm; min-height:0; padding:0; overflow:hidden; break-inside:avoid; page-break-inside:avoid; }
+      .page-break { height:0; break-after:page; page-break-after:always; }
+      * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <span>F13A · Área total del suelo del local</span><button onclick="window.print()">Imprimir ficha · A4</button></div>
+  <main class="document">
+    <section class="page">
+      <header>
+        <div class="top"><div><h1>Calculamos áreas para nuestro local</h1><p class="subtitle">UD1 · Mi tienda sostenible · Ciencias Aplicadas II</p></div><span class="tag">DOSSIER A3 · F13A · 1 / 2</span></div>
+        <div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div>
+      </header>
+      <div class="callout"><b>¿Para qué sirve esta ficha?</b> Vas a calcular cuántos metros cuadrados de suelo tiene el local. Sigue los pasos en orden. Puedes consultar tu plano F12, una regla y una calculadora.</div>
+
+      <h2><span class="num">1.</span>Recordamos el área de un rectángulo</h2>
+      <p class="instruction">El área nos dice cuánto espacio ocupa una superficie. En un rectángulo, multiplica el largo por el ancho. Las dos medidas deben estar en la misma unidad.</p>
+      <div class="formula">Área del rectángulo = largo × ancho</div>
+      <p class="instruction">Si las medidas están en centímetros, el resultado queda en cm². Si están en metros, queda en m².</p>
+      <div class="practice">
+        <div class="card"><strong>Ejercicio 1.</strong> Un rectángulo mide 5 cm de largo y 3 cm de ancho.<br>Operación: 5 cm × 3 cm = <span class="answerline"></span> cm²</div>
+        <div class="card"><strong>Ejercicio 2.</strong> Una alfombra mide 4 m de largo y 2 m de ancho.<br>Operación: 4 m × 2 m = <span class="answerline"></span> m²</div>
+      </div>
+      <div class="card"><strong>Ejercicio 3.</strong> Completa la frase: para calcular el área de un rectángulo multiplico el <span class="answerline"></span> por el <span class="answerline"></span>.</div>
+
+      <h2><span class="num">2.</span>¿Y si la figura no es un rectángulo?</h2>
+      <p class="instruction">Podemos dividirla en rectángulos más pequeños. Calculamos el área de cada uno y después sumamos. Hay varias formas correctas de dividir una misma figura.</p>
+      <div class="worked">
+        <div class="guided">
+          <svg viewBox="0 0 340 180" role="img" aria-label="Figura en forma de L de 6 por 4 centímetros dividida en rectángulos de 4 por 4 y 2 por 2 centímetros">
+            <path d="M35 24 H215 V84 H155 V144 H35 Z" fill="#f0f9ff" stroke="#0f172a" stroke-width="3"/>
+            <line x1="155" y1="24" x2="155" y2="84" stroke="#0369a1" stroke-width="3" stroke-dasharray="6 4"/>
+            <line x1="155" y1="84" x2="215" y2="84" stroke="#0369a1" stroke-width="3" stroke-dasharray="6 4"/>
+            <text x="97" y="18" font-size="12" fill="#334155">6 cm</text>
+            <text x="17" y="90" font-size="12" fill="#334155">4 cm</text>
+          </svg>
+          <p class="figure-note">La línea discontinua muestra dónde dividimos la figura.</p>
+          <div class="steps"><b>Ejemplo guiado.</b> A la figura en L de 6 cm × 4 cm le falta un cuadrado de 2 cm × 2 cm. Aquí la dividimos en dos rectángulos:<ol><li>Rectángulo 1: 4 × 4 = <b>16 cm²</b>.</li><li>Rectángulo 2: 2 × 2 = <b>4 cm²</b>.</li><li>Sumamos: 16 + 4 = <b>20 cm²</b>.</li></ol><div class="result">Área total de la figura: 20 cm²</div></div>
+        </div>
+        <div class="challenge">
+          <h3>Ahora prueba tú</h3>
+          <p>Esta figura está dividida en <b>4 rectángulos</b>. Las cotas exteriores están en cm. Lee las secciones de izquierda a derecha, calcula sus áreas y súmalas.</p>
+          <svg viewBox="0 0 360 220" role="img" aria-label="Figura escalonada dividida con líneas discontinuas en cuatro rectángulos. Las cotas exteriores indican anchos de 2 centímetros y alturas de 2, 4, 6 y 4 centímetros">
+            <defs>
+              <marker id="dimArrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M6 0 L0 3 L6 6" fill="none" stroke="#334155" stroke-width="1"/></marker>
+            </defs>
+            <path d="M60 165 V125 H112 V85 H164 V45 H216 V85 H268 V165 Z" fill="#f0f9ff" stroke="#0f172a" stroke-width="3"/>
+            <line x1="112" y1="125" x2="112" y2="165" stroke="#0369a1" stroke-width="2.5" stroke-dasharray="5 4"/>
+            <line x1="164" y1="85" x2="164" y2="165" stroke="#0369a1" stroke-width="2.5" stroke-dasharray="5 4"/>
+            <line x1="216" y1="85" x2="216" y2="165" stroke="#0369a1" stroke-width="2.5" stroke-dasharray="5 4"/>
+            <g stroke="#64748b" stroke-width="1" fill="none">
+              <line x1="60" y1="165" x2="60" y2="190"/><line x1="112" y1="165" x2="112" y2="190"/>
+              <line x1="112" y1="85" x2="112" y2="71"/><line x1="164" y1="85" x2="164" y2="71"/>
+              <line x1="164" y1="45" x2="164" y2="29"/><line x1="216" y1="45" x2="216" y2="29"/>
+              <line x1="216" y1="85" x2="216" y2="71"/><line x1="268" y1="85" x2="268" y2="71"/>
+              <line x1="44" y1="125" x2="60" y2="125"/><line x1="44" y1="165" x2="60" y2="165"/>
+              <line x1="268" y1="85" x2="293" y2="85"/><line x1="268" y1="165" x2="293" y2="165"/>
+              <line x1="216" y1="45" x2="324" y2="45"/><line x1="268" y1="165" x2="324" y2="165"/>
+            </g>
+            <g stroke="#334155" stroke-width="1.2" fill="none" marker-start="url(#dimArrow)" marker-end="url(#dimArrow)">
+              <line x1="62" y1="190" x2="110" y2="190"/>
+              <line x1="114" y1="71" x2="162" y2="71"/>
+              <line x1="166" y1="29" x2="214" y2="29"/>
+              <line x1="218" y1="71" x2="266" y2="71"/>
+              <line x1="44" y1="127" x2="44" y2="163"/>
+              <line x1="293" y1="87" x2="293" y2="163"/>
+              <line x1="324" y1="47" x2="324" y2="163"/>
+            </g>
+            <g fill="#334155" font-family="Arial, sans-serif" font-size="10" text-anchor="middle">
+              <text x="86" y="204">2 cm</text><text x="138" y="66">2 cm</text><text x="190" y="24">2 cm</text><text x="242" y="66">2 cm</text>
+              <text x="28" y="148">2 cm</text><text x="305" y="123">4 cm</text><text x="305" y="135" font-size="8">secciones 2 y 4</text><text x="341" y="108">6 cm</text>
+            </g>
+          </svg>
+          <div class="challenge-work"><b>1.</b> ______ × ______ = ______ cm²<br><b>2.</b> ______ × ______ = ______ cm²<br><b>3.</b> ______ × ______ = ______ cm²<br><b>4.</b> ______ × ______ = ______ cm²</div>
+          <div class="challenge-total">Suma: ______ + ______ + ______ + ______ = ______ cm²</div>
+        </div>
+      </div>
+      <p class="check"><b>Comprueba:</b> las piezas cubren toda la figura, no se montan unas sobre otras y todas son rectángulos.</p>
+
+      <h2><span class="num">3.</span>Tu turno: aplica estos pasos</h2>
+      <div class="own-steps">
+        <div><b>1.</b> Localiza el contorno del suelo en tu plano.</div>
+        <div><b>2.</b> Divídelo en rectángulos y numéralos.</div>
+        <div><b>3.</b> Mide cada lado <b>sobre el plano</b>, en cm.</div>
+        <div><b>4.</b> Calcula las áreas, súmalas y convierte con la escala.</div>
+      </div>
+      <div class="callout"><b>Si te atascas:</b> vuelve al ejemplo y busca una línea de corte que forme rectángulos. Puedes probar más de una división. Si no sabes cómo seguir, deja señalada la duda y continúa con otra parte.</div>
+      <footer class="footer"><span>F13A · Área total del suelo · Trabajo individual</span><span>1 / 2</span></footer>
+    </section>
+    <div class="page-break"></div>
+    <section class="page">
+      <header>
+        <div class="top"><div><h1>Calculamos el área de nuestro local</h1><p class="subtitle">Trabaja con tu plano F12 · Mide en el plano y escribe siempre las unidades</p></div><span class="tag">DOSSIER A3 · F13A · 2 / 2</span></div>
+        <div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div>
+      </header>
+      <div class="callout"><b>Importante:</b> todas las medidas de los rectángulos de esta página se toman con regla directamente sobre tu plano y se anotan en <b>centímetros (cm)</b>. No uses aquí las medidas reales del local.</div>
+
+      <h2><span class="num">1.</span>Haz tu descomposición</h2>
+      <p class="instruction">Dibuja el contorno del suelo y marca cómo lo vas a dividir en rectángulos. Numera cada rectángulo (1, 2, 3…). Elige la división que te resulte más clara. Tu descomposición no tiene por qué coincidir con la de otra persona; asegúrate de que las piezas cubran todo el suelo sin solaparse.</p>
+      <div class="sketch"><span class="sketch-label">Croquis: contorno del local + líneas de división + números de cada rectángulo</span></div>
+
+      <h2><span class="num">2.</span>Mide y calcula cada rectángulo en el plano</h2>
+      <p class="instruction">Mide largo y ancho de cada pieza con la regla. Calcula: largo × ancho = área del rectángulo. Escribe el resultado en cm². Si tienes más de cinco rectángulos, continúa en otra tabla o en una hoja adicional.</p>
+      <table>
+        <thead><tr><th>Rectángulo<br>(n.º del croquis)</th><th>Largo medido en el plano<br>(cm)</th><th>Ancho medido en el plano<br>(cm)</th><th>Operación<br>largo × ancho</th><th>Área en el plano<br>(cm²)</th></tr></thead>
+        <tbody>
+          <tr class="row-space"><td>1</td><td></td><td></td><td></td><td></td></tr>
+          <tr class="row-space"><td>2</td><td></td><td></td><td></td><td></td></tr>
+          <tr class="row-space"><td>3</td><td></td><td></td><td></td><td></td></tr>
+          <tr class="row-space"><td>4</td><td></td><td></td><td></td><td></td></tr>
+          <tr class="row-space"><td>5</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <h2><span class="num">3.</span>Suma las áreas del plano</h2>
+      <p class="instruction">Suma las áreas en cm² de todos tus rectángulos. Este total todavía corresponde al dibujo del plano.</p>
+      <div class="card"><strong>Área total dibujada:</strong> ________ cm² + ________ cm² + ________ cm² + ________ cm² + ________ cm² = <span class="answerline"></span> <b>cm²</b></div>
+
+      <h2><span class="num">4.</span>Convierte de cm² del plano a m² reales</h2>
+      <div class="conversion">
+        <div class="card"><strong>A. Averigua cuánto representa 1 cm²</strong>
+          <div>1. Mi escala es 1 : <span class="answerline" style="min-width:45px"></span>.</div>
+          <div>2. 1 cm del plano representa ______ cm reales. Pasa a metros: ______ cm ÷ 100 = ______ m reales.</div>
+          <div>3. Para el área, multiplico esa medida por sí misma:<br>______ m × ______ m = ______ m² por cada 1 cm² del plano.</div>
+        </div>
+        <div class="card"><strong>B. Multiplica el área de tu plano</strong>
+          <div>Área real = área del plano × m² reales que representa cada cm² del plano.</div>
+          <div style="margin-top:5px; font-size:10px"><b>Ejemplo 1:75:</b> 1 cm del plano = 75 cm reales = 0,75 m. Entonces 1 cm² del plano = 0,75 × 0,75 = 0,5625 m² reales. Si el plano mide 20 cm²: 20 × 0,5625 = <b>11,25 m²</b>.</div>
+        </div>
+      </div>
+      <div class="final"><div><b>Mi cálculo:</b><br><span class="answerline" style="min-width:65px"></span> cm² del plano × <span class="answerline" style="min-width:65px"></span> m² reales por cada cm² del plano</div><div><b>Área total real del suelo:</b><br><span class="answerline"></span> m²</div></div>
+      <p class="check"><b>Revisión final:</b> ☐ Medí sobre el plano en cm. &nbsp; ☐ Escribí las áreas en cm². &nbsp; ☐ Sumé todas las piezas. &nbsp; ☐ Apliqué la escala al área y acabé en m². &nbsp; ☐ Mi resultado tiene sentido para el tamaño de un local.</p>
+      <footer class="footer"><span>F13A · Área total del suelo · Trabajo individual</span><span>2 / 2</span></footer>
+    </section>
+  </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>F04 · Lámina de Croquis a Mano Alzada del Local</title>
+  <style>
+    /* ==========================================================================
+       VARIABLES DE DISEÑO: ESTÉTICA TÉCNICA PROFESIONAL Y ARQUITECTÓNICA
+       ========================================================================== */
+    :root {
+      --bg-canvas: #f1f5f9;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --surface-muted: #e2e8f0;
+
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --border-dark: #0f172a;
+      --border-main: #334155;
+      --border-subtle: #cbd5e1;
+      --border-hairline: #e2e8f0;
+
+      --grid-major: rgba(100, 116, 139, 0.32);
+      --grid-minor: rgba(148, 163, 184, 0.18);
+
+      --navy-900: #0f172a;
+      --navy-800: #1e293b;
+      --navy-700: #334155;
+
+      --petrol-800: #075985;
+      --petrol-700: #0369a1;
+      --petrol-50: #f0f9ff;
+
+      --teal-800: #115e59;
+      --teal-700: #0f766e;
+      --teal-50: #f0fdf4;
+
+      --radius-sm: 3px;
+      --radius-md: 6px;
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-stack);
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      line-height: 1.35;
+      -webkit-font-smoothing: antialiased;
+      padding: 24px 16px 40px;
+    }
+
+    /* ==========================================================================
+       BARRA DE CONTROL SUPERIOR (SOLO EN PANTALLA)
+       ========================================================================== */
+    .top-toolbar {
+      max-width: 900px;
+      margin: 0 auto 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .top-toolbar__meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy-800);
+    }
+
+    .doc-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      background: var(--navy-900);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .top-toolbar__actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .grid-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 11px;
+      font-size: 0.80rem;
+      font-weight: 600;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--navy-800);
+      transition: all 0.15s ease;
+    }
+
+    .grid-toggle-btn:hover {
+      background: var(--surface-muted);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn--primary {
+      background: var(--navy-900);
+      color: #ffffff;
+    }
+
+    .btn--primary:hover {
+      background: var(--navy-700);
+    }
+
+    .btn--secondary {
+      background: var(--surface-subtle);
+      border-color: var(--border-subtle);
+      color: var(--navy-800);
+    }
+
+    /* ==========================================================================
+       CONTENEDOR DE LA LÁMINA TÉCNICA (PANTALLA)
+       ========================================================================== */
+    .document-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ==========================================================================
+       CARA A (FOLIO 1 - ANVERSO): LIENZO LIMPIO DE CROQUIZADO
+       ========================================================================== */
+    .sheet-face {
+      background: #ffffff;
+      border: 1.5px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .face-a {
+      padding: 16px 20px 14px;
+      display: flex;
+      flex-direction: column;
+      min-height: 840px;
+    }
+
+    /* 1. CABECERA TÉCNICA LIMPIA Y DESPEJADA (CARA A) */
+    .face-a__header {
+      border-bottom: 2px solid var(--navy-900);
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .face-a__header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .face-a__title-group h1 {
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+    }
+
+    .face-a__title-group .sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .dossier-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 8px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--navy-800);
+      white-space: nowrap;
+    }
+
+    /* Franja de identificación en 3 columnas amplias (sin solapamiento) */
+    .student-id-strip {
+      display: flex;
+      gap: 14px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 7px 12px;
+      font-size: 0.82rem;
+    }
+
+    .id-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .id-col--name {
+      flex: 2.6;
+    }
+
+    .id-col--group {
+      flex: 1.2;
+    }
+
+    .id-col--date {
+      flex: 1;
+    }
+
+    .id-col label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .id-col input {
+      border: none;
+      border-bottom: 1px solid var(--border-dark);
+      background: transparent;
+      padding: 1px 0;
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      outline: none;
+    }
+
+    /* 2. LIENZO TÉCNICO DE CROQUIS (MÁXIMO ESPACIO LIBRE) */
+    .canvas-container {
+      flex: 1;
+      width: 100%;
+      min-height: 640px;
+      border: 1.5px solid var(--border-dark);
+      background-color: #ffffff;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Cuadrícula milimetrada técnica de 5 × 5 mm con líneas maestras a 25 mm */
+    .drafting-canvas {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      min-height: 640px;
+      background-color: #ffffff;
+      background-image:
+        linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(to right, var(--grid-minor) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-minor) 1px, transparent 1px);
+      background-size: 25mm 25mm, 25mm 25mm, 5mm 5mm, 5mm 5mm;
+      position: relative;
+    }
+
+    .drafting-canvas.grid--dots {
+      background-image: radial-gradient(var(--navy-900) 0.65px, transparent 0.65px);
+      background-size: 5mm 5mm;
+      opacity: 0.70;
+    }
+
+    .drafting-canvas.grid--none {
+      background-image: none;
+    }
+
+    /* Rosa de los vientos / Orientación Norte discreta */
+    .north-arrow-badge {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 60px;
+      height: 60px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.94);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      pointer-events: none;
+    }
+
+    .north-arrow-badge svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    /* Pauta orientativa en esquina superior izquierda */
+    .canvas-hint-tag {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 3px 8px;
+      border: 1px dashed var(--border-subtle);
+      border-radius: 2px;
+      pointer-events: none;
+      font-weight: 500;
+    }
+
+    /* 3. CAJETÍN TÉCNICO INFERIOR DESPEJADO Y NORMALIZADO (CARA A) */
+    .face-a__cajetin {
+      width: 100%;
+      margin-top: 10px;
+      border: 1.5px solid var(--navy-900);
+      background: #ffffff;
+      display: flex;
+      font-size: 0.76rem;
+    }
+
+    .cajetin-block {
+      padding: 6px 10px;
+      border-right: 1px solid var(--border-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cajetin-block:last-child {
+      border-right: none;
+    }
+
+    .cajetin-block--center {
+      width: 28%;
+      background: var(--surface-subtle);
+    }
+
+    .cajetin-block--project {
+      width: 44%;
+    }
+
+    .cajetin-block--validation {
+      width: 28%;
+      background: var(--surface-subtle);
+    }
+
+    .cajetin-lbl {
+      font-size: 0.62rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .cajetin-val {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--navy-900);
+    }
+
+    .cajetin-title-main {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    /* ==========================================================================
+       CARA B (FOLIO 2 - REVERSO): SIMBOLOGÍA, DETALLES Y VALIDACIÓN DOCENTE
+       ========================================================================== */
+    .face-b {
+      padding: 16px 20px 14px;
+      min-height: 840px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .face-b__header {
+      background: var(--navy-900);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* Secciones técnicas en Cara B */
+    .section-title {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      border-bottom: 1.5px solid var(--navy-900);
+      padding-bottom: 3px;
+      margin: 10px 0 8px;
+    }
+
+    .section-title:first-of-type {
+      margin-top: 0;
+    }
+
+    .section-title__num {
+      color: var(--petrol-700);
+      font-weight: 800;
+    }
+
+    /* 1. Catálogo visual de simbología técnica */
+    .symbols-catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .symbol-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+    }
+
+    .symbol-card__icon-box {
+      width: 42px;
+      height: 36px;
+      border: 1px solid var(--border-dark);
+      background: var(--surface-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Iconos vectoriales dibujados en CSS/SVG para la simbología */
+    .sym-draw--door {
+      width: 24px;
+      height: 24px;
+      border-left: 2.5px solid var(--navy-900);
+      position: relative;
+    }
+    .sym-draw--door::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-top: 1.5px dashed var(--petrol-700);
+      border-right: 1.5px dashed var(--petrol-700);
+      border-radius: 0 100% 0 0;
+      top: 0;
+      right: 0;
+    }
+
+    .sym-draw--window {
+      width: 32px;
+      height: 14px;
+      border: 1.5px solid var(--navy-900);
+      background: linear-gradient(to bottom, transparent 35%, var(--navy-900) 35%, var(--navy-900) 65%, transparent 65%);
+    }
+
+    .sym-draw--pillar {
+      width: 18px;
+      height: 18px;
+      background: var(--navy-900);
+    }
+
+    .sym-draw--socket {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--navy-900);
+      border-radius: 50%;
+      position: relative;
+    }
+    .sym-draw--socket::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--navy-900);
+      border-radius: 50%;
+      top: 4.5px;
+      left: 4.5px;
+    }
+
+    .sym-draw--dimension {
+      width: 34px;
+      height: 12px;
+      border-bottom: 1.5px solid var(--navy-900);
+      position: relative;
+    }
+    .sym-draw--dimension::before,
+    .sym-draw--dimension::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-top: 1.5px solid var(--navy-900);
+      border-left: 1.5px solid var(--navy-900);
+      bottom: -3px;
+    }
+    .sym-draw--dimension::before {
+      left: 0;
+      transform: rotate(-45deg);
+    }
+    .sym-draw--dimension::after {
+      right: 0;
+      transform: rotate(135deg);
+    }
+
+    .symbol-card__name {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--navy-900);
+    }
+
+    .symbol-card__desc {
+      font-size: 0.67rem;
+      color: var(--text-muted);
+      line-height: 1.25;
+    }
+
+    /* 2. Checklist técnico de comprobaciones in situ */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      font-size: 0.77rem;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--navy-900);
+    }
+
+    .check-box {
+      width: 12px;
+      height: 12px;
+      border: 1.5px solid var(--border-dark);
+      border-radius: 2px;
+      display: inline-block;
+      flex-shrink: 0;
+      background: #ffffff;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .check-box.is-checked::after {
+      content: "✓";
+      position: absolute;
+      top: -2px;
+      left: 1px;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--navy-900);
+      line-height: 1;
+    }
+
+    /* 3. Espacio auxiliar para dibujo de detalles constructivos o alzados */
+    .aux-detail-container {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .aux-canvas-box {
+      flex: 1.6;
+      height: 160px;
+      border: 1px solid var(--border-dark);
+      background-color: #ffffff;
+      background-image:
+        linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(to right, var(--grid-minor) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-minor) 1px, transparent 1px);
+      background-size: 25mm 25mm, 25mm 25mm, 5mm 5mm, 5mm 5mm;
+      position: relative;
+      border-radius: 2px;
+    }
+
+    .aux-canvas-label {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.90);
+      padding: 1px 5px;
+      border: 1px dashed var(--border-subtle);
+      border-radius: 2px;
+    }
+
+    .aux-notes-box {
+      flex: 1.1;
+      border: 1px solid var(--border-subtle);
+      background: var(--surface-subtle);
+      border-radius: 2px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      font-size: 0.76rem;
+    }
+
+    .aux-notes-box h4 {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--petrol-800);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .aux-notes-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .aux-line {
+      border-bottom: 1px dashed var(--border-main);
+      height: 16px;
+    }
+
+    /* 4. Rúbrica y visto bueno docente (Cara B) */
+    .validation-rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76rem;
+      margin-bottom: 8px;
+      border: 1px solid var(--border-subtle);
+      table-layout: fixed;
+    }
+
+    .validation-rubric-table th {
+      background: var(--surface-muted);
+      color: var(--navy-900);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      padding: 5px 8px;
+      border: 1px solid var(--border-subtle);
+      text-align: left;
+    }
+
+    .validation-rubric-table th.rubric-level-col {
+      text-align: center;
+      width: 12%;
+      white-space: nowrap;
+    }
+
+    .validation-rubric-table td {
+      padding: 5px 8px;
+      border: 1px solid var(--border-subtle);
+      color: var(--navy-900);
+      vertical-align: middle;
+    }
+
+    .validation-rubric-table td.rubric-check-cell {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .validation-rubric-table td.rubric-check-cell .check-box {
+      margin: 0 auto;
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      cursor: pointer;
+    }
+
+    .teacher-sign-footer {
+      display: flex;
+      gap: 12px;
+      border: 1.5px solid var(--navy-900);
+      border-radius: var(--radius-sm);
+      background: var(--petrol-50);
+      padding: 8px 12px;
+      font-size: 0.78rem;
+    }
+
+    .sign-decision-col {
+      flex: 1.3;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sign-signature-col {
+      flex: 1;
+      border-left: 1px solid var(--border-subtle);
+      padding-left: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .sign-line {
+      border-bottom: 1px dashed var(--border-dark);
+      margin-bottom: 4px;
+    }
+
+    /* Salto de página para impresión */
+    .print-page-break {
+      display: none;
+    }
+
+    /* ==========================================================================
+       ESTILOS EXCLUSIVOS PARA IMPRESIÓN (EXACTAMENTE 2 FOLIOS A4: CARA A Y CARA B)
+       ========================================================================== */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 8mm 10mm 8mm 10mm;
+      }
+
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        font-size: 8pt !important;
+        line-height: 1.25 !important;
+      }
+
+      .top-toolbar {
+        display: none !important;
+      }
+
+      .document-container {
+        max-width: 100% !important;
+      }
+
+      .sheet-face {
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      /* CARA A EN IMPRESIÓN (FOLIO 1 COMPLETO) */
+      .face-a {
+        height: 278mm !important;
+        max-height: 278mm !important;
+        padding: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .face-a__header {
+        padding-bottom: 4pt !important;
+        margin-bottom: 6pt !important;
+        border-bottom: 1.5pt solid #0f172a !important;
+      }
+
+      .face-a__title-group h1 {
+        font-size: 11pt !important;
+      }
+
+      .face-a__title-group .sub {
+        font-size: 7.6pt !important;
+      }
+
+      .student-id-strip {
+        padding: 3pt 6pt !important;
+        gap: 10pt !important;
+        border: 1pt solid #94a3b8 !important;
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .id-col input {
+        border-bottom: 1pt solid #0f172a !important;
+        font-size: 8pt !important;
+      }
+
+      input::placeholder {
+        color: transparent !important;
+        opacity: 0 !important;
+      }
+
+      .canvas-container {
+        flex: 1 !important;
+        min-height: 205mm !important;
+        border: 1.5pt solid #0f172a !important;
+      }
+
+      .drafting-canvas {
+        min-height: 205mm !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .north-arrow-badge {
+        width: 14mm !important;
+        height: 14mm !important;
+        border: 1pt solid #94a3b8 !important;
+      }
+
+      .north-arrow-badge svg {
+        width: 8mm !important;
+        height: 8mm !important;
+      }
+
+      .face-a__cajetin {
+        margin-top: 6pt !important;
+        border: 1.5pt solid #0f172a !important;
+      }
+
+      .cajetin-block {
+        padding: 4pt 8pt !important;
+      }
+
+      .cajetin-block--center,
+      .cajetin-block--validation {
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* SALTO EXACTO ENTRE CARA A Y CARA B */
+      .print-page-break {
+        display: block !important;
+        page-break-before: always !important;
+        break-before: page !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+      }
+
+      /* CARA B EN IMPRESIÓN (FOLIO 2 COMPLETO) */
+      .face-b {
+        height: 278mm !important;
+        max-height: 278mm !important;
+        padding: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .face-b__header {
+        background: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 3.5pt 6pt !important;
+        font-size: 7.5pt !important;
+        margin-bottom: 6pt !important;
+      }
+
+      .section-title {
+        font-size: 8.4pt !important;
+        margin: 6pt 0 4pt !important;
+        padding-bottom: 1.5pt !important;
+        border-bottom: 1pt solid #0f172a !important;
+      }
+
+      .symbols-catalog-grid {
+        gap: 5pt !important;
+        margin-bottom: 6pt !important;
+      }
+
+      .symbol-card {
+        border: 1pt solid #94a3b8 !important;
+        padding: 4pt 5pt !important;
+      }
+
+      .symbol-card__icon-box {
+        width: 32pt !important;
+        height: 24pt !important;
+      }
+
+      .checklist-grid {
+        padding: 5pt 8pt !important;
+        gap: 4pt 8pt !important;
+        margin-bottom: 6pt !important;
+        border: 1pt solid #94a3b8 !important;
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .aux-detail-container {
+        gap: 8pt !important;
+        margin-bottom: 6pt !important;
+      }
+
+      .aux-canvas-box {
+        height: 48mm !important;
+        border: 1pt solid #0f172a !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .aux-notes-box {
+        border: 1pt solid #94a3b8 !important;
+        padding: 5pt 7pt !important;
+      }
+
+      .validation-rubric-table {
+        width: 100% !important;
+        margin-bottom: 5pt !important;
+        border: 1pt solid #94a3b8 !important;
+        table-layout: fixed !important;
+      }
+
+      .validation-rubric-table th,
+      .validation-rubric-table td {
+        padding: 2.5pt 5pt !important;
+        font-size: 7.1pt !important;
+      }
+
+      .validation-rubric-table th.rubric-level-col {
+        width: 12% !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+      }
+
+      .validation-rubric-table td.rubric-check-cell {
+        text-align: center !important;
+      }
+
+      .validation-rubric-table td.rubric-check-cell .check-box {
+        margin: 0 auto !important;
+        display: inline-block !important;
+        border: 1pt solid #000000 !important;
+      }
+
+      .teacher-sign-footer {
+        padding: 5pt 8pt !important;
+        border: 1.2pt solid #0f172a !important;
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    /* PANTALLAS MÓVILES */
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .face-a__header-top,
+      .student-id-strip,
+      .face-a__cajetin,
+      .symbols-catalog-grid,
+      .checklist-grid,
+      .aux-detail-container,
+      .teacher-sign-footer {
+        flex-direction: column;
+        display: flex;
+      }
+      .symbols-catalog-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .cajetin-block {
+        width: 100% !important;
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      .canvas-container {
+        min-height: 400px;
+      }
+      .drafting-canvas {
+        min-height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE ACCIONES SUPERIOR (SOLO VISIBLE EN PANTALLA) -->
+  <header class="top-toolbar">
+    <div class="top-toolbar__meta">
+      <span class="doc-badge">F04</span>
+      <span>Ciencias Aplicadas II · UD1 · Sesión 3</span>
+      <span style="color: var(--border-subtle);">|</span>
+      <span style="font-weight: normal; color: var(--text-muted);">Lámina de Croquis a Mano Alzada del Local</span>
+    </div>
+
+    <div class="top-toolbar__actions"><a class="btn btn--secondary" href="guia.html">Cómo hacerla</a> 
+      <button class="grid-toggle-btn" onclick="setGrid('5mm')" title="Cuadrícula técnica 5x5 mm">
+        Cuadrícula 5 mm
+      </button>
+      <button class="grid-toggle-btn" onclick="setGrid('dots')" title="Papel punteado (Dot grid)">
+        Puntos
+      </button>
+      <button class="grid-toggle-btn" onclick="setGrid('none')" title="Lienzo blanco liso">
+        Liso
+      </button>
+      <button class="btn btn--primary" onclick="window.print()">
+        Imprimir lámina (2 caras A4)
+      </button>
+    </div>
+  </header>
+
+  <main class="document-container">
+
+    <!-- ====================================================================
+         CARA A (FOLIO 1 - ANVERSO): LIENZO LIMPIO PARA EL DIBUJO DEL ALUMNADO
+         ==================================================================== -->
+    <article class="sheet-face face-a">
+
+      <!-- 1. CABECERA TÉCNICA LIMPIA Y DESPEJADA -->
+      <header class="face-a__header">
+        <div class="face-a__header-top">
+          <div class="face-a__title-group">
+            <h1>F04 · Croquis de Planta a Mano Alzada</h1>
+            <div class="sub">Tienda-Taller Sostenible «EcoTech Teis» · Ciencias Aplicadas II · Actividad A1 (Sesión 3)</div>
+          </div>
+          <div class="dossier-tag">Lámina de Campo · Cara A (Dibujo)</div>
+        </div>
+
+        <div class="student-id-strip">
+          <div class="id-col id-col--name">
+            <label for="alumnoNombre">Nombre y apellidos del técnico/a júnior:</label>
+            <input type="text" id="alumnoNombre" placeholder="Escribe tu nombre completo">
+          </div>
+          <div class="id-col id-col--group">
+            <label for="grupo">Grupo:</label>
+            <input type="text" id="grupo" value="2º FP Básica · Informática">
+          </div>
+          <div class="id-col id-col--date">
+            <label for="fecha">Fecha de visita:</label>
+            <input type="text" id="fecha" value="Septiembre 2026">
+          </div>
+        </div>
+      </header>
+
+      <!-- 2. LIENZO TÉCNICO DE CROQUIS (ESPACIO MÁXIMO LIBRE) -->
+      <section class="canvas-container" aria-label="Lienzo de dibujo a mano alzada">
+        <div id="draftingCanvas" class="drafting-canvas">
+
+          <!-- Pauta de orientación -->
+          <div class="canvas-hint-tag">
+            Cuadrícula de referencia: 5 × 5 mm (Cuadro mayor: 25 × 25 mm)
+          </div>
+
+          <!-- Rosa de los vientos / Orientación Norte -->
+          <div class="north-arrow-badge" title="Indica la orientación del Norte respecto al local">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="20,4 25,18 20,15 15,18" fill="#0f172a" />
+              <polygon points="20,36 25,22 20,25 15,22" fill="#94a3b8" />
+              <circle cx="20" cy="20" r="2.5" fill="#0f172a" />
+            </svg>
+            <span>NORTE</span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 3. CAJETÍN TÉCNICO INFERIOR (DESPEJADO, SIN SOLAPAMIENTO) -->
+      <footer class="face-a__cajetin" aria-label="Cajetín técnico normalizado">
+        <div class="cajetin-block cajetin-block--center">
+          <span class="cajetin-lbl">Centro Educativo:</span>
+          <span class="cajetin-val">IES de Teis (Vigo)</span>
+          <span class="cajetin-lbl" style="margin-top: 2px;">Módulo:</span>
+          <span class="cajetin-val" style="font-size: 0.72rem; color: var(--text-secondary);">Ciencias Aplicadas II · UD1</span>
+        </div>
+
+        <div class="cajetin-block cajetin-block--project">
+          <span class="cajetin-lbl">Proyecto y Lámina:</span>
+          <div class="cajetin-title-main">«EcoTech Teis» · Croquis de Planta</div>
+          <div style="display: flex; gap: 12px; margin-top: 2px; font-size: 0.68rem; color: var(--text-muted);">
+            <span>Planta: <strong>Baja / Taller</strong></span>
+            <span>Escala: <strong>Sin escala (A mano alzada)</strong></span>
+            <span>Ref: <strong>F04</strong></span>
+          </div>
+        </div>
+
+        <div class="cajetin-block cajetin-block--validation">
+          <span class="cajetin-lbl">Control de Aula in situ:</span>
+          <div style="margin-top: 2px; font-size: 0.72rem; color: var(--navy-900); font-weight: 700;">
+            [ &nbsp; ] Revisado in situ
+          </div>
+          <div style="font-size: 0.66rem; color: var(--text-muted); margin-top: 4px;">
+            Firma profesor/a: ________________
+          </div>
+        </div>
+      </footer>
+
+    </article>
+
+    <!-- ====================================================================
+         SALTO DE PÁGINA EXACTO PARA IMPRESIÓN (A4 CARA B - REVERSO)
+         ==================================================================== -->
+    <div class="print-page-break"></div>
+
+    <!-- ====================================================================
+         CARA B (FOLIO 2 - REVERSO): SIMBOLOGÍA, DETALLES Y VALIDACIÓN DOCENTE
+         ==================================================================== -->
+    <article class="sheet-face face-b">
+
+      <!-- BANNER SUPERIOR INSTITUCIONAL -->
+      <div class="face-b__header">
+        <span>F04 · Guía Técnica de Croquizado y Protocolo de Validación</span>
+        <span>Reverso técnico · IES de Teis (Vigo)</span>
+      </div>
+
+      <!-- SECCIÓN 1: CATÁLOGO DE SIMBOLOGÍA ARQUITECTÓNICA BÁSICA -->
+      <section>
+        <h2 class="section-title">
+          <span class="section-title__num">1.</span>
+          <span>Simbología arquitectónica normalizada para croquis</span>
+        </h2>
+
+        <div class="symbols-catalog-grid">
+          <!-- Puertas -->
+          <div class="symbol-card">
+            <div class="symbol-card__icon-box">
+              <div class="sym-draw--door"></div>
+            </div>
+            <div class="symbol-card__name">Puerta (P-01/P-02)</div>
+            <div class="symbol-card__desc">Hoja abierta 90º con arco discontinuo del sentido de giro hacia dentro o fuera.</div>
+          </div>
+
+          <!-- Ventanas -->
+          <div class="symbol-card">
+            <div class="symbol-card__icon-box">
+              <div class="sym-draw--window"></div>
+            </div>
+            <div class="symbol-card__name">Ventana (V-01)</div>
+            <div class="symbol-card__desc">Hueco en muro con doble línea paralela que indica carpintería y vidrios.</div>
+          </div>
+
+          <!-- Pilares -->
+          <div class="symbol-card">
+            <div class="symbol-card__icon-box">
+              <div class="sym-draw--pillar"></div>
+            </div>
+            <div class="symbol-card__name">Pilar / Columna</div>
+            <div class="symbol-card__desc">Cuadrado o rectángulo macizo oscuro (adosado o exento en medio).</div>
+          </div>
+
+          <!-- Enchufes -->
+          <div class="symbol-card">
+            <div class="symbol-card__icon-box">
+              <div class="sym-draw--socket"></div>
+            </div>
+            <div class="symbol-card__name">Toma de corriente</div>
+            <div class="symbol-card__desc">Círculo sobre la línea de pared que representa un enchufe o punto eléctrico.</div>
+          </div>
+
+          <!-- Cotas -->
+          <div class="symbol-card">
+            <div class="symbol-card__icon-box">
+              <div class="sym-draw--dimension"></div>
+            </div>
+            <div class="symbol-card__name">Línea de cota</div>
+            <div class="symbol-card__desc">Flechas con línea de acotación. La cifra de medida se rotula encima.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 2: CHECKLIST DE AUTORREVISIÓN IN SITU -->
+      <section>
+        <h2 class="section-title">
+          <span class="section-title__num">2.</span>
+          <span>Lista de comprobación técnica del croquis (Autocontrol antes de entregar)</span>
+        </h2>
+
+        <div class="checklist-grid">
+          <label class="check-item"><span class="check-box"></span> <strong>Paredes rotuladas:</strong> P-1 (Acceso), P-2 (Lat. der.), P-3 (Fondo), P-4 (Lat. izq.).</label>
+          <label class="check-item"><span class="check-box"></span> <strong>Esquinas identificadas:</strong> E-1, E-2, E-3 y E-4 señaladas en el perímetro.</label>
+          <label class="check-item"><span class="check-box"></span> <strong>Vanos posicionados:</strong> Puertas P-01/P-02 con su giro y ventanas V-01 en su pared real.</label>
+          <label class="check-item"><span class="check-box"></span> <strong>Instalaciones y fijos:</strong> Cuadro eléctrico, enchufes, radiadores y pilares marcados.</label>
+          <label class="check-item"><span class="check-box"></span> <strong>Líneas de cota preparadas:</strong> Trazadas las cotas que se medirán con cinta en la Sesión 4.</label>
+          <label class="check-item"><span class="check-box"></span> <strong>Orientación Norte:</strong> Flecha de la rosa de los vientos señalando el Norte en Cara A.</label>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 3: ESPACIO AUXILIAR PARA ALZADO RÁPIDO O DETALLE CONSTRUCTIVO -->
+      <section>
+        <h2 class="section-title">
+          <span class="section-title__num">3.</span>
+          <span>Detalle constructivo singular o alzado de pared (Opcional)</span>
+        </h2>
+
+        <div class="aux-detail-container">
+          <div class="aux-canvas-box">
+            <span class="aux-canvas-label">Espacio para detalle: Umbral de puerta, pilar con enchufe o alzado de radiador</span>
+          </div>
+          <div class="aux-notes-box">
+            <h4>Notas del detalle dibujado:</h4>
+            <p style="font-size: 0.70rem; color: var(--text-muted); margin-bottom: 4px;">Anota aquí peculiaridades de altura, rodapiés o estado del resalte del acceso:</p>
+            <div class="aux-notes-lines">
+              <div class="aux-line"></div>
+              <div class="aux-line"></div>
+              <div class="aux-line"></div>
+              <div class="aux-line"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 4: RÚBRICA DE VERIFICACIÓN Y VISTO BUENO DOCENTE -->
+      <section>
+        <h2 class="section-title">
+          <span class="section-title__num">4.</span>
+          <span>Evaluación formativa y validación docente para pasar a F05 (Medición)</span>
+        </h2>
+
+        <table class="validation-rubric-table">
+          <thead>
+            <tr>
+              <th style="width: 64%;">Criterio técnico de calidad del croquis</th>
+              <th class="rubric-level-col">Excelente</th>
+              <th class="rubric-level-col">Adecuado</th>
+              <th class="rubric-level-col">A revisar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Geometría y proporcionalidad:</strong> La forma de la planta refleja fielmente el local sin distorsiones excesivas.</td>
+              <td class="rubric-check-cell"><span class="check-box" title="Excelente"></span></td>
+              <td class="rubric-check-cell"><span class="check-box" title="Adecuado"></span></td>
+              <td class="rubric-check-cell"><span class="check-box" title="A revisar"></span></td>
+            </tr>
+            <tr>
+              <td><strong>2. Codificación con F03:</strong> Coincidencia exacta de los códigos de paredes (P-1 a P-4) y vanos (P-01, V-01).</td>
+              <td class="rubric-check-cell"><span class="check-box" title="Excelente"></span></td>
+              <td class="rubric-check-cell"><span class="check-box" title="Adecuado"></span></td>
+              <td class="rubric-check-cell"><span class="check-box" title="A revisar"></span></td>
+            </tr>
+            <tr>
+              <td><strong>3. Obstáculos e instalaciones:</strong> Situación correcta de pilares, cuadro eléctrico, tomas de corriente y radiador.</td>
+              <td class="rubric-check-cell"><span class="check-box" title="Excelente"></span></td>
+              <td class="rubric-check-cell"><span class="check-box" title="Adecuado"></span></td>
+              <td class="rubric-check-cell"><span class="check-box" title="A revisar"></span></td>
+            </tr>
+            <tr>
+              <td><strong>4. Preparación de cotas:</strong> Trazado limpio de líneas de acotación para la toma de medidas de la Sesión 4.</td>
+              <td class="rubric-check-cell"><span class="check-box" title="Excelente"></span></td>
+              <td class="rubric-check-cell"><span class="check-box" title="Adecuado"></span></td>
+              <td class="rubric-check-cell"><span class="check-box" title="A revisar"></span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Dictamen docente y firmas -->
+        <div class="teacher-sign-footer">
+          <div class="sign-decision-col">
+            <strong style="color: var(--navy-900); font-size: 0.76rem; text-transform: uppercase;">Dictamen de validación técnica:</strong>
+            <label class="check-item" style="font-size: 0.74rem;">
+              <span class="check-box"></span> <strong>VALIDADO:</strong> Croquis completo y riguroso. Autorizado para iniciar la medición en <strong>F05</strong>.
+            </label>
+            <label class="check-item" style="font-size: 0.74rem;">
+              <span class="check-box"></span> <strong>REVISIÓN REQUERIDA:</strong> Corregir proporciones o vanos omitidos antes de medir.
+            </label>
+          </div>
+          <div class="sign-signature-col">
+            <div class="sign-line"></div>
+            <span style="font-size: 0.70rem; color: var(--text-muted);">Firma y fecha del profesor/a: ________________________</span>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+
+  <script>
+    function setGrid(type) {
+      const canvas = document.getElementById('draftingCanvas');
+      canvas.classList.remove('grid--dots', 'grid--none');
+      if (type === 'dots') {
+        canvas.classList.add('grid--dots');
+      } else if (type === 'none') {
+        canvas.classList.add('grid--none');
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('.check-box');
+      if (!target) return;
+      
+      const row = target.closest('tr');
+      if (row && row.closest('.validation-rubric-table')) {
+        const boxes = row.querySelectorAll('.check-box');
+        const wasChecked = target.classList.contains('is-checked');
+        boxes.forEach(b => b.classList.remove('is-checked'));
+        if (!wasChecked) target.classList.add('is-checked');
+      } else {
+        target.classList.toggle('is-checked');
+      }
+    });
+  </script>
+
+</body>
+</html>

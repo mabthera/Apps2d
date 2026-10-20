@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F13B · Área de paredes y volumen del local</title>
+  <style>
+    :root { --navy:#0f172a; --navy2:#334155; --blue:#0369a1; --ink:#1e293b; --muted:#64748b; --line:#cbd5e1; --soft:#f8fafc; --pale:#f0f9ff; --font:Arial,Helvetica,sans-serif; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:18px; color:var(--ink); background:#e2e8f0; font:13px/1.32 var(--font); }
+    .toolbar { max-width:800px; margin:0 auto 12px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid var(--line); border-radius:4px; color:var(--navy); font-weight:bold; }
+    button { border:0; border-radius:3px; padding:8px 12px; color:#fff; background:var(--navy); font-weight:bold; cursor:pointer; }
+    .document { max-width:800px; margin:auto; background:#fff; box-shadow:0 3px 14px #0f172a20; }
+    .page { min-height:1120px; padding:28px 34px 22px; display:flex; flex-direction:column; background:#fff; }
+    .page-break { height:1px; background:var(--navy); }
+    header { border-bottom:2px solid var(--navy); padding-bottom:9px; margin-bottom:9px; }
+    .top { display:flex; justify-content:space-between; gap:12px; align-items:start; }
+    h1 { margin:0; color:var(--navy); font-size:20px; line-height:1.14; text-transform:uppercase; letter-spacing:.02em; }
+    .subtitle { margin:4px 0 0; color:var(--muted); font-size:12px; }
+    .tag { padding:4px 7px; border:1px solid var(--line); border-radius:3px; background:var(--soft); color:var(--navy2); font-size:10px; font-weight:bold; white-space:nowrap; }
+    .identity { display:grid; grid-template-columns:2fr .7fr .8fr; gap:12px; margin-top:9px; font-size:11px; font-weight:bold; }
+    .write { display:inline-block; height:16px; width:100%; vertical-align:bottom; border-bottom:1px solid var(--navy); }
+    h2 { margin:9px 0 4px; padding-bottom:3px; border-bottom:1px solid var(--navy); color:var(--navy); font-size:14px; text-transform:uppercase; }
+    .num { color:var(--blue); margin-right:5px; }
+    p { margin:4px 0 6px; }
+    .instruction { color:var(--navy2); font-size:11px; }
+    .callout { margin:4px 0 7px; padding:7px 10px; border-left:3px solid var(--blue); background:var(--pale); font-size:11px; }
+    .formula { display:inline-block; padding:5px 10px; border:1px solid #7dd3fc; background:var(--pale); color:#0c4a6e; font-size:15px; font-weight:bold; }
+    .steps { display:grid; grid-template-columns:repeat(2,1fr); gap:7px; margin:5px 0; }
+    .step { padding:7px 9px; border:1px solid var(--line); border-radius:3px; background:var(--soft); font-size:11px; }
+    .step b { color:var(--blue); }
+    .formula-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin:5px 0; }
+    .formula-card { padding:6px 8px; border:1px solid var(--line); background:var(--soft); font-size:10px; }
+    .formula-card b { color:var(--navy); }
+    .case-columns { display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start; }
+    .case-panel { padding:8px; border:1px solid var(--line); border-radius:3px; background:#fff; min-width:0; }
+    .case-panel h3 { margin:0 0 4px; color:var(--navy); font-size:13px; }
+    .case-panel .wall-svg { width:100%; height:242px; display:block; border:1px solid var(--line); background:#fff; }
+    .wall-svg text, .exercise-volume-svg text, .volume-second-practice svg text { paint-order:stroke; stroke:#fff; stroke-width:2.5px; stroke-linejoin:round; }
+    .measure-key { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-top:5px; }
+    .measure-key div { padding:4px 5px; border:1px solid var(--line); background:var(--soft); font-size:9.5px; }
+    .calc-list { margin-top:6px; padding:7px 8px; background:var(--soft); border:1px solid var(--line); font-size:10px; line-height:1.5; }
+    .calc-list p { margin:2px 0; }
+    .blank { display:inline-block; min-width:48px; height:14px; border-bottom:1px solid var(--navy); vertical-align:bottom; }
+    .case-result { margin-top:5px; padding:5px; border:1.5px solid var(--blue); background:var(--pale); text-align:center; color:#0c4a6e; font-size:11px; font-weight:bold; }
+    .final-practice { margin-top:9px; padding:9px 11px; border:1.5px solid var(--blue); background:#fff; }
+    .final-practice h3 { margin:0 0 4px; color:var(--navy); font-size:13px; }
+    .final-practice p { margin:3px 0 6px; font-size:10.5px; }
+    .final-practice-grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:10px; align-items:stretch; }
+    .final-practice-data, .final-practice-work { padding:7px 9px; border:1px solid var(--line); background:var(--soft); font-size:10px; line-height:1.45; }
+    .final-practice-work { display:grid; grid-template-columns:1fr 1fr; gap:3px 10px; }
+    .final-practice-work div { min-height:28px; border-bottom:1px solid var(--line); }
+    .example { padding:9px 11px; border:1.5px solid var(--blue); border-radius:3px; background:#fff; }
+    .example h3 { margin:0 0 5px; color:var(--navy); font-size:13px; }
+    .example-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .calc { padding:7px 8px; border:1px solid var(--line); background:var(--soft); font-size:10.5px; line-height:1.5; }
+    .calc strong { color:var(--navy); }
+    .result { margin-top:6px; padding:7px 9px; border:1.5px solid var(--blue); background:var(--pale); text-align:center; color:#0c4a6e; font-weight:bold; font-size:13px; }
+    .tiny { color:var(--muted); font-size:10px; }
+    .check { margin-top:7px; padding:6px 8px; background:var(--soft); font-size:10.5px; }
+    table { width:100%; border-collapse:collapse; table-layout:fixed; margin-top:5px; font-size:9px; }
+    th { padding:5px 3px; border:1px solid var(--navy); background:var(--navy); color:#fff; text-align:center; font-size:8.5px; line-height:1.2; }
+    td { height:34px; padding:3px; border:1px solid var(--line); text-align:center; }
+    tbody tr:nth-child(even) td { background:#f8fafc; }
+    td:first-child { font-weight:bold; color:var(--navy); }
+    .wall-table th:nth-child(1) { width:8%; } .wall-table th:nth-child(2) { width:15%; } .wall-table th:nth-child(3) { width:14%; } .wall-table th:nth-child(4) { width:18%; } .wall-table th:nth-child(5) { width:22%; } .wall-table th:nth-child(6) { width:23%; }
+    .opening-table th:nth-child(1) { width:22%; } .opening-table th:nth-child(2) { width:18%; } .opening-table th:nth-child(3) { width:19%; } .opening-table th:nth-child(4) { width:19%; } .opening-table th:nth-child(5) { width:22%; }
+    .opening-table td:nth-child(2) { background:#e0f2fe !important; font-weight:bold; }
+    .sum-box { margin-top:7px; padding:8px 10px; border:2px solid var(--navy); display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:center; font-size:11px; }
+    .line { display:inline-block; min-width:76px; height:18px; border-bottom:1px solid var(--navy); vertical-align:bottom; }
+    .volume-columns { display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:stretch; margin-top:5px; }
+    .volume-panel { padding:8px; border:1px solid var(--line); border-radius:3px; background:#fff; min-width:0; }
+    .volume-panel h3 { margin:0 0 6px; color:var(--navy); font-size:13px; }
+    .volume-panel .room-svg { width:100%; height:165px; display:block; }
+    .exercise-volume-svg { width:100%; height:165px; display:block; border:1px solid var(--line); background:#fff; }
+    .volume-panel .example-work { margin-top:6px; }
+    .volume-exercise-data { padding:8px; border:1px solid var(--line); background:var(--soft); font-size:11px; line-height:1.65; }
+    .volume-exercise-data b { color:var(--navy); }
+    .volume-second-practice { margin-top:8px; padding:8px 10px; border:1px solid var(--line); border-radius:3px; background:#fff; display:grid; grid-template-columns:.9fr 1.1fr; gap:10px; align-items:center; }
+    .volume-second-practice h3 { grid-column:1 / -1; margin:0; color:var(--navy); font-size:13px; }
+    .volume-second-practice svg { width:100%; height:190px; border:1px solid var(--line); background:#fff; display:block; }
+    .volume-second-work { padding:8px 10px; border:1px solid var(--line); background:var(--soft); font-size:10.5px; line-height:1.55; }
+    .volume-second-work p { margin:4px 0; }
+    .volume-practice { margin-top:7px; padding:8px; border:1px solid var(--line); background:var(--soft); font-size:11px; line-height:1.8; }
+    .volume-practice .blank { min-width:58px; }
+    .local-volume { margin-top:8px; padding:9px 11px; border:1.5px solid var(--navy); }
+    .local-volume h3 { margin:0 0 5px; color:var(--navy); font-size:13px; }
+    .local-volume-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px 12px; }
+    .local-volume-grid div { min-height:30px; padding:5px 2px; border-bottom:1px solid var(--line); font-size:11px; }
+    .local-volume-grid .wide { grid-column:1 / -1; }
+    .volume-flow { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin:6px 0; }
+    .volume-flow .step { min-height:67px; }
+    .volume-example { display:grid; grid-template-columns:1.1fr .9fr; gap:10px; align-items:center; margin-top:6px; }
+    .room-svg { width:100%; height:170px; border:1px solid var(--line); background:#fff; }
+    .example-work { padding:10px; border:1px solid var(--line); background:var(--soft); font-size:11px; line-height:1.7; }
+    .own-calc { margin-top:9px; padding:10px 12px; border:1.5px solid var(--navy); background:#fff; }
+    .own-calc h3 { margin:0 0 7px; color:var(--navy); font-size:13px; }
+    .own-row { min-height:36px; padding:7px 2px; border-bottom:1px solid var(--line); font-size:11px; }
+    .own-row:last-child { border-bottom:0; }
+    .footer { display:flex; justify-content:space-between; margin-top:auto; padding-top:7px; border-top:1px solid var(--line); color:var(--muted); font-size:9px; }
+    @media print {
+      @page { size:A4 portrait; margin:8mm; }
+      body { padding:0; background:#fff; }
+      .toolbar { display:none; }
+      .document { max-width:none; box-shadow:none; }
+      .page { height:281mm; min-height:0; padding:0; overflow:hidden; break-inside:avoid; page-break-inside:avoid; }
+      .page-break { height:0; break-after:page; page-break-after:always; }
+      * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+  .toolbar{flex-wrap:wrap}.toolbar .guide-link{display:inline-block;padding:7px 11px;border:1px solid currentColor;border-radius:5px;color:inherit;text-decoration:none;font-weight:bold}.toolbar .guide-link:hover{text-decoration:underline}.toolbar .guide-link:focus-visible{outline:3px solid #e49b28;outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="toolbar"><a class="guide-link" href="guia.html">Cómo hacerla</a> <span>F13B · Área de paredes y volumen del local</span><button onclick="window.print()">Imprimir ficha · 3 páginas A4</button></div>
+  <main class="document">
+    <section class="page">
+      <header>
+        <div class="top"><div><h1>Paredes: calculamos y descontamos huecos</h1><p class="subtitle">UD1 · Mi tienda sostenible · Ciencias Aplicadas II</p></div><span class="tag">DOSSIER A3 · F13B · 1 / 3</span></div>
+        <div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div>
+      </header>
+      <div class="callout"><b>Objetivo.</b> Averiguar cuánta superficie de pared hay que pintar o cubrir. Primero calculamos la pared completa y después restamos puertas y ventanas.</div>
+
+      <h2><span class="num">1.</span>Fórmulas que vas a usar</h2>
+      <div class="formula-strip">
+        <div class="formula-card"><b>Pared completa</b><br>largo × altura = área bruta</div>
+        <div class="formula-card"><b>Puerta o ventana</b><br>ancho × alto = área del hueco</div>
+        <div class="formula-card"><b>Pared sin huecos</b><br>área bruta − huecos = área neta</div>
+      </div>
+      <div class="callout"><b>Usa las medidas reales en metros de F10.</b> No vuelvas a convertir la escala. Si alguna medida está anotada en cm, divídela entre 100 para pasarla a metros.</div>
+
+      <h2><span class="num">2.</span>Ejemplo guiado y práctica</h2>
+      <div class="case-columns">
+        <div class="case-panel">
+          <h3>Ejemplo resuelto · mira el dibujo</h3>
+          <svg class="wall-svg" viewBox="0 0 360 245" role="img" aria-label="Alzado de una pared de 4,50 metros por 2,80, con puerta de 0,90 por 2,10 y ventana de 1,20 por 1,00. Todas las cotas están fuera del dibujo.">
+            <defs><marker id="wallDimA" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M6 0 L0 3 L6 6" fill="none" stroke="#334155" stroke-width="1"/></marker></defs>
+            <rect x="70" y="35" width="230" height="120" fill="#f8fafc" stroke="#0f172a" stroke-width="3"/>
+            <rect x="105" y="65" width="46" height="90" fill="#dbeafe" stroke="#0f172a" stroke-width="2"/>
+            <rect x="205" y="95" width="61" height="43" fill="#e0f2fe" stroke="#0f172a" stroke-width="2"/>
+            <text x="112" y="112" font-size="9" fill="#334155">PUERTA</text><text x="216" y="119" font-size="9" fill="#334155">VENTANA</text>
+            <g stroke="#64748b" stroke-width="1" fill="none">
+              <line x1="70" y1="155" x2="70" y2="215"/><line x1="300" y1="155" x2="300" y2="215"/>
+              <line x1="105" y1="155" x2="105" y2="176"/><line x1="151" y1="155" x2="151" y2="176"/>
+              <line x1="205" y1="155" x2="205" y2="176"/><line x1="266" y1="155" x2="266" y2="176"/>
+              <line x1="42" y1="35" x2="70" y2="35"/><line x1="42" y1="155" x2="70" y2="155"/>
+              <line x1="56" y1="65" x2="70" y2="65"/><line x1="56" y1="155" x2="70" y2="155"/>
+              <line x1="300" y1="95" x2="318" y2="95"/><line x1="300" y1="138" x2="318" y2="138"/>
+            </g>
+            <g stroke="#334155" stroke-width="1.1" fill="none" marker-start="url(#wallDimA)" marker-end="url(#wallDimA)">
+              <line x1="107" y1="176" x2="149" y2="176"/><line x1="207" y1="176" x2="264" y2="176"/>
+              <line x1="72" y1="215" x2="298" y2="215"/><line x1="42" y1="37" x2="42" y2="153"/>
+              <line x1="56" y1="67" x2="56" y2="153"/><line x1="318" y1="97" x2="318" y2="136"/>
+            </g>
+            <g fill="#334155" font-family="Arial,sans-serif" font-size="10" text-anchor="middle">
+              <text x="128" y="173">0,90 m</text><text x="235" y="173">1,20 m</text><text x="185" y="231">4,50 m</text>
+              <text x="18" y="98">2,80 m</text><text x="60" y="113" transform="rotate(-90 60 113)">2,10 m</text><text x="338" y="119">1,00 m</text>
+            </g>
+          </svg>
+          
+          <div class="calc-list">
+            <p><b>1. Área bruta:</b> 4,50 × 2,80 = <b>12,60 m²</b></p>
+            <p><b>2. Huecos:</b> puerta 0,90 × 2,10 = 1,89 m²</p>
+            <p>ventana 1,20 × 1,00 = 1,20 m²</p>
+            <p><b>3. Suma huecos:</b> 1,89 + 1,20 = <b>3,09 m²</b></p>
+            <p><b>4. Área neta:</b> 12,60 − 3,09 = <b>9,51 m²</b></p>
+          </div>
+          <div class="case-result">Pared sin huecos: 9,51 m²</div>
+        </div>
+        <div class="case-panel">
+          <h3>Ahora replica el procedimiento</h3>
+          <p class="instruction">Calcula el área de esta pared y resta la puerta y la ventana. Todas las medidas están en metros.</p>
+          <svg class="wall-svg" viewBox="0 0 360 245" role="img" aria-label="Alzado de una pared de 5,20 metros por 2,80, con puerta de 1,00 por 2,10 y ventana de 1,50 por 1,20. Todas las cotas están fuera del dibujo.">
+            <defs><marker id="wallDimB" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M6 0 L0 3 L6 6" fill="none" stroke="#334155" stroke-width="1"/></marker></defs>
+            <rect x="60" y="35" width="250" height="120" fill="#f8fafc" stroke="#0f172a" stroke-width="3"/>
+            <rect x="96" y="65" width="48" height="90" fill="#dbeafe" stroke="#0f172a" stroke-width="2"/>
+            <rect x="205" y="88" width="72" height="51" fill="#e0f2fe" stroke="#0f172a" stroke-width="2"/>
+            <text x="103" y="112" font-size="9" fill="#334155">PUERTA</text><text x="215" y="117" font-size="9" fill="#334155">VENTANA</text>
+            <g stroke="#64748b" stroke-width="1" fill="none">
+              <line x1="60" y1="155" x2="60" y2="215"/><line x1="310" y1="155" x2="310" y2="215"/>
+              <line x1="96" y1="155" x2="96" y2="176"/><line x1="144" y1="155" x2="144" y2="176"/>
+              <line x1="205" y1="155" x2="205" y2="176"/><line x1="277" y1="155" x2="277" y2="176"/>
+              <line x1="35" y1="35" x2="60" y2="35"/><line x1="35" y1="155" x2="60" y2="155"/>
+              <line x1="47" y1="65" x2="60" y2="65"/><line x1="47" y1="155" x2="60" y2="155"/>
+              <line x1="310" y1="88" x2="328" y2="88"/><line x1="310" y1="139" x2="328" y2="139"/>
+            </g>
+            <g stroke="#334155" stroke-width="1.1" fill="none" marker-start="url(#wallDimB)" marker-end="url(#wallDimB)">
+              <line x1="98" y1="176" x2="142" y2="176"/><line x1="207" y1="176" x2="275" y2="176"/>
+              <line x1="62" y1="215" x2="308" y2="215"/><line x1="35" y1="37" x2="35" y2="153"/>
+              <line x1="47" y1="67" x2="47" y2="153"/><line x1="328" y1="90" x2="328" y2="137"/>
+            </g>
+            <g fill="#334155" font-family="Arial,sans-serif" font-size="10" text-anchor="middle">
+              <text x="120" y="173">1,00 m</text><text x="241" y="173">1,50 m</text><text x="185" y="231">5,20 m</text>
+              <text x="18" y="98">2,80 m</text><text x="53" y="113" transform="rotate(-90 53 113)">2,10 m</text><text x="340" y="118">1,20 m</text>
+            </g>
+          </svg>
+          
+          <div class="calc-list">
+            <p><b>1. Área bruta:</b> ______ × ______ = <span class="blank"></span> m²</p>
+            <p><b>2. Área de la puerta:</b> ______ × ______ = <span class="blank"></span> m²</p>
+            <p><b>3. Área de la ventana:</b> ______ × ______ = <span class="blank"></span> m²</p>
+            <p><b>4. Suma de huecos:</b> ________ + ________ = <span class="blank"></span> m²</p>
+            <p><b>5. Área neta:</b> ________ − ________ = <span class="blank"></span> m²</p>
+          </div>
+          <div class="check"><b>Comprueba:</b> ¿el área neta es menor que el área bruta?</div>
+        </div>
+      </div>
+      <div class="final-practice">
+        <h3>3. Reto autónomo · una pared con tres huecos</h3>
+        <p>Sigue los mismos pasos del ejemplo. Calcula primero cada hueco, después súmalos y réstalos al área bruta.</p>
+        <div class="final-practice-grid">
+          <div class="final-practice-data"><b>Medidas reales</b><br>Pared: 6,10 m × 2,80 m<br>Puerta: 1,00 m × 2,10 m<br>Ventana 1: 1,00 m × 1,20 m<br>Ventana 2: 0,80 m × 1,20 m</div>
+          <div class="final-practice-work">
+            <div>Área bruta: ______ × ______ = ______ m²</div>
+            <div>Área de la puerta: ______ × ______ = ______ m²</div>
+            <div>Área ventana 1: ______ × ______ = ______ m²</div>
+            <div>Área ventana 2: ______ × ______ = ______ m²</div>
+            <div>Suma de huecos: ______ + ______ + ______ = ______ m²</div>
+            <div>Área neta: ______ − ______ = ______ m²</div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer"><span>F13B · Paredes y huecos · Ejemplo guiado</span><span>1 / 3</span></footer>
+    </section>
+
+    <div class="page-break"></div>
+    <section class="page">
+      <header>
+        <div class="top"><div><h1>Calcula las áreas de las ocho paredes</h1><p class="subtitle">Usa F10 para las medidas reales y F12 para identificar paredes y huecos</p></div><span class="tag">DOSSIER A3 · F13B · 2 / 3</span></div>
+        <div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div>
+      </header>
+      <div class="callout"><b>Pasos.</b> 1) Busca en F10 el largo real de cada pared, en metros. 2) Anota su altura real en metros. 3) Multiplica para obtener el área bruta. 4) Calcula y suma los huecos de esa pared. 5) Resta: área neta = área bruta − huecos. No necesitas volver a convertir la escala.</div>
+
+      <h2><span class="num">1.</span>Registro de paredes</h2>
+      <p class="instruction">Anota una pared por fila y copia las medidas reales de F10 en metros. Si alguna está en cm, pasa a metros dividiendo entre 100; no apliques la escala. Si una pared no tiene huecos, escribe 0 en «Suma de huecos».</p>
+      <table class="wall-table">
+        <thead><tr><th>Pared</th><th>Largo real<br>(m)</th><th>Altura real<br>(m)</th><th>Área bruta<br>(m²)</th><th>Suma de huecos<br>(m²)</th><th>Área neta<br>(m²)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>5</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>6</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>7</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>8</td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <h2><span class="num">2.</span>Calcula cada puerta y ventana</h2>
+      <p class="instruction">Copia de F10 el ancho y el alto reales de cada hueco, en metros. En la columna «Pared» escribe su número (del 1 al 8), según el registro de arriba; consulta el plano F12 para identificarlo.</p>
+      <table class="opening-table">
+        <thead><tr><th>Código del hueco</th><th>Pared donde está<br>(n.º 1–8)</th><th>Ancho real<br>(m)</th><th>Alto real<br>(m)</th><th>Área del hueco<br>(m²)</th></tr></thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      <p class="tiny">Si una pared tiene más de un hueco, suma sus áreas antes de anotarlas en «Suma de huecos». Si tienes más de ocho huecos, continúa en una hoja adicional.</p>
+      <div class="sum-box"><div><b>Área total neta de las ocho paredes:</b><br>Suma las ocho áreas netas de la tabla.</div><div>________ + ________ + ________ + ________<br>+ ________ + ________ + ________ + ________ = <b>________ m²</b></div></div>
+      <footer class="footer"><span>F13B · Registro de ocho paredes y huecos</span><span>2 / 3</span></footer>
+    </section>
+
+    <div class="page-break"></div>
+    <section class="page">
+      <header>
+        <div class="top"><div><h1>Calcula el volumen interior del local</h1><p class="subtitle">El volumen indica cuánto espacio hay dentro del local</p></div><span class="tag">DOSSIER A3 · F13B · 3 / 3</span></div>
+        <div class="identity"><span>Nombre y apellidos <i class="write"></i></span><span>Grupo <i class="write"></i></span><span>Fecha <i class="write"></i></span></div>
+      </header>
+      <div class="callout"><b>Recuerda.</b> Para calcular el volumen interior, usamos el área del suelo como base y la altura real del local. No uses el área de las paredes en esta operación.</div>
+
+      <h2><span class="num">1.</span>Ejemplo guiado y práctica</h2>
+      <div class="formula">Volumen = área de la base × altura</div>
+      <div class="volume-columns">
+        <div class="volume-panel">
+          <h3>Ejemplo resuelto · sigue los pasos</h3>
+          <svg class="room-svg" viewBox="0 0 360 220" role="img" aria-label="Prisma rectangular con base de 5 por 4 metros y altura de 3 metros">
+            <polygon points="58,82 158,35 290,75 188,123" fill="#e0f2fe" stroke="#0f172a" stroke-width="2"/>
+            <polygon points="58,82 188,123 188,190 58,148" fill="#f8fafc" stroke="#0f172a" stroke-width="2"/>
+            <polygon points="188,123 290,75 290,143 188,190" fill="#dbeafe" stroke="#0f172a" stroke-width="2"/>
+            <line x1="58" y1="82" x2="58" y2="148" stroke="#0f172a" stroke-width="2"/>
+            <text x="100" y="66" font-size="13" fill="#0f172a" font-weight="bold">Base: 5 m × 4 m</text>
+            <text x="202" y="157" font-size="13" fill="#0f172a" font-weight="bold">altura 3 m</text>
+            <text x="92" y="174" font-size="12" fill="#334155">Suelo (base)</text>
+          </svg>
+          <div class="example-work"><b>Paso 1 · Calcula el área de la base.</b><br>5 m × 4 m = <b>20 m²</b><br><b>Paso 2 · Multiplica por la altura.</b><br>20 m² × 3 m = <b>60 m³</b><br><b>Comprueba las unidades:</b> m² × m = m³.</div>
+        </div>
+        <div class="volume-panel">
+          <h3>Ahora replica el procedimiento</h3>
+          <p class="instruction">La base tiene forma de L. Divídela por la línea discontinua en dos rectángulos. Calcula sus áreas, súmalas y multiplica por la altura.</p>
+          <svg class="exercise-volume-svg" viewBox="0 0 360 235" role="img" aria-label="Base en forma de L de 6 por 4 metros dividida en dos rectángulos de 4 por 4 y 2 por 2 metros. La altura para el volumen es 2,4 metros."><defs><marker id="volDimC" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M6 0 L0 3 L6 6" fill="none" stroke="#334155" stroke-width="1"/></marker></defs>
+            <path d="M50 35 H290 V115 H210 V195 H50 Z" fill="#e0f2fe" stroke="#0f172a" stroke-width="3"/>
+            <line x1="210" y1="35" x2="210" y2="115" stroke="#0369a1" stroke-width="3" stroke-dasharray="6 4"/>
+            <line x1="210" y1="115" x2="290" y2="115" stroke="#0369a1" stroke-width="3" stroke-dasharray="6 4"/>
+            <g stroke="#64748b" stroke-width="1" fill="none"><line x1="50" y1="195" x2="50" y2="218"/><line x1="290" y1="195" x2="290" y2="218"/><line x1="30" y1="35" x2="50" y2="35"/><line x1="30" y1="195" x2="50" y2="195"/><line x1="210" y1="115" x2="210" y2="103"/><line x1="290" y1="115" x2="290" y2="103"/><line x1="290" y1="115" x2="312" y2="115"/><line x1="290" y1="195" x2="312" y2="195"/></g>
+            <g stroke="#334155" stroke-width="1.1" fill="none" marker-start="url(#volDimC)" marker-end="url(#volDimC)"><line x1="52" y1="218" x2="288" y2="218"/><line x1="30" y1="37" x2="30" y2="193"/><line x1="212" y1="103" x2="288" y2="103"/><line x1="312" y1="117" x2="312" y2="193"/></g>
+            <g fill="#334155" font-family="Arial,sans-serif" font-size="10" text-anchor="middle"><text x="170" y="229">6 m</text><text x="14" y="118">4 m</text><text x="250" y="99">2 m</text><text x="334" y="158">2 m</text></g>
+            <text x="70" y="19" font-size="11" fill="#0f172a" font-weight="bold">Altura del prisma: 2,4 m</text>
+          </svg>
+          <div class="volume-practice"><b>Área de la base:</b><br>Rectángulo 1: ______ m × ______ m = ______ m²<br>Rectángulo 2: ______ m × ______ m = ______ m²<br>Suma: ______ m² + ______ m² = ______ m²<br><b>Volumen:</b> ______ m² × ______ m = ______ m³</div>
+        </div>
+      </div>
+
+      <h2><span class="num">2.</span>Práctica 2 · otra base irregular</h2>
+      <div class="volume-second-practice">
+        <h3>Base en forma de U · calcula sus tres secciones</h3>
+        <svg viewBox="0 0 360 245" role="img" aria-label="Base en forma de U de 8 metros de ancho y 6 metros de alto. Los dos brazos miden 2 metros de ancho y la franja inferior mide 2 metros de alto. Las líneas discontinuas separan tres rectángulos. Altura del prisma: 2,5 metros.">
+          <defs><marker id="volDimD" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M6 0 L0 3 L6 6" fill="none" stroke="#334155" stroke-width="1"/></marker></defs>
+          <path d="M60 40 H110 V140 H210 V40 H260 V190 H60 Z" fill="#e0f2fe" stroke="#0f172a" stroke-width="3"/>
+          <line x1="60" y1="140" x2="110" y2="140" stroke="#0369a1" stroke-width="3" stroke-dasharray="6 4"/>
+          <line x1="210" y1="140" x2="260" y2="140" stroke="#0369a1" stroke-width="3" stroke-dasharray="6 4"/>
+          <g stroke="#64748b" stroke-width="1" fill="none"><line x1="60" y1="190" x2="60" y2="218"/><line x1="260" y1="190" x2="260" y2="218"/><line x1="35" y1="40" x2="60" y2="40"/><line x1="35" y1="190" x2="60" y2="190"/><line x1="260" y1="140" x2="312" y2="140"/><line x1="260" y1="190" x2="312" y2="190"/><line x1="60" y1="40" x2="60" y2="25"/><line x1="110" y1="40" x2="110" y2="25"/><line x1="210" y1="40" x2="210" y2="25"/><line x1="260" y1="40" x2="260" y2="25"/></g>
+          <g stroke="#334155" stroke-width="1.1" fill="none" marker-start="url(#volDimD)" marker-end="url(#volDimD)"><line x1="62" y1="218" x2="258" y2="218"/><line x1="35" y1="42" x2="35" y2="188"/><line x1="262" y1="142" x2="262" y2="188"/><line x1="62" y1="25" x2="108" y2="25"/><line x1="212" y1="25" x2="258" y2="25"/></g>
+          <g fill="#334155" font-family="Arial,sans-serif" font-size="10" text-anchor="middle"><text x="160" y="232">8 m</text><text x="18" y="116">6 m</text><text x="80" y="21">2 m</text><text x="235" y="21">2 m</text><text x="335" y="168">2 m</text></g>
+          <text x="120" y="18" font-size="11" fill="#0f172a" font-weight="bold">Altura: 2,5 m</text>
+        </svg>
+        <div class="volume-second-work">
+          <p>La base es distinta a la práctica anterior. Fíjate en las líneas discontinuas: forman <b>tres rectángulos</b>.</p>
+          <p><b>Sección 1 · brazo izquierdo:</b> ______ m × ______ m = ______ m²</p>
+          <p><b>Sección 2 · brazo derecho:</b> ______ m × ______ m = ______ m²</p>
+          <p>Ancho de la sección 3: ______ − ______ − ______ = ______ m.</p>
+          <p><b>Sección 3 · franja inferior:</b> ______ m × ______ m = ______ m²</p>
+          <p><b>Área total de la base:</b> ______ + ______ + ______ = ______ m²</p>
+          <p><b>Volumen:</b> ______ m² × ______ m = ______ m³</p>
+        </div>
+      </div>
+
+      <h2><span class="num">3.</span>Calcula el volumen de tu local</h2>
+      <p class="instruction">Usa el área total del suelo que calculaste en F13A. Busca en F10 la altura real desde el suelo hasta el techo y anótala en metros. Si está en cm, divide entre 100. Si el local tiene varias alturas, pregunta cuál debes usar antes de continuar.</p>
+      <div class="local-volume">
+        <h3>Mis datos y mi cálculo</h3>
+        <div class="local-volume-grid">
+          <div><b>Área de la base (suelo), resultado de F13A:</b> __________ m²</div>
+          <div><b>Altura real del local, registrada en F10:</b> __________ m</div>
+          <div class="wide"><b>Operación:</b> __________ m² × __________ m = __________ m³</div>
+          <div class="wide"><b>Volumen interior de mi local:</b> __________________________________ m³</div>
+        </div>
+      </div>
+      <div class="check"><b>Revisión final:</b> ☐ He usado el área del suelo de F13A como base. ☐ La altura está en metros. ☐ Mi respuesta está en m³. ☐ El resultado representa el espacio interior, no la superficie de las paredes.</div>
+      <footer class="footer"><span>F13B · Volumen interior del local</span><span>3 / 3</span></footer>
+    </section>
+  </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
