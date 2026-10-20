@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>F21 · Diseña el cuadro eléctrico de tu tienda</title>
+  <style>
+    :root { --ink:#17212e; --blue:#185a85; --muted:#4b5b68; --line:#aebdc8; --pale:#edf5fa; --grid:#e7edf1; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:16px; background:#e9edf0; color:var(--ink); font:11.5px/1.3 Arial,Helvetica,sans-serif; }
+    .toolbar { width:297mm; max-width:100%; margin:0 auto 12px; padding:9px 12px; background:#fff; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .toolbar button,.toolbar a { padding:8px 12px; border:1px solid var(--blue); background:var(--blue); color:#fff; font-weight:bold; cursor:pointer; text-decoration:none; }
+    .sheet { width:297mm; max-width:100%; margin:auto; background:#fff; box-shadow:0 3px 14px #26374730; }
+    .page { width:297mm; height:210mm; padding:10mm 12mm 9mm; display:flex; flex-direction:column; overflow:hidden; }
+    header { border-bottom:1.5px solid var(--ink); padding-bottom:5px; }
+    .headrow { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+    h1 { margin:0; font-size:20px; line-height:1.12; }
+    .sub { margin:3px 0 0; color:var(--muted); font-size:10px; }
+    .tag { color:var(--blue); font-size:9px; font-weight:bold; white-space:nowrap; }
+    .identity { display:grid; grid-template-columns:2fr .65fr .8fr; gap:15px; margin-top:6px; font-size:10px; }
+    .identity i { display:block; height:12px; border-bottom:1px solid var(--ink); }
+    .intro { margin:6px 0 0; padding:6px 9px; border-left:3px solid var(--blue); background:var(--pale); }
+    .intro p { margin:0; }
+    .drawing { height:80mm; margin-top:7px; border:1.5px solid var(--ink); background-color:#fff; background-image:linear-gradient(var(--grid) 1px, transparent 1px),linear-gradient(90deg,var(--grid) 1px, transparent 1px); background-size:5mm 5mm; }
+    .band { height:33.333%; position:relative; }
+    .band:not(:last-child) { border-bottom:1px dashed var(--line); }
+    .band span { position:absolute; right:2mm; top:1.5mm; padding:1mm 2mm; background:#ffffffeb; color:var(--muted); font-size:9px; }
+    h2 { margin:7px 0 5px; color:var(--blue); font-size:13px; }
+    .tables { display:grid; grid-template-columns:1fr 1fr; gap:7mm; }
+    table { width:100%; border-collapse:collapse; table-layout:fixed; }
+    th,td { border:1px solid var(--line); text-align:left; }
+    th { height:6mm; padding:3px 6px; background:var(--pale); font-size:9px; }
+    td { height:7mm; padding:0 6px; }
+    th:nth-child(1) { width:13%; }
+    th:nth-child(2) { width:29%; }
+    th:nth-child(3) { width:58%; }
+    td i { display:block; height:5.2mm; border-bottom:1px solid var(--line); }
+    footer { margin-top:auto; padding-top:6px; border-top:1px solid var(--line); display:flex; justify-content:space-between; color:var(--muted); font-size:8px; }
+    @media print {
+      @page { size:A4 landscape; margin:0; }
+      body { padding:0; background:#fff; }
+      .toolbar { display:none; }
+      .sheet { box-shadow:none; }
+      * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar"><a href="guia.html">Cómo hacerla</a><strong>F21 · Diseña el cuadro eléctrico de tu tienda</strong><button type="button" onclick="window.print()">Imprimir · A4 horizontal</button></div>
+  <main class="sheet">
+    <section class="page" aria-label="Ficha F21 de una cara">
+      <header>
+        <div class="headrow"><div><h1>F21 · Diseña el cuadro eléctrico de tu tienda</h1><p class="sub">UD1 · Mi tienda sostenible de reparación informática</p></div><span class="tag">F21 · UNA CARA</span></div>
+        <div class="identity"><span>Nombre y apellidos<i></i></span><span>Grupo<i></i></span><span>Fecha<i></i></span></div>
+      </header>
+      <div class="intro"><p>Un <b>único ICP</b> alimenta <b>tres ramas independientes</b>, una por zona. Dibuja el cuadro, diferencia los PIAs según los aparatos elegidos y explica abajo qué hace cada elemento.</p></div>
+      <div class="drawing" aria-label="Espacio para dibujar tres ramas una sobre otra">
+        <div class="band"><span>Rama 1 · Zona: __________________</span></div>
+        <div class="band"><span>Rama 2 · Zona: __________________</span></div>
+        <div class="band"><span>Rama 3 · Zona: __________________</span></div>
+      </div>
+      <h2>Elementos de tu cuadro y función</h2>
+      <div class="tables">
+        <table aria-label="Elementos 1 a 8"><thead><tr><th>Código</th><th>Elemento / A</th><th>Qué hace</th></tr></thead><tbody>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+        </tbody></table>
+        <table aria-label="Elementos 9 a 16"><thead><tr><th>Código</th><th>Elemento / A</th><th>Qué hace</th></tr></thead><tbody>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+          <tr><td><i></i></td><td><i></i></td><td><i></i></td></tr>
+        </tbody></table>
+      </div>
+      <footer><span>F21 · Diseño del cuadro · Trabajo individual</span><span>1 / 1</span></footer>
+    </section>
+  </main>
+</body>
+</html>
