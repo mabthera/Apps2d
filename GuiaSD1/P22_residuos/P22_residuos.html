@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>P22 · ¿Cuándo se convierte en residuo?</title>
+  <style>
+    :root{--ink:#14212c;--blue:#155d88;--soft:#e8f2f8;--line:#b9cbd5;--paper:#fffefb}
+    *{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#eaf2f6}
+    body{display:grid;grid-template-rows:1fr auto;overflow:hidden}.stage{min-height:0;display:grid;place-items:center;overflow:hidden}.scene{position:relative;width:min(1200px,94vw,calc((100vh - 75px)*1.777));aspect-ratio:16/9}
+    .slide{position:absolute;inset:0;display:none;flex-direction:column;padding:4% 5%;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px #465c6b24;overflow:hidden}.slide.active{display:flex}
+    .eyebrow{font-size:clamp(15px,1.65vw,23px);font-weight:700;letter-spacing:.05em;color:var(--blue)}h1{font-size:clamp(42px,5.5vw,72px);line-height:1.07;margin:20px 0}h2{font-size:clamp(34px,4.5vw,58px);line-height:1.08;margin:14px 0 25px}.lead{font-size:clamp(24px,3vw,40px);line-height:1.2;max-width:1000px}.body{font-size:clamp(21px,2.5vw,32px);line-height:1.25}.large{font-size:clamp(28px,3.5vw,46px);line-height:1.16}.acronym{margin:22px 0 0;font-size:clamp(22px,2.65vw,34px);line-height:1.2;color:var(--blue)}.question{margin-top:auto;padding-top:22px;border-top:2px solid var(--line);font-size:clamp(21px,2.45vw,32px);font-weight:700}.source{margin-top:auto;padding-top:15px;font-size:clamp(13px,1.2vw,17px);color:#455866}.source a{color:var(--blue)}.line-list{list-style:none;margin:0;padding:0}.line-list li{padding:14px 0;border-bottom:1px solid var(--line);font-size:clamp(22px,2.7vw,34px)}.line-list b{color:var(--blue)}.flow{font-size:clamp(24px,3.3vw,43px);line-height:1.32;font-weight:700;color:var(--blue)}.flow span{display:block;padding:10px 0;border-bottom:1px solid var(--line)}.flow small{font-size:.56em;color:#40515d;font-weight:400}.image-cover{background-image:linear-gradient(90deg,#fffefbf5 0%,#fffefbed 46%,#fffefb10 77%),url('../P02_necesidades_tienda/assets/almacen-circular.png');background-size:cover;background-position:center}.image-cover h1{max-width:760px}.image-cover .lead{max-width:670px}nav{display:flex;justify-content:space-between;align-items:center;padding:9px 6%;background:var(--paper);border-top:1px solid var(--line);font-size:15px}button{padding:7px 13px;border:1px solid var(--line);background:white;color:var(--ink);cursor:pointer}button:disabled{opacity:.35}
+    .definition-slide{padding:3% 5%}.definition-slide h2{font-size:clamp(28px,4.3vh,48px);margin:6px 0 12px}.definition-slide .large{margin:0;font-size:clamp(23px,3.5vh,36px);line-height:1.12}.definition-slide .acronym{margin:14px 0 0;font-size:clamp(20px,3.1vh,30px);line-height:1.15}.definition-slide .question{margin:auto 0 0;padding-top:10px;font-size:clamp(18px,2.8vh,26px);line-height:1.18}.definition-slide .source{margin:10px 0 0;padding:0;font-size:clamp(11px,1.7vh,14px);line-height:1.15}
+    .actor-slide{padding:3% 5%}.actor-slide h2{font-size:clamp(28px,4.2vh,46px);margin:6px 0 15px}.actor-case{border-top:1px solid var(--line);padding:10px 0}.actor-case h3{margin:0 0 5px;color:var(--blue);font-size:clamp(20px,3vh,29px)}.actor-case p{margin:0;font-size:clamp(17px,2.5vh,24px);line-height:1.2}.actor-slide .source{margin-top:auto;padding-top:8px;font-size:clamp(11px,1.7vh,14px);line-height:1.15}
+    @media print{@page{size:A4 landscape;margin:0}html,body,.stage{height:auto;overflow:visible;background:white}body{display:block}.stage,.scene{display:block;position:static;width:auto;height:auto;aspect-ratio:auto}.slide,.slide.active{display:flex;position:relative;inset:auto;width:297mm;height:210mm;break-after:page;border:0;border-radius:0;box-shadow:none;padding:18mm}nav{display:none}}
+  </style>
+</head>
+<body>
+<main class="stage"><div class="scene">
+  <section class="slide image-cover"><div class="eyebrow">P22 · MI TIENDA SOSTENIBLE</div><h1>¿Cuándo se convierte en residuo?</h1><p class="lead">Un equipo que entra en la tienda puede tener varios destinos. Hoy decidiremos cuál corresponde a cada caso.</p><p class="question">¿Un ordenador averiado es siempre un residuo?</p></section>
+  <section class="slide"><div class="eyebrow">P22 · SITUACIÓN INICIAL · 5 MIN</div><h2>¿Cuáles son residuos?</h2><ul class="line-list"><li><b>Portátil 1:</b> funciona, pero va lento. La clienta quiere repararlo.</li><li><b>Portátil 2:</b> su propietario ha decidido desecharlo.</li><li><b>Caja de cartón:</b> ha llegado con un repuesto. La tienda aún no ha decidido qué hacer con ella.</li></ul><p class="question">¿Es residuo cada uno? Explica por qué. Si te falta un dato, di cuál.</p></section>
+  <section class="slide definition-slide"><div class="eyebrow">LA PRIMERA DECISIÓN</div><h2>¿Qué es un residuo?</h2><p class="large">Es un objeto o sustancia que su poseedor <b>desecha</b>, quiere desechar o debe desechar.</p><p class="acronym"><b>RAEE</b> = <b>Residuos de Aparatos Eléctricos y Electrónicos</b>.</p><p class="question">¿El cliente lo entrega para otro uso o para desecharlo?</p><p class="source">Definición legal: <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2022-5809">Ley 7/2022, artículo 2</a>.</p></section>
+  <section class="slide actor-slide"><div class="eyebrow">CLIENTE Y TIENDA</div><h2>¿Cómo entrega el equipo?</h2><div class="actor-case"><h3>Lo cede para otro uso</h3><p>El cliente ya no lo quiere, pero acuerda que la tienda reutilice un aparato aprovechable. La tienda puede guardarlo como usado para darle otro uso o emplear piezas funcionales en reparaciones.</p></div><div class="actor-case"><h3>Lo entrega como residuo</h3><p>El cliente decide desecharlo. Aunque la tienda vea piezas útiles, sigue siendo RAEE. Preparar esos componentes para reutilizarlos corresponde a gestores autorizados.</p></div><p class="source">Referencia: <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-1762">Real Decreto 110/2015, artículos 3, 13 y 30</a>.</p></section>
+  <section class="slide"><div class="eyebrow">APARATOS DE LA TIENDA</div><h2>Usado y RAEE</h2><ul class="line-list"><li><b>Aparato usado:</b> se entrega para un uso posterior real.</li><li><b>RAEE:</b> aparato eléctrico o electrónico entregado como residuo.</li><li>Guardarlo para piezas no cambia por sí solo la condición de RAEE.</li></ul><p class="source">Distinción basada en <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-1762">Real Decreto 110/2015, artículos 3, 13 y 30</a>.</p></section>
+  <section class="slide"><div class="eyebrow">PRIORIDAD</div><h2>Primero, evitar el residuo</h2><div class="flow"><span>1. Prevenir <small>Comprar lo necesario, cuidar y reparar.</small></span><span>2. Preparar para reutilizar <small>Cuando ya es residuo, gestores autorizados valoran si puede volver a usarse.</small></span><span>3. Reciclar <small>Recuperar materiales cuando no puede reutilizarse.</small></span></div><p class="source">Orden de prioridad: <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2022-5809">Ley 7/2022, artículo 8</a>. La jerarquía continúa con otras formas de valorización y eliminación.</p></section>
+  <section class="slide"><div class="eyebrow">TARJETAS · TRABAJO EN PAREJAS</div><h2>Decidid qué haría la tienda</h2><ul class="line-list"><li>¿El objeto ya es un residuo? ¿Qué dato del caso lo indica?</li><li>¿Cuál es la mejor acción posible ahora?</li><li>¿En qué lugar lo dejaríais temporalmente?</li><li>¿Qué explicación daríais al cliente?</li></ul><p class="question">Anotad una decisión y una razón por tarjeta. Después contrastaremos los seis casos.</p></section>
+  <section class="slide"><div class="eyebrow">IDEAS PARA EL PLANO</div><h2>Destinos posibles</h2><ul class="line-list"><li>Cuatro mínimos: diagnóstico, uso posterior, RAEE y pilas o baterías.</li><li>Para E y F podríais pensar en cartón descartado o equipos reparados listos para entregar.</li><li>También podéis proponer otros lugares si responden a una necesidad de vuestra tienda.</li></ul><p class="question">Elegid dos propuestas propias, situadlas en el plano y justificadlas.</p></section>
+  <section class="slide"><div class="eyebrow">F22 · TU PROYECTO</div><h2>Organiza tu tienda</h2><ul class="line-list"><li>Recupera el plano con tus tres zonas: Atención, Taller y Almacén/RAEE.</li><li>Sitúa los cuatro destinos dados en la ficha.</li><li>Decide otros dos lugares, completa E y F y márcalos en el plano.</li><li>Propón una medida para prevenir residuos y otra para separarlos.</li></ul><p class="question">¿Cómo organizarías tu tienda para que cada objeto tenga un destino claro?</p></section>
+</div></main><nav><button id="prev" type="button">Anterior</button><span id="counter"></span><button id="next" type="button">Siguiente</button></nav>
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const counter = document.getElementById('counter');
+  const textSelector = '.eyebrow,h1,h2,h3,p,li,.flow,.flow small';
+  let current = 0;
+  let fitFrame = 0;
+
+  function fitSlide(slide) {
+    if (!slide || !slide.classList.contains('active')) return;
+    const elements = [...slide.querySelectorAll(textSelector)];
+    elements.forEach(element => element.style.removeProperty('font-size'));
+    const baseSizes = elements.map(element => parseFloat(getComputedStyle(element).fontSize));
+    const setScale = scale => elements.forEach((element, index) => {
+      element.style.fontSize = `${baseSizes[index] * scale}px`;
+    });
+    const fits = scale => {
+      setScale(scale);
+      return slide.scrollHeight <= slide.clientHeight + 1 &&
+             slide.scrollWidth <= slide.clientWidth + 1;
+    };
+
+    // Ajusta cada diapositiva al espacio disponible sin recortar contenido.
+    let lower = 0.45;
+    let upper = slide.classList.contains('image-cover') ? 1.12 : 1.30;
+    if (fits(upper)) return;
+    if (!fits(lower)) {
+      setScale(lower);
+      return;
+    }
+    for (let i = 0; i < 14; i++) {
+      const middle = (lower + upper) / 2;
+      if (fits(middle)) lower = middle;
+      else upper = middle;
+    }
+    setScale(Math.max(0.45, lower - 0.005));
+  }
+
+  function scheduleFit() {
+    cancelAnimationFrame(fitFrame);
+    fitFrame = requestAnimationFrame(() => fitSlide(slides[current]));
+  }
+
+  function show(index) {
+    current = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach((slide, position) => {
+      slide.classList.toggle('active', position === current);
+      slide.setAttribute('aria-hidden', String(position !== current));
+    });
+    counter.textContent = `${current + 1} / ${slides.length}`;
+    prev.disabled = current === 0;
+    next.disabled = current === slides.length - 1;
+    scheduleFit();
+  }
+
+  prev.onclick = () => show(current - 1);
+  next.onclick = () => show(current + 1);
+  document.addEventListener('keydown', event => {
+    if (['ArrowRight', 'PageDown', ' '].includes(event.key)) {
+      event.preventDefault();
+      show(current + 1);
+    }
+    if (['ArrowLeft', 'PageUp'].includes(event.key)) {
+      event.preventDefault();
+      show(current - 1);
+    }
+  });
+  window.addEventListener('resize', scheduleFit);
+  window.addEventListener('beforeprint', () => {
+    slides.forEach(slide => slide.querySelectorAll(textSelector).forEach(element => {
+      element.style.removeProperty('font-size');
+    }));
+  });
+  window.addEventListener('afterprint', scheduleFit);
+  show(0);
+</script>
+</body></html>
