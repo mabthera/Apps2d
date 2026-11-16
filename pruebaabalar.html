@@ -87,12 +87,26 @@
 
     button:hover { background: #0e5636; }
 
-    #aviso {
-      margin: 0.65rem 0 0;
-      color: #476657;
-      font-size: 0.9rem;
+    button:disabled { opacity: 0.65; cursor: wait; }
+
+    #estado {
+      margin: 0;
       line-height: 1.45;
     }
+
+    #estado:not(:empty) {
+      margin-top: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: 0.65rem;
+      background: #e8f2e8;
+    }
+
+    #estado[data-tipo="error"] {
+      color: #762617;
+      background: #fff1e8;
+    }
+
+    #estado[data-tipo="exito"] { font-weight: 700; }
   </style>
 </head>
 <body>
@@ -101,27 +115,59 @@
       <h1>Encuesta ficticia</h1>
       <p>Usa un alias inventado y escribe una actividad de ejemplo.</p>
     </header>
-    <form
-      action="https://boxabalar.edu.xunta.gal/ocs/v2.php/apps/forms/api/v3/forms/9185/submissions?format=json"
-      method="post"
-      target="_blank"
-      rel="noopener"
-    >
-      <input type="hidden" name="shareHash" value="fxe7emotNGkTJkiicpzrsnWE">
+    <form id="encuesta" action="https://pruebaabalar-envios.flowerymarmalade4.chatgpt.site/enviar" method="post">
       <div>
         <label for="alias">Alias ficticio</label>
-        <input type="text" id="alias" name="answers[85413][]" placeholder="Ejemplo: Lince-01" autocomplete="off" maxlength="80" pattern=".*\S.*" required>
+        <input type="text" id="alias" name="alias" placeholder="Ejemplo: Lince-01" autocomplete="off" maxlength="80" pattern=".*\S.*" required>
       </div>
       <div>
         <label for="actividad">Actividad favorita</label>
-        <input type="text" id="actividad" name="answers[85414][]" placeholder="Ejemplo: Huerto escolar" autocomplete="off" maxlength="140" pattern=".*\S.*" required>
+        <input type="text" id="actividad" name="actividad" placeholder="Ejemplo: Huerto escolar" autocomplete="off" maxlength="140" pattern=".*\S.*" required>
       </div>
       <div>
-        <button type="submit" aria-describedby="aviso">Enviar respuesta</button>
-        <p id="aviso">BoxAbalar abre el resultado del envío en otra pestaña.</p>
+        <button type="submit" disabled>Enviar respuesta</button>
+        <p id="estado" role="status"></p>
+        <noscript><p>Activa JavaScript para enviar tu respuesta.</p></noscript>
       </div>
     </form>
   </main>
+  <script>
+    const formulario = document.getElementById('encuesta');
+    const boton = formulario.querySelector('button');
+    const estado = document.getElementById('estado');
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      if (boton.disabled) return;
+
+      boton.disabled = true;
+      estado.dataset.tipo = 'pendiente';
+      estado.textContent = 'Enviando tu respuesta…';
+      const campos = new FormData(formulario);
+
+      try {
+        const respuesta = await fetch(formulario.action, {
+          method: 'POST',
+          credentials: 'omit',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ alias: campos.get('alias'), actividad: campos.get('actividad') }),
+        });
+        const resultado = await respuesta.json();
+        if (respuesta.status !== 201 || resultado.ok !== true) throw new Error('Envío sin confirmar');
+
+        formulario.reset();
+        estado.dataset.tipo = 'exito';
+        estado.textContent = 'Gracias. Tu respuesta se ha guardado.';
+      } catch {
+        estado.dataset.tipo = 'error';
+        estado.textContent = 'No pudimos confirmar el envío. Si necesitas ayuda, avisa al docente.';
+      } finally {
+        boton.disabled = false;
+      }
+    });
+
+    boton.disabled = false;
+  </script>
 </body>
 </html>
 
