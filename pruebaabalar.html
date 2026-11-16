@@ -3,58 +3,125 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#163e29">
   <title>pruebaabalar · Encuesta ficticia</title>
   <style>
     :root {
       color-scheme: light;
-      font-family: "Atkinson Hyperlegible Next", system-ui, sans-serif;
-      color: #162938;
-      background: #edf4f5;
+      font-family: "DM Sans", system-ui, sans-serif;
+      color: #163e29;
+      background: #e8f2e8;
     }
 
-    body { margin: 0; }
-    main { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1rem; }
-    h1 { margin: 0; font-size: clamp(1.8rem, 6vw, 2.8rem); }
-    p { line-height: 1.5; }
-    iframe {
-      display: block;
-      width: 100%;
-      height: 690px;
-      box-sizing: border-box;
-      border: 1px solid #b8cad1;
-      border-radius: 1rem;
-      background: white;
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: clamp(1rem, 5vw, 4rem) 1rem;
+      background: radial-gradient(ellipse at 20% 0%, #c7e6cf, transparent 65%), #e8f2e8;
     }
-    a { color: #00596a; text-underline-offset: 0.2em; }
-    a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    main {
+      max-width: 35rem;
+      margin-inline: auto;
+      overflow: hidden;
+      border: 1px solid #b9d2be;
+      border-radius: 1.4rem;
+      background: #fbfdf9;
+      box-shadow: 0 1.25rem 3rem #163e2917;
+    }
+
+    header {
+      padding: clamp(1.5rem, 5vw, 2.5rem);
+      background: linear-gradient(115deg, #163e29, #226142);
+      color: #fff;
+    }
+
+    h1 {
+      margin: 0 0 0.6rem;
+      font-size: clamp(1.9rem, 7vw, 2.65rem);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    header p { margin: 0; color: #e0f3e4; line-height: 1.5; }
+
+    form {
+      display: grid;
+      gap: 1.35rem;
+      padding: clamp(1.5rem, 5vw, 2.5rem);
+    }
+
+    label { display: block; margin-bottom: 0.45rem; font-weight: 700; }
+
+    input[type="text"] {
+      width: 100%;
+      min-height: 3.125rem;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid #739782;
+      border-radius: 0.65rem;
+      color: inherit;
+      background: #f2f8f1;
+      font: inherit;
+    }
+
+    input::placeholder { color: #557063; }
+
+    :is(button, input):focus-visible {
+      outline: 3px solid #136b45;
+      outline-offset: 3px;
+    }
+
+    button {
+      min-height: 3rem;
+      padding: 0.72rem 1.2rem;
+      border: 0;
+      border-radius: 0.65rem;
+      background: #136b45;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover { background: #0e5636; }
+
+    #aviso {
+      margin: 0.65rem 0 0;
+      color: #476657;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
   </style>
 </head>
 <body>
   <main>
-    <h1>Encuesta ficticia</h1>
-    <p>Usa un alias inventado y escribe una actividad de ejemplo.</p>
-    <iframe
-      id="encuesta"
-      title="Encuesta pruebaabalar en BoxAbalar"
-      src="https://boxabalar.edu.xunta.gal/index.php/apps/forms/embed/fxe7emotNGkTJkiicpzrsnWE"
-      referrerpolicy="strict-origin-when-cross-origin"
-    ></iframe>
-    <p><a href="https://boxabalar.edu.xunta.gal/index.php/apps/forms/embed/fxe7emotNGkTJkiicpzrsnWE">Abrir la encuesta en BoxAbalar</a></p>
+    <header>
+      <h1>Encuesta ficticia</h1>
+      <p>Usa un alias inventado y escribe una actividad de ejemplo.</p>
+    </header>
+    <form
+      action="https://boxabalar.edu.xunta.gal/ocs/v2.php/apps/forms/api/v3/forms/9185/submissions?format=json"
+      method="post"
+      target="_blank"
+      rel="noopener"
+    >
+      <input type="hidden" name="shareHash" value="fxe7emotNGkTJkiicpzrsnWE">
+      <div>
+        <label for="alias">Alias ficticio</label>
+        <input type="text" id="alias" name="answers[85413][]" placeholder="Ejemplo: Lince-01" autocomplete="off" maxlength="80" pattern=".*\S.*" required>
+      </div>
+      <div>
+        <label for="actividad">Actividad favorita</label>
+        <input type="text" id="actividad" name="answers[85414][]" placeholder="Ejemplo: Huerto escolar" autocomplete="off" maxlength="140" pattern=".*\S.*" required>
+      </div>
+      <div>
+        <button type="submit" aria-describedby="aviso">Enviar respuesta</button>
+        <p id="aviso">BoxAbalar abre el resultado del envío en otra pestaña.</p>
+      </div>
+    </form>
   </main>
-  <script>
-    const encuesta = document.getElementById('encuesta');
-    const origen = new URL(encuesta.src).origin;
-
-    window.addEventListener('message', (evento) => {
-      if (evento.origin !== origen || evento.source !== encuesta.contentWindow) return;
-      if (evento.data?.type !== 'resize-iframe') return;
-
-      const altura = evento.data.payload?.height;
-      if (Number.isFinite(altura) && altura > 0) {
-        encuesta.style.height = `${Math.min(1400, Math.max(460, Math.ceil(altura) + 12))}px`;
-      }
-    });
-  </script>
 </body>
 </html>
 
