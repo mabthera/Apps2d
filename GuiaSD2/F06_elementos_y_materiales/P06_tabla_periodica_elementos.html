@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P06 · Elementos en los materiales · CIMATEX</title>
+<style>
+:root{--navy:#17324d;--blue:#176b87;--teal:#2a817b;--ink:#202b36;--muted:#586875;--line:#b9c5cc;--paper:#fff;--pale:#f1f6f8}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#e7ecef}
+.toolbar{height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 22px;background:var(--navy);color:#fff}
+.identity{font-size:14px;font-weight:800;letter-spacing:.08em;white-space:nowrap}.identity span{font-weight:400;opacity:.8;letter-spacing:.03em}
+.controls{display:flex;align-items:center;gap:8px}.controls button{height:34px;padding:0 13px;border:1px solid #ffffff55;border-radius:4px;background:#246f87;color:#fff;font-size:14px;font-weight:700;cursor:pointer}.controls button:hover{background:#31859b}.counter{min-width:58px;text-align:center;font-size:13px;font-weight:700}
+.progress{height:3px;background:#dce3e7}.progress span{display:block;height:100%;width:12.5%;background:#59b1aa;transition:width .2s}
+.stage{height:calc(100% - 57px);display:grid;place-items:center;padding:14px}
+.slide{display:none;width:min(1600px,96vw,calc(177.78vh - 150px));aspect-ratio:16/9;overflow:hidden;background:var(--paper);padding:4% 5%;border-top:7px solid var(--teal);box-shadow:0 8px 32px #172b3b20}
+.slide.active{display:flex;flex-direction:column}.slide-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.3%}
+.eyebrow{font-size:clamp(12px,1vw,17px);text-transform:uppercase;letter-spacing:.13em;color:var(--teal);font-weight:800}.section-no{font-size:clamp(12px,1vw,16px);font-weight:700;color:var(--muted)}
+h1{font-size:clamp(32px,3.8vw,60px);line-height:1.04;letter-spacing:-.04em;color:var(--navy);margin:0 0 1.7%}h2{font-size:clamp(19px,1.7vw,27px);color:var(--navy);margin:0 0 1%}
+.content{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;font-size:clamp(17px,1.45vw,23px);line-height:1.28}
+.grid{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4%;height:100%}.card{padding:2.4%;border:1px solid var(--line);border-radius:5px;background:#fff}.card p{margin:.5em 0}
+.question{margin-top:1.8%;padding:1.8% 2.4%;border-left:6px solid var(--blue);background:var(--pale);font-size:clamp(19px,1.7vw,26px)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:2%}.tile{padding:4%;background:#f1f4f6;border:1px solid var(--line);border-radius:5px}.tile b{display:block;color:var(--teal);margin-bottom:.45em}
+.photo{width:100%;max-height:440px;object-fit:contain;background:#f2f4f5}.caption{font-size:.8em;color:var(--muted);margin-top:.4em}
+.element-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 18px;margin:1% 0}.element{padding:12px 14px;background:#f1f4f6;border-bottom:4px solid var(--teal);font-weight:700}.element small{display:block;font-size:.72em;color:var(--muted);font-weight:400;margin-top:3px}
+.periodic-sample{display:grid;grid-template-columns:75px 1fr;grid-template-rows:auto auto auto;gap:2px 12px;width:270px;padding:15px;border:2px solid var(--blue);background:#f7fbfc;text-align:center}.periodic-sample .z{grid-column:1;grid-row:1;font-size:20px;text-align:left;color:var(--muted)}.periodic-sample .sym{grid-column:1 / 3;grid-row:2;font-size:64px;font-weight:800;color:var(--navy);line-height:1}.periodic-sample .name{grid-column:1 / 3;grid-row:3;font-size:20px}.periodic-sample .pos{grid-column:2;grid-row:1;text-align:right;font-size:15px;color:var(--muted)}
+.fact{font-size:1.12em;color:var(--navy);font-weight:700}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2%;margin:1.5% 0}.step{padding:3%;border-left:5px solid var(--teal);background:#f1f4f6}.step b{display:block;color:var(--navy);margin-bottom:.4em}.footer{position:fixed;bottom:3px;right:14px;color:#64748b;font-size:10px}
+.carbon-model{width:330px;max-width:100%;height:auto}.material-list{display:grid;grid-template-columns:1fr 1fr;gap:2%}.material-list div{padding:2.2% 2.8%;border-left:5px solid var(--blue);background:#f5f8fa}.muted{color:var(--muted)}
+@media(max-width:720px){.identity span,.hint{display:none}.slide{width:96vw;padding:4%}.content{font-size:15px}h1{font-size:30px}.grid{gap:2%}.controls button{padding:0 8px}.photo{max-height:300px}.element-list{gap:5px}.element{padding:8px}}
+</style>
+</head>
+<body>
+<header class="toolbar"><div class="identity">CIMATEX <span>· CIENCIAS APLICADAS II</span></div><nav class="controls" aria-label="Navegación de diapositivas"><button id="prev" aria-label="Diapositiva anterior">←</button><span class="counter" id="counter">1 / 8</span><button id="next" aria-label="Diapositiva siguiente">→</button><button id="full">Pantalla completa</button></nav></header>
+<div class="progress"><span id="progress"></span></div>
+<main class="stage">
+  <section class="slide active">
+    <div class="slide-head"><span class="eyebrow">Sesión 6</span><span class="section-no">F06</span></div>
+    <h1>De los materiales a los elementos</h1>
+    <div class="content"><p class="fact">¿Qué encontramos en la tabla periódica cuando miramos dentro de un material?</p><p>Hoy localizaremos siete elementos, los relacionaremos con objetos de F04 y representaremos electrones con dibujos sencillos de puntos.</p><div class="question">Necesitarás F06, una tabla periódica y lápices de dos colores.</div></div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-head"><span class="eyebrow">Conectamos · F04 y F05</span><span class="section-no">De lo visible al modelo</span></div>
+    <h1>Lo que vemos no cuenta toda la composición</h1>
+    <div class="content"><div class="grid"><div><img class="photo" src="../F04_observacion_propiedades/objetos_propiedades.jpg" alt="Linterna y materiales observados en F04"><p class="caption">Fotografías de observación de F04</p></div><div><p>En F04 describimos propiedades visibles. En F05 representamos la materia con partículas.</p><p>Ahora distinguimos <b>material</b> y <b>elemento</b>: una pieza puede contener varios elementos.</p><div class="question">La imagen permite observar el aspecto, pero no confirma por sí sola de qué está hecha cada pieza.</div></div></div></div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-head"><span class="eyebrow">Aprendemos · La tabla periódica</span><span class="section-no">Nombre · símbolo · posición</span></div>
+    <h1>Leemos una casilla</h1>
+    <div class="content"><div class="grid"><div class="periodic-sample"><span class="z">6</span><span class="pos">Grupo 14<br>Período 2</span><span class="sym">C</span><span class="name">Carbono</span></div><div><p><b>Símbolo:</b> abreviatura del elemento.</p><p><b>Número atómico:</b> número de protones. En un átomo neutro, también indica el número de electrones.</p><p><b>Grupo:</b> columna.<br><b>Período:</b> fila.</p></div></div></div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-head"><span class="eyebrow">Ejemplo · Carbono</span><span class="section-no">Número atómico 6</span></div>
+    <h1>Del número atómico a los puntos</h1>
+    <div class="content"><div class="grid"><svg class="carbon-model" viewBox="0 0 240 220" role="img" aria-label="Dibujo sencillo del carbono: dos electrones en la primera capa y cuatro en la segunda"><circle cx="120" cy="110" r="43" fill="none" stroke="#586875" stroke-width="3"/><circle cx="120" cy="110" r="88" fill="none" stroke="#586875" stroke-width="3"/><circle cx="120" cy="110" r="23" fill="#e8f2f6" stroke="#176b87" stroke-width="2"/><text x="120" y="118" text-anchor="middle" font-size="23" font-weight="bold" fill="#17324d">C</text><g fill="#176b87" stroke="white" stroke-width="2"><circle cx="120" cy="67" r="7"/><circle cx="120" cy="153" r="7"/><circle cx="32" cy="110" r="7"/><circle cx="208" cy="110" r="7"/><circle cx="120" cy="22" r="7"/><circle cx="120" cy="198" r="7"/></g></svg><div><p><b>Carbono · número atómico 6</b></p><p>El átomo neutro tiene seis electrones: colocamos dos en la primera capa y los cuatro restantes en la segunda.</p><p class="muted">En F06 las capas ya están dibujadas. Añade los puntos que faltan.</p></div></div></div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-head"><span class="eyebrow">Exploramos · Búsqueda individual</span><span class="section-no">Siete elementos</span></div>
+    <h1>Localiza estos elementos</h1>
+    <div class="content"><div class="element-list"><div class="element">Hidrógeno<small>F06: símbolo, Z, grupo y período</small></div><div class="element">Carbono<small>F06: símbolo, Z, grupo y período</small></div><div class="element">Oxígeno<small>F06: símbolo, Z, grupo y período</small></div><div class="element">Aluminio<small>F06: símbolo, Z, grupo y período</small></div><div class="element">Silicio<small>F06: símbolo, Z, grupo y período</small></div><div class="element">Hierro<small>F06: símbolo, Z, grupo y período</small></div><div class="element">Cobre<small>F06: símbolo, Z, grupo y período</small></div></div><div class="question">Usa la tabla periódica para completar la primera parte de F06. Trabaja en tu ficha; puedes consultar la tabla proyectada.</div></div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-head"><span class="eyebrow">Relacionamos · Elementos y materiales</span><span class="section-no">F04 → F06</span></div>
+    <h1>Un material puede reunir varios elementos</h1>
+    <div class="content"><div class="material-list"><div><b>Vidrio común</b><br>Se basa habitualmente en sílice: silicio y oxígeno.</div><div><b>Acero</b><br>Está formado principalmente por hierro; contiene carbono y puede incluir otros elementos.</div><div><b>Muchos plásticos</b><br>Contienen carbono e hidrógeno; la composición depende del polímero.</div><div><b>Aro metálico de la linterna</b><br>Podría ser de distintos metales o aleaciones. La foto no confirma cuál.</div></div><div class="question">Completa la tabla de F06. Anota qué relación es habitual y qué necesitarías confirmar con una ficha del material.</div></div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-head"><span class="eyebrow">Representamos · Dibujo por puntos</span><span class="section-no">Modelo sencillo por capas</span></div>
+    <h1>Completa las capas de F06</h1>
+    <div class="content"><p class="fact">No dibujes el átomo desde cero: coloca puntos en las capas ya impresas.</p><div class="steps"><div class="step"><b>1 · Cuenta</b>En el átomo neutro, el número total de puntos es el número atómico.</div><div class="step"><b>2 · Primera capa</b>Coloca hasta 2 electrones.</div><div class="step"><b>3 · Segunda y tercera</b>Hasta 8 en la segunda. Para los elementos de esta ficha, hasta 8 en la tercera. Rellena desde dentro hacia fuera.</div></div><p>Usa el ejemplo del carbono y completa los dibujos de hidrógeno, oxígeno, aluminio y silicio.</p><p class="muted">Localiza y relaciona también hierro y cobre en la tabla periódica.</p></div>
+  </section>
+
+  <section class="slide">
+    <div class="slide-head"><span class="eyebrow">Cierre · Compruebo mi modelo</span><span class="section-no">F06</span></div>
+    <h1>¿Qué relación me llevo?</h1>
+    <div class="content"><div class="three"><div class="tile"><b>Elemento</b>Comprueba que símbolo y número atómico coinciden con la tabla.</div><div class="tile"><b>Material</b>Recuerda que una pieza puede contener varios elementos.</div><div class="tile"><b>Dibujo</b>Cuenta los puntos: deben sumar el número atómico.</div></div><div class="question">Termina en F06: «Relaciono __________ con __________ porque…». Si la composición no está confirmada, escribe qué dato te falta.</div></div>
+  </section>
+</main>
+<div class="footer">P06 · Sesión 6 · Usa las flechas o las teclas ← y →</div>
+<script>
+(()=>{const slides=[...document.querySelectorAll('.slide')],counter=document.getElementById('counter'),bar=document.getElementById('progress');let i=0;function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,j)=>s.classList.toggle('active',j===i));counter.textContent=(i+1)+' / '+slides.length;bar.style.width=((i+1)/slides.length*100)+'%'}document.getElementById('prev').onclick=()=>show(i-1);document.getElementById('next').onclick=()=>show(i+1);document.getElementById('full').onclick=async()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.();document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(i+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}if(e.key==='f'||e.key==='F')document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.()})})();
+</script>
+</body>
+</html>

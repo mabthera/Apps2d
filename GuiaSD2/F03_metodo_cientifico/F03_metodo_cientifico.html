@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>F03 · Investigo con método · SDA 02</title>
+  <style>
+    :root{--navy:#0f172a;--blue:#075985;--teal:#0f766e;--ink:#172033;--muted:#526176;--line:#aebdca;--pale:#f5f8fa;--sans:Arial,Helvetica,sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0;background:#e9edf1;color:var(--ink);font:10pt/1.32 var(--sans)}
+    .toolbar{position:sticky;top:0;z-index:3;background:var(--navy);color:#fff;display:flex;justify-content:center;align-items:center;gap:14px;padding:10px;font-size:14px}
+    .toolbar button{border:0;border-radius:4px;padding:9px 16px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}
+    .page{width:210mm;height:297mm;margin:18px auto;background:#fff;padding:9mm 12mm;box-shadow:0 6px 22px #17203324;overflow:hidden;position:relative;break-after:page;page-break-after:always}
+    .page:last-child{break-after:auto;page-break-after:auto}
+    .topline{height:12mm;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid var(--navy);padding-bottom:2mm}
+    .brand{display:flex;gap:3mm;align-items:center}.sigil{width:9mm;height:9mm;border:1px solid #cbd5e1;background:#eef1f4;color:var(--navy);border-radius:50%;display:grid;place-items:center;font-size:7.5pt;font-weight:800}
+    .brandtext{font-size:8pt;line-height:1.2;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.brandtext strong{display:block;color:var(--navy);font-size:9pt;letter-spacing:.1em}
+    .code{color:var(--blue);font-size:18pt;font-weight:800;letter-spacing:.03em}.title-row{display:flex;justify-content:space-between;align-items:end;gap:4mm;margin:3mm 0 2mm}
+    h1{margin:0;color:var(--navy);font-size:20pt;line-height:1.05;letter-spacing:-.03em}.side{font-size:8pt;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;text-align:right;white-space:nowrap}
+    .identity{display:grid;grid-template-columns:2fr .7fr 1fr;gap:4mm;margin:2mm 0 2.5mm}.field{border-bottom:1px solid var(--line);height:7mm;display:flex;align-items:end;padding-bottom:1mm;color:var(--muted);font-size:7.5pt;text-transform:uppercase;letter-spacing:.06em}
+    .brief{background:#fff;border:1px solid #cbd5e1;border-left:1.5mm solid var(--blue);padding:2.4mm 3mm;margin:1.5mm 0 2.5mm;font-size:9pt;color:#334155}.brief strong{color:var(--navy)}.brief p{margin:1mm 0 0}.gloss{font-size:8pt;color:var(--muted)}
+    .section{margin:2.4mm 0 3mm;break-inside:avoid}.section-head{display:flex;align-items:center;gap:2mm;margin-bottom:1.2mm}.num{width:6.5mm;height:6.5mm;border-radius:50%;border:1px solid #cbd5e1;background:#e8ecef;color:var(--navy);display:grid;place-items:center;font-size:8.5pt;font-weight:800;flex:none}h2{font-size:10.5pt;line-height:1.15;color:var(--navy);margin:0}h3{font-size:8pt;color:var(--teal);margin:0 0 .7mm;text-transform:uppercase;letter-spacing:.04em}
+    .prompt{font-size:9pt;color:#334155;margin:1mm 0}.small{font-size:7.6pt;color:var(--muted)}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm}.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:2mm}
+    .scenario{display:grid;grid-template-columns:1fr 1fr;gap:2mm;border:1px solid var(--line);padding:1.5mm 2mm;background:#fff;margin:1mm 0 1.5mm}.plane-card{display:flex;align-items:center;gap:2mm;border:1px solid #d6dee4;background:#fafbfc;padding:1mm 1.5mm}.plane-svg{width:22mm;height:15mm;flex:none}.plane-name{font-size:8.5pt;font-weight:700;color:var(--navy)}.plane-detail{font-size:7.8pt;color:#526176}
+    .choice-list{display:grid;grid-template-columns:1fr;gap:1mm;margin:1mm 0}.choice{display:flex;gap:1.5mm;align-items:flex-start;font-size:8.8pt;color:#334155}.check{width:3.7mm;height:3.7mm;border:1px solid #64748b;flex:none;margin-top:.2mm;background:#fff}
+    .answerline{height:7mm;border-bottom:1px solid #bac7d2;margin:.2mm 0}.answerlines{height:15mm;background:repeating-linear-gradient(to bottom,transparent 0,transparent 5.5mm,#cbd5e1 5.5mm,#cbd5e1 5.7mm);margin:.5mm 0}.answerlines.tall{height:19mm}.answerbox{border:1px solid var(--line);border-radius:1mm;padding:1.5mm 2mm;background:#fff}
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:1mm 2mm;margin:1.2mm 0}.phase-card{border:1px solid #d2dbe2;padding:1.2mm 1.5mm;border-radius:1mm;font-size:8.4pt;line-height:1.2;background:#fff;min-height:8mm}.phase-card b{display:inline-block;color:var(--blue);min-width:5mm}.sequence{display:grid;grid-template-columns:repeat(8,1fr);gap:1.4mm;margin-top:1.5mm}.seq-cell{height:7mm;border-bottom:1px solid #748493;text-align:center;color:#64748b;font-size:7.5pt;padding-top:1mm}.sequence-label{font-size:8.3pt;font-weight:700;color:var(--navy);margin-top:1mm}
+    .sentence{border:1px solid #cbd5e1;background:#f8fafb;padding:2mm 2.5mm;font-size:9pt;line-height:1.6}.blank{display:inline-block;min-width:28mm;border-bottom:1px solid #637381;height:5mm;vertical-align:bottom}.blank.wide{min-width:42mm}
+    .table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:8.7pt;margin:1mm 0}.table th{background:#eef1f3;color:var(--navy);text-align:left;border:1px solid var(--line);padding:1.3mm}.table td{border:1px solid var(--line);padding:1.4mm;vertical-align:top;height:10mm}.table td:first-child,.table th:first-child{width:26%}
+    .data-table{text-align:center}.data-table th:first-child,.data-table td:first-child{text-align:left}.data-table td{height:7.5mm}.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2mm;margin:1mm 0}.calc-card{border:1px solid var(--line);padding:1.5mm 2mm;background:#fff}.calc-card strong{font-size:8pt;color:var(--navy)}.calc-line{height:6mm;border-bottom:1px solid #9eacb7}
+    .quiz{border:1px solid var(--line);border-radius:1mm;padding:1.5mm 2mm;margin:1.3mm 0;background:#fff;break-inside:avoid}.quiz-title{font-weight:700;color:var(--navy);font-size:8.4pt;margin-bottom:1mm}.quiz-options{display:grid;grid-template-columns:repeat(3,1fr);gap:1mm 2mm}.quiz-option{font-size:7.8pt;color:#334155;display:flex;gap:1mm;align-items:flex-start}.letter{font-weight:700;color:var(--blue);min-width:3.5mm}
+    .footer{position:absolute;bottom:6mm;left:12mm;right:12mm;border-top:1px solid #d6dee7;padding-top:1.2mm;display:flex;justify-content:space-between;font-size:7.2pt;color:#64748b;letter-spacing:.02em}
+    @page{size:A4 portrait;margin:0}@media print{html,body{width:210mm;margin:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar{display:none!important}.page{width:210mm;height:297mm;margin:0;padding:9mm 12mm;box-shadow:none}}
+  </style>
+</head>
+<body>
+  <div class="toolbar"><span>F03 · Sesión 3 · una ficha A4 impresa a doble cara</span><button onclick="window.print()">Imprimir ficha</button><a href="guia.html" style="color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:8px 12px">Cómo hacerla</a></div>
+  <main>
+    <section class="page" aria-label="F03, anverso: plantear una investigación">
+      <header class="topline"><div class="brand"><div class="sigil">CX</div><div class="brandtext"><strong>CIMATEX</strong>Ciencias Aplicadas II · SDA 02</div></div><div class="code">F03</div></header>
+      <div class="title-row"><h1>Investigo con método</h1><div class="side">Sesión 3 · Anverso</div></div>
+      <div class="identity"><div class="field">Nombre y apellidos</div><div class="field">Grupo</div><div class="field">Fecha</div></div>
+      <div class="brief"><strong>Tu tarea:</strong> ordenar las fases de una investigación y aplicarlas a un caso nuevo. Los datos están preparados; no necesitas hacer un ensayo de laboratorio. Completa tu propia ficha: puedes pedir u ofrecer ayuda puntual.<p class="gloss"><b>Hipótesis:</b> predicción que se puede comprobar. <b>Dato:</b> medida u observación anotada.</p></div>
+
+      <section class="section">
+        <div class="section-head"><span class="num">1</span><h2>Ordena las fases del método científico</h2></div>
+        <p class="prompt">Lee las tarjetas. Escribe en la secuencia la letra de cada fase, desde el inicio hasta comunicar el resultado.</p>
+        <div class="cards">
+          <div class="phase-card"><b>A</b> Comunicar: presentar el proceso y el resultado.</div>
+          <div class="phase-card"><b>B</b> Probar: seguir un procedimiento para comprobar la idea.</div>
+          <div class="phase-card"><b>C</b> Concluir: responder a la pregunta usando los datos.</div>
+          <div class="phase-card"><b>D</b> Observar: fijarse en qué ocurre.</div>
+          <div class="phase-card"><b>E</b> Interpretar: comparar los datos y buscar patrones.</div>
+          <div class="phase-card"><b>F</b> Formular una hipótesis: anticipar qué pasará.</div>
+          <div class="phase-card"><b>G</b> Registrar datos: anotar lo observado o medido.</div>
+          <div class="phase-card"><b>H</b> Preguntar: decidir qué queremos averiguar.</div>
+        </div>
+        <div class="sequence-label">Orden correcto de trabajo</div>
+        <div class="sequence"><div class="seq-cell">1 · ___</div><div class="seq-cell">2 · ___</div><div class="seq-cell">3 · ___</div><div class="seq-cell">4 · ___</div><div class="seq-cell">5 · ___</div><div class="seq-cell">6 · ___</div><div class="seq-cell">7 · ___</div><div class="seq-cell">8 · ___</div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">2</span><h2>Observa el caso y elige una pregunta comprobable</h2></div>
+        <div class="scenario">
+          <div class="plane-card"><svg class="plane-svg" viewBox="0 0 100 70" role="img" aria-label="Vista superior de un avión de papel con alas de 4 centímetros de ancho"><path d="M50 5 L56 56 L50 64 L44 56 Z" fill="#dce5ea" stroke="#526176" stroke-width="1.8"/><path d="M45 27 L31 21 L23 38 L44 47 Z M55 27 L69 21 L77 38 L56 47 Z" fill="#e8edf1" stroke="#526176" stroke-width="1.8" stroke-linejoin="round"/></svg><div><div class="plane-name">Modelo A</div><div class="plane-detail">Ancho de alas: 4 cm</div></div></div>
+          <div class="plane-card"><svg class="plane-svg" viewBox="0 0 100 70" role="img" aria-label="Vista superior de un avión de papel con alas de 6 centímetros de ancho"><path d="M50 5 L56 56 L50 64 L44 56 Z" fill="#dce5ea" stroke="#526176" stroke-width="1.8"/><path d="M45 27 L16 18 L10 39 L44 47 Z M55 27 L84 18 L90 39 L56 47 Z" fill="#e8edf1" stroke="#526176" stroke-width="1.8" stroke-linejoin="round"/></svg><div><div class="plane-name">Modelo B</div><div class="plane-detail">Ancho de alas: 6 cm</div></div></div>
+          <p class="small" style="grid-column:1/-1;margin:0">Se usa el mismo tipo de papel y el mismo cuerpo. Los dos modelos se lanzan desde la misma línea y con el mismo procedimiento; solo cambia el ancho de las alas. Queremos medir la distancia recorrida hasta aterrizar.</p>
+        </div>
+        <div class="choice-list">
+          <div class="choice"><span class="check"></span><span><b>A.</b> ¿Cuál de los dos aviones es más bonito?</span></div>
+          <div class="choice"><span class="check"></span><span><b>B.</b> ¿Qué modelo recorre más distancia si se lanza desde la misma línea y con el mismo procedimiento?</span></div>
+          <div class="choice"><span class="check"></span><span><b>C.</b> ¿Por qué puede volar el papel?</span></div>
+        </div>
+        <div class="two-col">
+          <div class="prompt">«El modelo A tiene 4 cm de ancho de alas». ¿Dato del caso u opinión?<div class="answerline"></div></div>
+          <div class="prompt">«El modelo B llegará más lejos». ¿Dato u hipótesis?<div class="answerline"></div></div>
+        </div>
+        <p class="prompt"><b>La pregunta que elegiría:</b> explica brevemente qué se mediría.</p>
+        <div class="answerlines"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">3</span><h2>Escribe una hipótesis</h2></div>
+        <p class="prompt">Completa una predicción que responda a la pregunta anterior. Usa los datos que tenemos, no una opinión.</p>
+        <div class="sentence">Si el ancho de las alas es <span class="blank"></span>, entonces el avión recorrerá <span class="blank"></span> distancia que el otro modelo, porque <span class="blank wide"></span>.</div>
+        <p class="small" style="margin:1mm 0 0">La hipótesis se propone antes de comparar los resultados. Después veremos si los datos la apoyan.</p>
+      </section>
+      <footer class="footer"><span>FP Básica · IES de Teis · Curso 2026–2027</span><span>F03 · Anverso · Pregunta e hipótesis</span></footer>
+    </section>
+
+    <section class="page" aria-label="F03, reverso: comparar datos y concluir">
+      <header class="topline"><div class="brand"><div class="sigil">CX</div><div class="brandtext"><strong>CIMATEX</strong>Ciencias Aplicadas II · SDA 02</div></div><div class="code">F03</div></header>
+      <div class="title-row"><h1>Comparo y concluyo</h1><div class="side">Sesión 3 · Reverso</div></div>
+
+      <section class="section">
+        <div class="section-head"><span class="num">4</span><h2>Identifica qué se cambia y qué se mantiene</h2></div>
+        <p class="prompt">La prueba compara modelos A y B. Completa la tabla con la información del caso. <span class="small"><b>Variable:</b> algo que cambiamos, medimos o mantenemos igual.</span></p>
+        <table class="table"><thead><tr><th>En la comparación</th><th>Respuesta</th></tr></thead><tbody>
+          <tr><td>Lo que cambiamos</td><td></td></tr>
+          <tr><td>Lo que medimos (con unidad)</td><td></td></tr>
+          <tr><td>Dos cosas que mantenemos iguales</td><td></td></tr>
+        </tbody></table>
+        <div class="quiz"><div class="quiz-title">¿Cuál de estas opciones ayuda a que la comparación sea justa?</div><div class="quiz-options">
+          <div class="quiz-option"><span class="letter">A</span><span>Soltar ambos modelos desde la misma altura y sin empujarlos.</span></div>
+          <div class="quiz-option"><span class="letter">B</span><span>Cambiar a la vez las alas, el papel y la forma de lanzar.</span></div>
+          <div class="quiz-option"><span class="letter">C</span><span>Elegir solo el resultado que más nos gusta.</span></div>
+        </div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">5</span><h2>Lee los datos preparados</h2></div>
+        <p class="prompt">La distancia se mide desde la línea de lanzamiento hasta el punto donde aterriza el avión, en metros. Cada modelo se prueba tres veces.</p>
+        <table class="table data-table"><thead><tr><th>Modelo · ancho de alas</th><th>Prueba 1</th><th>Prueba 2</th><th>Prueba 3</th></tr></thead><tbody>
+          <tr><td>A · 4 cm</td><td>1,8 m</td><td>2,0 m</td><td>1,9 m</td></tr>
+          <tr><td>B · 6 cm</td><td>2,4 m</td><td>2,2 m</td><td>2,3 m</td></tr>
+        </tbody></table>
+        <p class="prompt"><b>Marca la distancia mayor de cada fila.</b> ¿Qué patrón ves al comparar las tres repeticiones?</p><div class="answerlines"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">6</span><h2>Escribe una conclusión con evidencia</h2></div>
+        <p class="prompt">¿Los resultados apoyan tu hipótesis? Completa la respuesta con un dato de la tabla.</p>
+        <div class="answerbox">
+          <p class="prompt"><b>Con estos datos, puedo concluir que…</b></p><div class="answerline"></div><div class="answerline"></div>
+          <p class="prompt"><b>La evidencia es…</b></p><div class="answerline"></div>
+          <p class="prompt"><b>No puedo asegurar que…</b></p><div class="answerline"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">7</span><h2>Compruebo lo que entendí</h2></div>
+        <div class="quiz"><div class="quiz-title">1. ¿Para qué repetimos cada prueba?</div><div class="quiz-options">
+          <div class="quiz-option"><span class="letter">A</span><span>Para comprobar si se repite un patrón y no depender de un único resultado.</span></div>
+          <div class="quiz-option"><span class="letter">B</span><span>Para poder borrar los resultados distintos.</span></div>
+          <div class="quiz-option"><span class="letter">C</span><span>Para cambiar la pregunta cuando queramos.</span></div>
+        </div></div>
+        <div class="quiz"><div class="quiz-title">2. Si los datos no apoyan la hipótesis, debemos…</div><div class="quiz-options">
+          <div class="quiz-option"><span class="letter">A</span><span>Esconder los datos que no encajan.</span></div>
+          <div class="quiz-option"><span class="letter">B</span><span>Contar los resultados y revisar nuestra explicación.</span></div>
+          <div class="quiz-option"><span class="letter">C</span><span>Afirmar que la hipótesis era correcta de todos modos.</span></div>
+        </div></div>
+      </section>
+      <footer class="footer"><span>Entrega F03 completa: anverso y reverso</span><span>F03 · Reverso · Datos y conclusión</span></footer>
+    </section>
+  </main>
+</body>
+</html>
+

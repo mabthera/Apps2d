@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F08 · Leo fórmulas y etiquetas · CIMATEX</title>
+<style>
+@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;background:#e9edf1;color:#172033;font:9pt/1.28 Arial,Helvetica,sans-serif}
+.toolbar{position:sticky;top:0;background:#17324d;text-align:center;padding:9px;z-index:2}.toolbar button{background:#176b87;color:#fff;border:0;border-radius:4px;padding:8px 15px;font-weight:bold;cursor:pointer}
+.page{width:210mm;height:297mm;margin:16px auto;padding:9mm 12mm;background:#fff;box-shadow:0 6px 22px #17203324;overflow:hidden;position:relative;page-break-after:always}.page:last-child{page-break-after:auto}.head{height:11mm;border-bottom:1.5px solid #0f172a;padding:1mm 0;display:flex;justify-content:space-between;align-items:center;color:#075985;font-weight:bold;letter-spacing:.06em}.id{margin:3mm 0;display:flex;gap:8mm}.line{border-bottom:1px solid #9aa8b5;display:inline-block;min-width:44mm;height:6mm}
+h1{font-size:20pt;line-height:1.1;margin:3mm 0}h2{font-size:12pt;margin:2.5mm 0 1mm}h3{font-size:10pt;margin:0 0 1mm;color:#075985}p{margin:1.5mm 0}.prompt{background:#f4f9fc;border-left:3px solid #075985;padding:2.2mm 3mm;margin:2mm 0 3mm}.small{font-size:9pt;color:#526176}.hint{background:#f7f8fa;border:1px solid #cbd5e1;padding:2mm 2.5mm;margin:1.5mm 0 2mm}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:2mm;margin:2mm 0}.rules div{border:1px solid #cbd5e1;background:#f5f8fa;padding:2mm 2.5mm}.example{display:grid;grid-template-columns:1fr 1fr;gap:3mm;align-items:center;border:1px solid #9aa8b5;background:#f8fafb;padding:3mm;margin:2mm 0}.formula{font-size:24pt;font-weight:bold;color:#17324d;letter-spacing:.03em}.bigformula{font-size:30pt;font-weight:800;color:#176b87}.example-count{display:grid;grid-template-columns:1fr 1fr;gap:1mm 3mm}.example-count span{padding:1.2mm 2mm;background:#fff;border-left:3px solid #2a817b}
+table{width:100%;border-collapse:collapse;font-size:9pt;margin:2mm 0}th,td{border:1px solid #9aa8b5;padding:1.4mm;text-align:left;vertical-align:top}th{background:#f0f3f6;color:#0f172a}td{height:20mm}.formulas th:first-child{width:13%}.formulas th:nth-child(2){width:22%}.formulas th:nth-child(3){width:23%}.formulas th:nth-child(4){width:19%}.formulas th:nth-child(5){width:23%}.formulas td{height:21mm}.sample-labels{display:grid;grid-template-columns:1fr 1fr;gap:3mm}.label-card{border:1px solid #9aa8b5;padding:3mm;background:#fff;min-height:53mm;position:relative}.label-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #cbd5e1;padding-bottom:1.5mm;margin-bottom:1.5mm}.label-name{font-size:11pt;font-weight:bold;color:#17324d}.label-value{font-size:15pt;font-weight:bold;color:#176b87}.write{height:13mm;border-bottom:1px solid #aab6c2;margin-top:1mm}.label-card .write{height:10mm}.two-cols{display:grid;grid-template-columns:1fr 1fr;gap:3mm}.response{border-bottom:1px solid #aab6c2;height:13mm;margin:1mm 0}.response.tall{height:18mm}.atom-tiles{display:flex;align-items:center;gap:4mm;margin:2mm 0}.atom-tile{border:1px solid #9aa8b5;background:#f6f8f9;border-radius:7px;padding:3mm;text-align:center;min-width:28mm}.atom-tile b{display:block;font-size:18pt;color:#176b87}.arrow{color:#2a817b;font-size:22pt;font-weight:bold}.exit{border:1px solid #9aa8b5;padding:2.5mm 3mm;margin-top:2mm}.footer{position:absolute;bottom:5mm;left:12mm;right:12mm;border-top:1px solid #cbd5e1;padding-top:1.5mm;color:#526176;font-size:9pt}
+.claim{border:1px solid #9aa8b5;background:#f8fafb;padding:2.5mm 3mm;margin:2mm 0}.formulas td{height:23mm}.label-card{min-height:70mm}.label-card .write{height:15mm}.extension-table td{height:26mm}.response.tall{height:22mm}.compound-bank{display:grid;grid-template-columns:1fr 1fr;gap:1.3mm 3mm;margin:1.5mm 0}.compound-bank div{border:1px solid #cbd5e1;background:#f5f8fa;padding:1.5mm 2mm;min-height:12mm}.research-table td{height:24mm}.research-table th:first-child{width:25%}.research-table th:nth-child(2){width:16%}.research-table th:nth-child(3){width:34%}.research-table th:nth-child(4){width:25%}
+@media print{html,body{background:#fff}.page{margin:0;box-shadow:none}.toolbar{display:none}}
+</style>
+</head>
+<body><div class="toolbar"><button onclick="window.print()">Imprimir / guardar como PDF</button><a href="guia.html" style="color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:8px 12px">Cómo hacerla</a></div><main>
+<section class="page">
+  <div class="head"><span>CIMATEX · CIENCIAS APLICADAS II</span><span>F08</span></div>
+  <h1>Leo fórmulas químicas</h1>
+  <div class="id">Nombre: <i class="line"></i> Fecha: <i class="line"></i></div>
+  <p class="prompt"><b>Reto:</b> interpreta qué elementos y cuántos átomos aparecen en una fórmula. La fórmula describe la composición de una sustancia; no indica por sí sola la masa de la muestra.</p>
+  <div class="rules"><div><b>1 · Lee el símbolo</b><br>Cada símbolo nombra un elemento. Respeta mayúsculas y minúsculas: C es carbono; Cl es cloro.</div><div><b>2 · Busca el subíndice</b><br>El número pequeño indica cuántos átomos de ese elemento hay. Si no aparece, cuenta 1.</div><div><b>3 · Cuenta los elementos</b><br>Un elemento tiene un solo tipo de átomo; un compuesto contiene dos o más elementos combinados.</div></div>
+  <h2>1 · Ejemplo guiado: H₂O</h2>
+  <div class="example"><div><div class="bigformula">H₂O</div><p>El 2 solo afecta al símbolo H. Como O no tiene subíndice, hay 1 átomo de oxígeno.</p></div><div class="example-count"><span><b>Elementos:</b> H y O (2)</span><span><b>Átomos:</b> 2 H + 1 O (3)</span><span><b>Tipo:</b> compuesto</span><span><b>Partícula:</b> molécula</span></div></div>
+  <h2>2 · Practico la lectura</h2>
+  <p class="small">Completa los elementos, el número de átomos de cada uno y el tipo de sustancia. En NaCl, indica la proporción de la fórmula: es una red iónica, no una molécula suelta.</p>
+  <table class="formulas"><thead><tr><th>Fórmula</th><th>Elementos que aparecen</th><th>Átomos de cada elemento</th><th>Elemento o compuesto</th><th>Molécula o red / unidad fórmula</th></tr></thead><tbody>
+    <tr><td><b>Cu</b></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td><b>O₂</b></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td><b>CH₄</b></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td><b>CO₂</b></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td><b>NaCl</b></td><td></td><td></td><td></td><td></td></tr>
+  </tbody></table>
+  <div class="hint"><b>Una precisión:</b> el cobre sólido forma una red metálica. La fórmula Cu identifica el elemento, pero no significa que el cobre esté formado por moléculas Cu aisladas.</div>
+  <div class="footer">SDA 02 · Sesión 8 · F08 · Cara 1 de 3</div>
+</section>
+
+<section class="page">
+  <div class="head"><span>CIMATEX · CIENCIAS APLICADAS II</span><span>F08</span></div>
+  <h1>Fórmula y cantidad son datos distintos</h1>
+  <p class="prompt">La fórmula indica de qué está hecha una sustancia y la proporción entre sus átomos o iones. La etiqueta puede indicar la cantidad de muestra: masa, volumen o cantidad de sustancia.</p>
+  <h2>3 · Leo etiquetas didácticas</h2>
+  <p class="small">En cada tarjeta, identifica qué dice la fórmula y qué cantidad y unidad aparecen. No necesitas hacer cálculos.</p>
+  <div class="sample-labels">
+    <div class="label-card"><div class="label-top"><span class="label-name">Cable de cobre</span><span class="label-value">Cu</span></div><p><b>Etiqueta:</b> masa de muestra · 25 g</p><p>¿Qué elemento indica la fórmula?</p><div class="write"></div><p>¿Qué mide 25 g?</p><div class="write"></div></div>
+    <div class="label-card"><div class="label-top"><span class="label-name">Sal común</span><span class="label-value">NaCl</span></div><p><b>Etiqueta:</b> masa neta · 20 g</p><p>¿Qué elementos y proporción indica la fórmula?</p><div class="write"></div><p>¿Qué mide 20 g?</p><div class="write"></div></div>
+    <div class="label-card"><div class="label-top"><span class="label-name">Agua</span><span class="label-value">H₂O</span></div><p><b>Etiqueta:</b> volumen · 500 mL</p><p>¿Qué elementos y cuántos átomos por molécula?</p><div class="write"></div><p>¿Qué mide 500 mL?</p><div class="write"></div></div>
+    <div class="label-card"><div class="label-top"><span class="label-name">Dióxido de carbono</span><span class="label-value">CO₂</span></div><p><b>Ficha de muestra:</b> cantidad · 0,25 mol</p><p>¿Qué elementos y cuántos átomos por molécula?</p><div class="write"></div><p>¿Qué magnitud se expresa en mol: masa, volumen o cantidad de sustancia?</p><div class="write"></div></div>
+  </div>
+  <h2>4 · Comparo</h2>
+  <div class="two-cols"><div class="claim"><b>La fórmula me informa de…</b><div class="response"></div></div><div class="claim"><b>La unidad g, mL o mol me informa de…</b><div class="response"></div></div></div>
+  <div class="hint"><b>Ojo:</b> 20 g es una masa; 500 mL es un volumen; 0,25 mol expresa cantidad de sustancia. No son unidades intercambiables.</div>
+  <div class="footer">SDA 02 · Sesión 8 · F08 · Cara 2 de 3</div>
+</section>
+
+<section class="page">
+  <div class="head"><span>CIMATEX · CIENCIAS APLICADAS II</span><span>F08</span></div>
+  <h1>Compruebo lo que interpreto</h1>
+  <p class="prompt">Usa los subíndices con cuidado. Distingue el número que forma parte de una fórmula del número que indica cuántas unidades hay.</p>
+  <h2>5 · Ampliación: subíndice y coeficiente</h2>
+  <div class="atom-tiles"><div class="atom-tile"><b>CO₂</b>1 unidad</div><span class="arrow">→</span><div class="atom-tile"><b>2 CO₂</b>2 unidades</div></div>
+  <table class="extension-table"><thead><tr><th>Expresión</th><th>Átomos de C en total</th><th>Átomos de O en total</th><th>Total de átomos</th></tr></thead><tbody><tr><td>CO₂</td><td></td><td></td><td></td></tr><tr><td>2 CO₂</td><td></td><td></td><td></td></tr></tbody></table>
+  <div class="hint"><b>Pista:</b> el subíndice 2 de CO₂ cuenta oxígenos en cada unidad. El coeficiente 2 delante multiplica todos los átomos de la fórmula.</div>
+  <h2>6 · Creo una etiqueta que pueda leerse</h2>
+  <p>Elige cobre (Cu), sal común (NaCl), agua (H₂O) o dióxido de carbono (CO₂). Inventa una cantidad razonable y una unidad. Después explica qué dato aporta la fórmula y cuál aporta la etiqueta.</p>
+  <div class="claim"><b>Mi etiqueta:</b> sustancia ____________________ · fórmula ____________________<br><br><b>Cantidad y unidad:</b> ________________________________________________<br><br><b>La fórmula indica:</b> ________________________________________________<br><br><b>La etiqueta indica:</b> _______________________________________________</div>
+  <h2>7 · Salida</h2>
+  <p>Completa: «En H₂O, el 2 indica ____________________. La fórmula no me dice ____________________.»</p>
+  <div class="response tall"></div><div class="response tall"></div>
+  <div class="footer">SDA 02 · Sesión 8 · F08 · Cara 3 de 3</div>
+</section>
+
+<section class="page">
+  <div class="head"><span>CIMATEX · CIENCIAS APLICADAS II</span><span>F08</span></div>
+  <h1>Investigo compuestos de los materiales</h1>
+  <p class="prompt"><b>Investigación abierta:</b> usa Internet para buscar la fórmula de los compuestos del banco. Elige cuatro y completa la tabla. Anota una fuente fiable para cada búsqueda.</p>
+  <h2>Banco de nombres · relacionados con el proyecto</h2>
+  <div class="compound-bank">
+    <div><b>Dióxido de silicio (sílice)</b> · componente principal de muchos vidrios.</div>
+    <div><b>Celulosa</b> · polímero presente en fibras de madera y papel.</div>
+    <div><b>Polietileno</b> · polímero posible en cubiertas o aislamientos plásticos.</div>
+    <div><b>Poliisopreno</b> · polímero principal del caucho natural de algunas gomas.</div>
+    <div><b>Óxido de hierro (III)</b> · referencia relacionada con la herrumbre; no representa toda la herrumbre real.</div>
+    <div><b>Óxido de aluminio</b> · alúmina, presente en materiales cerámicos y capas de óxido.</div>
+  </div>
+  <div class="hint"><b>Elige cuatro nombres.</b> Son referencias para investigar; no afirmamos que todos estén presentes en la linterna concreta. Si eliges un polímero, busca su unidad repetitiva. Si eliges un sólido de red, la fórmula indica la proporción de átomos, no una molécula aislada.</div>
+  <h2>8 · Busco, cuento y registro la fuente</h2>
+  <p class="small">Escribe el recuento por molécula, unidad fórmula o unidad repetitiva, según el caso. Para polímeros, indica qué significa <b>n</b> y cuenta los átomos de una unidad repetitiva. Prioriza bases químicas, universidades o fichas técnicas; anota el nombre del sitio o su dirección web.</p>
+  <table class="research-table"><thead><tr><th>Nombre elegido</th><th>Fórmula que encuentro</th><th>Número de átomos de cada tipo</th><th>Fuente consultada</th></tr></thead><tbody>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td><b>Otro compuesto:</b></td><td></td><td></td><td></td></tr>
+  </tbody></table>
+  <div class="hint"><b>Comprueba:</b> ¿tu fórmula incluye todos los elementos del nombre? ¿Has aplicado bien los subíndices? ¿Has contado por unidad repetitiva si aparece <b>n</b>?</div>
+  <div class="footer">SDA 02 · Sesión 8 · F08 · Cara 4 de 4</div>
+</section>
+</main></body></html>
+

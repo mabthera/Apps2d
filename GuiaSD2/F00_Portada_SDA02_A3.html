@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Carpeta de proyecto · SDA 02 · CIMATEX</title>
+  <style>
+    :root {
+      --navy-900:#0f172a; --navy-800:#1e293b; --navy-700:#334155;
+      --petrol-700:#0369a1; --petrol-100:#e0f2fe; --teal-700:#0f766e;
+      --paper:#fff; --canvas:#e8edf3; --ink:#172033; --muted:#526176;
+      --line:#b9c6d4; --soft:#f3f6f9; --gold:#d7a84b;
+      --sans:Arial, Helvetica, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--sans);line-height:1.38}
+    .toolbar{position:sticky;top:0;z-index:5;display:flex;justify-content:center;align-items:center;gap:16px;padding:10px;background:var(--navy-900);color:#fff;font-size:14px}
+    .toolbar button{border:0;border-radius:4px;padding:9px 16px;background:var(--petrol-700);color:#fff;font-weight:700;cursor:pointer}
+    .toolbar span{opacity:.86}
+    .sheet{width:420mm;height:297mm;margin:18px auto;background:var(--paper);display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;box-shadow:0 8px 28px #17203326;page:cover}
+    .panel{position:relative;min-width:0;height:297mm;padding:16mm 15mm 13mm}
+    .fold{position:absolute;z-index:3;top:9mm;bottom:9mm;left:50%;border-left:1px dashed #7890a8;pointer-events:none}
+    .fold span{position:absolute;top:50%;left:0;transform:translate(-50%,-50%) rotate(-90deg);background:#fff;color:#6b7d91;padding:3mm 2mm;font-size:7.5pt;letter-spacing:.18em;white-space:nowrap}
+    .eyebrow{font-size:9pt;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--petrol-700)}
+    .school{font-size:9pt;text-transform:uppercase;letter-spacing:.12em;color:#64748b;font-weight:700}
+    .mark{width:34mm;height:34mm;border:1.2mm solid #78c7c1;border-radius:50%;display:grid;place-items:center;color:white;font-weight:800;font-size:16pt;letter-spacing:.06em;position:relative;margin:16mm 0 13mm}
+    .mark:before,.mark:after{content:"";position:absolute;border:1px solid #78c7c1;border-radius:50%;inset:4mm}
+    .mark:after{inset:10mm;background:#78c7c1;border:0}
+    .mark span{position:relative;z-index:1;color:var(--navy-900);font-size:9pt}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:31pt;line-height:1.05;letter-spacing:-.04em;margin:4mm 0 5mm;color:var(--navy-900);max-width:175mm}
+    h2{font-size:19pt;line-height:1.12;letter-spacing:-.025em;color:var(--navy-900);margin-bottom:4mm}
+    h3{font-size:10pt;text-transform:uppercase;letter-spacing:.12em;color:var(--petrol-700);margin:0 0 2mm}
+    p{margin-bottom:3mm}
+    .outside-back{background:#fff;color:var(--ink);display:flex;flex-direction:column;justify-content:space-between}
+    .outside-back .rule{width:24mm;height:1.4mm;background:var(--petrol-700);margin:11mm 0 8mm}
+    .outside-back h2{color:var(--navy-900);font-size:22pt;max-width:160mm}
+    .outside-back p{font-size:9pt;color:#475569;max-width:175mm;margin-bottom:3mm}
+    .inventory-help{max-width:175mm}
+    .inventory-grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:3mm}
+    .inventory-row{height:8.6mm;display:grid;grid-template-columns:11mm 1fr 5mm;align-items:end;gap:1.5mm;font-size:7.5pt;color:#334155}
+    .inventory-code{font-weight:700;color:var(--petrol-700);padding-bottom:1mm}
+    .inventory-blank{height:6.2mm;border-bottom:1px solid #cbd5e1}
+    .inventory-check{width:3.5mm;height:3.5mm;border:1px solid #64748b;margin-bottom:1.2mm}
+    .back-note{border-top:1px solid var(--line);padding-top:3mm;font-size:8pt;color:#64748b}
+    .outside-front{background:#fff;color:var(--ink);display:flex;flex-direction:column;justify-content:space-between}
+    .outside-front:after{content:"";position:absolute;width:95mm;height:95mm;border:1px solid #0f766e30;border-radius:50%;right:-28mm;top:18mm;box-shadow:0 0 0 13mm #0f766e0b,0 0 0 27mm #0f766e08}
+    .front-top,.front-bottom{position:relative;z-index:1}
+    .badge{display:inline-flex;align-items:center;gap:3mm;border:1px solid #94a3b8;border-radius:3mm;padding:2mm 3mm;font-size:9pt;letter-spacing:.1em;text-transform:uppercase;color:var(--navy-800)}
+    .sda{font-size:10pt;letter-spacing:.28em;text-transform:uppercase;color:var(--teal-700);font-weight:700;margin:14mm 0 0}
+    .subtitle{font-size:16pt;line-height:1.28;color:#475569;max-width:170mm}
+    .series{font-size:10pt;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-top:8mm}
+    .id-box{position:relative;z-index:1;border-top:1px solid var(--line);padding-top:5mm}
+    .id-title{font-size:8pt;text-transform:uppercase;letter-spacing:.16em;color:#64748b;margin-bottom:4mm}
+    .id-grid{display:grid;grid-template-columns:1fr 1fr;gap:4mm 7mm}
+    .field{border-bottom:1px solid #8292a5;min-height:11mm;position:relative;padding-top:5mm;color:#526176;font-size:7pt;text-transform:uppercase;letter-spacing:.11em}
+    .field.wide{grid-column:1/-1}
+    .year{text-align:right;font-size:9pt;color:var(--navy-800);letter-spacing:.12em;text-transform:uppercase;margin-top:5mm}
+    .inner-left{background:#fff}
+    .inner-right{background:#fff}
+    .inner-header{border-bottom:1px solid var(--line);padding-bottom:4mm;margin-bottom:5mm;display:flex;justify-content:space-between;align-items:end;gap:5mm}
+    .inner-header .code{font-size:8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-700);font-weight:800}
+    .intro{font-size:11.5pt;color:#334155;line-height:1.48}
+    .callout{background:#fff;color:#334155;border:1px solid #cbd5e1;border-left:2mm solid var(--petrol-700);padding:5mm 5mm;margin:5mm 0}
+    .callout strong{color:var(--teal-700)}
+    .goal-list{list-style:none;padding:0;margin:4mm 0 0;counter-reset:goal}
+    .goal-list li{counter-increment:goal;position:relative;padding:0 0 3.5mm 11mm;margin-bottom:3mm;border-bottom:1px solid #e1e7ee;font-size:10.2pt;color:#334155}
+    .goal-list li:before{content:counter(goal,decimal-leading-zero);position:absolute;left:0;top:0;color:var(--petrol-700);font-weight:800;font-size:9pt}
+    .goal-list strong{color:var(--navy-900)}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin-top:5mm}
+    .info-card{background:#fff;border:1px solid #d7e0e8;border-radius:2mm;padding:3.5mm;font-size:9.2pt;color:#475569}
+    .info-card strong{display:block;color:var(--navy-900);font-size:8pt;text-transform:uppercase;letter-spacing:.07em;margin-bottom:1mm}
+    .assignment{background:#fff;border:1px solid #bae6fd;border-radius:3mm;padding:5mm;margin:4mm 0}
+    .assignment .label{font-size:8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--petrol-700);font-weight:800}
+    .assignment h3{font-size:14pt;letter-spacing:0;text-transform:none;color:var(--navy-900);margin:2mm 0}
+    .email-card{border:1px solid #b9c6d4;border-radius:2mm;margin:3mm 0 4mm;overflow:hidden;background:#fff}
+    .email-banner{background:#f3f6f9;border-bottom:1px solid #d7e0e8;padding:2.5mm 3.5mm;color:var(--navy-800);font-size:8.5pt;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+    .email-meta{padding:2.5mm 3.5mm;border-bottom:1px solid #e2e8f0;font-size:9pt;color:#475569}
+    .email-meta div{display:grid;grid-template-columns:16mm 1fr;gap:2mm;margin:.7mm 0}
+    .email-meta strong{color:var(--navy-900)}
+    .email-body{padding:3mm 3.5mm;font-size:10pt;line-height:1.43;color:#334155}
+    .email-body p{margin:0 0 2mm}
+    .email-body .signature{margin-top:3mm;color:#526176}
+    .steps{padding-left:5mm;margin:4mm 0}
+    .steps li{padding-left:1mm;margin:0 0 2.5mm;font-size:10pt;color:#334155}
+    .checklist{border:1px solid var(--line);padding:4mm;border-radius:2mm;margin-top:4mm;font-size:8.7pt}
+    .checklist div{margin:1.5mm 0}
+    .box{display:inline-block;width:4mm;height:4mm;border:1px solid #718096;vertical-align:-.7mm;margin-right:2mm}
+    .mini-foot{position:absolute;bottom:8mm;left:15mm;right:15mm;border-top:1px solid #cbd5e1;padding-top:2.5mm;display:flex;justify-content:space-between;font-size:7.5pt;color:#718096;letter-spacing:.04em}
+    .paper-note{font-size:8pt;color:#64748b;margin-top:4mm}
+    @page cover{size:A3 landscape;margin:0}
+    @media print{
+      html,body{width:420mm;height:auto;background:#fff;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .toolbar{display:none!important}
+      .sheet{page:cover;width:420mm;height:297mm;margin:0;box-shadow:none;break-after:page;page-break-after:always}
+      .sheet:last-of-type{break-after:auto;page-break-after:auto}
+      .panel{height:297mm}
+      .fold{border-color:#9aa8b7}
+    }
+    @media screen and (max-width:900px){.sheet{transform:scale(.55);transform-origin:top left;margin:18px 0 -130mm 18px}}
+  </style>
+</head>
+<body>
+  <div class="toolbar"><span>Portada de carpeta · 2 caras A3 horizontal · doble cara y plegado central</span><button onclick="window.print()">Imprimir portada</button></div>
+
+  <main>
+    <section class="sheet" aria-label="Exterior de la carpeta A3">
+      <div class="panel outside-back">
+        <div>
+          <div class="school">FP Básica · Ciencias Aplicadas II</div>
+          <div class="rule"></div>
+          <h2>Control de fichas</h2>
+          <p class="inventory-help">Escribe el nombre de cada ficha cuando la añadas a la carpeta. Marca la casilla al guardarla. Así podrás localizar las entregas y comprobar qué materiales tienes archivados.</p>
+          <div class="inventory-grid" aria-label="Registro de fichas incorporadas">
+            <div>
+              <div class="inventory-row"><span class="inventory-code">F01</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F02</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F03</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F04</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F05</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F06</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F07</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F08</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F09</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F10</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F11</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F12</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F13</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F14</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F15</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F16</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F17</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F18</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+            </div>
+            <div>
+              <div class="inventory-row"><span class="inventory-code">F19</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F20</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F21</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F22</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F23</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F24</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F25</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F26</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F27</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F28</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F29</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F30</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F31</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F32</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F33</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F34</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">F35</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+              <div class="inventory-row"><span class="inventory-code">Otros</span><span class="inventory-blank"></span><span class="inventory-check"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="back-note">IES de Teis · Curso 2026–2027<br>Departamento de Matemáticas y Ciencias Aplicadas</div>
+      </div>
+
+      <div class="panel outside-front">
+        <div class="front-top">
+          <span class="badge">Carpeta de proyecto · Ciencias Aplicadas II</span>
+          <div class="mark"><span>CX</span></div>
+          <div class="sda">Situación de aprendizaje 02</div>
+          <h1>Laboratorio de materiales</h1>
+          <p class="subtitle">Probamos, medimos<br>y mejoramos</p>
+          <div class="series">CIMATEX · Equipo de investigación y certificación</div>
+        </div>
+        <div class="front-bottom">
+          <div class="id-box">
+            <div class="id-title">Datos del alumnado</div>
+            <div class="id-grid">
+              <div class="field wide">Apellidos y nombre</div>
+              <div class="field">Grupo</div><div class="field">Fecha de inicio</div>
+              <div class="field">Fecha de entrega</div><div class="field">Calificación SDA</div>
+            </div>
+            <div class="year">Curso 2026–2027 · IES de Teis</div>
+          </div>
+        </div>
+      </div>
+      <div class="fold"><span>DOBLAR POR AQUÍ</span></div>
+    </section>
+
+    <section class="sheet" aria-label="Interior de la carpeta A3">
+      <div class="panel inner-left">
+        <div class="inner-header"><span class="code">CIMATEX · El proyecto</span><span class="eyebrow">SDA 02</span></div>
+        <h2>Tu misión en el laboratorio</h2>
+        <p class="intro">Formas parte del equipo de investigación de <strong>CIMATEX</strong>. Un cliente necesita asesoramiento para seleccionar materiales destinados a la carcasa de una linterna de trabajo.</p>
+        <div class="callout"><strong>El reto:</strong> comparar materiales con pruebas y datos, explicar sus características y recomendar uno dando razones. Si el cliente no concreta una condición, anota qué habría que preguntarle o medir antes de decidir.</div>
+        <h3>Recorrido del proyecto</h3>
+        <ol class="goal-list">
+          <li><strong>Entender el encargo.</strong> Distinguir lo que sabemos de lo que falta averiguar.</li>
+          <li><strong>Investigar materiales.</strong> Plantear preguntas, ideas que se puedan comprobar y pruebas seguras.</li>
+          <li><strong>Medir y analizar.</strong> Anotar unidades, repetir pruebas y revisar los resultados.</li>
+          <li><strong>Explicar.</strong> Relacionar propiedades con estructura, cambios y energía.</li>
+          <li><strong>Recomendar.</strong> Comparar resultados, explicar qué no se pudo comprobar y justificar la elección.</li>
+        </ol>
+        <div class="info-grid">
+          <div class="info-card"><strong>Trabajo compartido</strong>Podéis contrastar procedimientos y datos; registra tu función y aportación.</div>
+          <div class="info-card"><strong>Trabajo individual</strong>Tu dossier y tu recomendación técnica deben mostrar tu propio razonamiento.</div>
+        </div>
+        <div class="mini-foot"><span>Ciencias Aplicadas II · FP Básica</span><span>Carpeta de proyecto · SDA 02</span></div>
+      </div>
+
+      <div class="panel inner-right">
+        <div class="inner-header"><span class="code">Mensaje del cliente · Sesión 1</span><span class="eyebrow">F01</span></div>
+        <h2>Correo de encargo</h2>
+        <div class="email-card">
+          <div class="email-banner">CIMATEX · Consulta para elegir un material</div>
+          <div class="email-meta">
+            <div><strong>De:</strong><span>Equipo de producto · Cliente</span></div>
+            <div><strong>Para:</strong><span>Equipo técnico de CIMATEX</span></div>
+            <div><strong>Asunto:</strong><span>Material para la carcasa de una linterna de trabajo</span></div>
+            <div><strong>Adjunto:</strong><span>No se adjunta ficha con las condiciones del producto</span></div>
+          </div>
+          <div class="email-body">
+            <p>Buenos días, equipo de CIMATEX:</p>
+            <p>Estamos preparando una linterna de trabajo y necesitamos elegir un material para fabricar su carcasa.</p>
+            <p>Por favor, comparen varios materiales y recomienden uno. Expliquen qué características han tenido en cuenta y en qué pruebas o datos se basan. Indiquen también algún punto a favor y algún inconveniente de la opción elegida.</p>
+            <p>Todavía no hemos decidido cuánto puede pesar la carcasa, qué golpes debe resistir, cuánto calor tendrá que soportar, cuánto puede costar ni qué condiciones de cuidado del medioambiente debemos tener en cuenta. No inventen esos datos. Digan qué preguntas necesitamos contestar y qué pruebas o datos nos ayudarían a comprobarlo.</p>
+            <p>Como primer paso, envíennos una propuesta breve: qué quieren averiguar, qué característica compararán y cómo piensan hacerlo.</p>
+            <p class="signature">Gracias,<br><strong>Equipo de producto</strong><br>Cliente de CIMATEX</p>
+          </div>
+        </div>
+        <h3>Analiza el correo con la ficha F01</h3>
+        <ol class="steps">
+          <li>Identifica quién escribe, a quién se dirige y qué producto se quiere estudiar.</li>
+          <li>Separa en F01 lo que el cliente afirma de la información que aún falta.</li>
+          <li>Propón una pregunta de investigación y un dato o ensayo que podría ayudar a responderla.</li>
+          <li>Entrega la ficha completada al final de la sesión y guárdala en tu dossier.</li>
+        </ol>
+        <div class="mini-foot"><span>Investiga · registra · comprueba · comunica</span><span>CIMATEX</span></div>
+      </div>
+      <div class="fold"><span>DOBLAR POR AQUÍ</span></div>
+    </section>
+  </main>
+</body>
+</html>

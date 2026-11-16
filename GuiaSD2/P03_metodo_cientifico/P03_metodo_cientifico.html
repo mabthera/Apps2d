@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17324d">
+<title>P03 · El método científico · CIMATEX</title>
+<style>
+:root{--navy:#17324d;--blue:#176b87;--teal:#2a817b;--ink:#202b36;--muted:#586875;--line:#b9c5cc;--pale:#f1f4f6;--paper:#fff;--gold:#d8ab4d}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#e7ecef}
+.toolbar{height:54px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 22px;background:var(--navy);color:#fff}.identity{font-size:14px;font-weight:800;letter-spacing:.08em;white-space:nowrap}.identity span{font-weight:400;opacity:.8;letter-spacing:.03em}.controls{display:flex;align-items:center;gap:8px}.controls button{height:34px;padding:0 13px;border:1px solid #ffffff55;border-radius:4px;background:#246f87;color:#fff;font-size:14px;font-weight:700;cursor:pointer}.controls button:hover{background:#31859b}.controls button:focus-visible{outline:3px solid #f1c453;outline-offset:2px}.counter{min-width:58px;text-align:center;font-size:13px;font-weight:700}.progress{height:3px;background:#dce3e7}.progress span{display:block;height:100%;width:16.666%;background:#59b1aa;transition:width .25s ease}
+.stage{height:calc(100% - 57px);display:grid;place-items:center;padding:16px}.slide{display:none;position:relative;width:min(1600px,96vw,calc(177.78vh - 160px));aspect-ratio:16/9;overflow:hidden;background:var(--paper);padding:4.2% 5.2%;box-shadow:0 8px 32px #172b3b20;border-top:7px solid var(--teal)}.slide.active{display:flex;flex-direction:column}.slide-head{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:1.1%}.eyebrow{font-size:clamp(12px,1vw,17px);text-transform:uppercase;letter-spacing:.13em;color:var(--teal);font-weight:800}.section-no{color:#667782;font-size:clamp(13px,1vw,16px);font-weight:700}.title{font-size:clamp(30px,3.8vw,60px);line-height:1.04;letter-spacing:-.04em;color:var(--navy);margin:0 0 1.8%}.subtitle{font-size:clamp(18px,1.75vw,27px);line-height:1.25;color:#415564;margin:0 0 1.8%}.content{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;font-size:clamp(17px,1.5vw,23px);line-height:1.28}.question{border-left:6px solid var(--blue);background:#f1f6f8;padding:1.8% 2.2%;margin-top:1.8%;font-size:clamp(19px,1.8vw,27px);line-height:1.25;border-radius:2px}.question strong{color:var(--navy)}
+.phase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.phase{border:1px solid var(--line);border-radius:5px;padding:12px 13px;background:#fff;min-height:88px;display:flex;gap:10px;align-items:flex-start}.phase-num{flex:none;width:31px;height:31px;border:1px solid #c4cdd2;border-radius:50%;background:#e8edef;color:var(--navy);display:grid;place-items:center;font-size:15px;font-weight:900}.phase b{display:block;color:var(--navy);font-size:clamp(15px,1.35vw,20px);margin-bottom:3px}.phase span{display:block;color:#52616a;font-size:clamp(13px,1.05vw,16px);line-height:1.25}.route{margin-top:14px;padding:12px 16px;background:#f1f4f6;border-left:5px solid var(--blue);color:#42545f;font-size:clamp(15px,1.25vw,19px)}
+.case-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:3.5%;align-items:center}.case-box{border:1.5px solid var(--line);border-radius:5px;padding:2.5% 3%;background:#fff}.case-title{font-size:clamp(18px,1.6vw,24px);font-weight:900;color:var(--navy);margin:0 0 12px}.bridge-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.bridge-card{border:1px solid #d2dbe0;border-radius:4px;background:#fafbfc;padding:9px 8px;text-align:center}.bridge-card b{display:block;color:#415564;font-size:clamp(13px,1vw,15px);margin-bottom:5px}.bridge-card svg{width:100%;height:78px}.bridge-card small{display:block;color:#63737d;font-size:12px;margin-top:2px}.model-text{display:grid;gap:10px}.model-row{border-left:5px solid var(--teal);background:#f2f7f6;padding:12px 15px;border-radius:2px;font-size:clamp(15px,1.3vw,20px)}.model-row b{display:block;color:var(--navy);font-size:.78em;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}.model-row p{margin:0}
+.test-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:3%;align-items:stretch}.principle-list{display:grid;gap:10px}.principle{padding:12px 14px;border:1px solid var(--line);border-radius:4px;background:#fff}.principle strong{display:block;color:var(--teal);font-size:clamp(15px,1.25vw,19px);margin-bottom:3px}.principle span{font-size:clamp(14px,1.1vw,17px);color:#465862}.protocol{border:1.5px solid #9eafb8;border-radius:5px;padding:18px 21px;background:#fafcfd}.protocol h3{margin:0 0 10px;color:var(--navy);font-size:clamp(17px,1.4vw,21px)}.protocol ol{margin:0;padding-left:25px}.protocol li{padding:4px 0;font-size:clamp(15px,1.2vw,18px)}.protocol .limit{margin-top:10px;padding:10px 12px;background:#eef2f4;color:#52616a;font-size:clamp(13px,1vw,15px)}
+.data-wrap{border:1px solid var(--line);border-radius:5px;overflow:hidden;background:#fff}.data-caption{padding:9px 14px;background:#eef2f4;color:#415564;font-size:clamp(13px,1vw,16px);font-weight:700}.data-table{width:100%;border-collapse:collapse;table-layout:fixed;text-align:center;font-size:clamp(15px,1.3vw,20px)}.data-table th{background:#f8f9fa;color:var(--navy);font-weight:800}.data-table th,.data-table td{border:1px solid #c6d0d5;padding:12px 8px}.data-table th:first-child,.data-table td:first-child{text-align:left;padding-left:14px;font-weight:700}.highest{background:#edf5f2;color:#17624f;font-weight:800}.data-note{margin-top:11px;color:#5b6b74;font-size:clamp(13px,1.05vw,16px)}
+.read-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5%;align-items:stretch}.read-card{border:1.5px solid var(--line);border-radius:5px;padding:3%;background:#fff}.read-card h3{margin:0 0 10px;color:var(--teal);font-size:clamp(17px,1.5vw,23px);text-transform:uppercase;letter-spacing:.04em}.read-card p{margin:0;font-size:clamp(17px,1.45vw,22px);line-height:1.3}.evidence{margin-top:11px;padding:12px 14px;background:#f1f4f6;border-left:5px solid var(--blue);font-size:clamp(14px,1.2vw,18px)}.evidence b{color:var(--navy)}.transfer{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.transfer-card{border:1.5px solid var(--line);border-radius:5px;padding:15px;background:#fff}.transfer-card h3{font-size:clamp(17px,1.5vw,22px);color:var(--teal);margin:0 0 7px}.transfer-card p{margin:0;color:#465862;font-size:clamp(14px,1.15vw,17px);line-height:1.3}.closing{margin-top:auto;padding:13px 16px;background:#eff3f5;border-left:5px solid var(--blue);font-size:clamp(15px,1.25vw,19px)}
+@media(max-width:760px){html,body{height:auto;min-height:100%;overflow:auto}.toolbar{height:auto;min-height:54px;flex-wrap:wrap;padding:8px 10px;gap:8px}.identity{font-size:12px}.controls{gap:4px}.controls button{padding:0 8px;font-size:12px}.stage{height:auto;min-height:calc(100vh - 60px);padding:10px}.slide,.slide.active{width:100%;height:auto;min-height:calc(100vh - 80px);aspect-ratio:auto;padding:24px;overflow:visible}.slide{display:none}.slide.active{display:flex}.title{font-size:32px}.subtitle{font-size:20px}.content{font-size:18px}.phase-grid{grid-template-columns:repeat(2,1fr)}.phase{min-height:0}.case-layout,.test-grid,.read-grid,.transfer{grid-template-columns:1fr}.bridge-card svg{height:58px}}
+</style>
+</head>
+<body>
+<nav class="toolbar" aria-label="Controles de presentación">
+  <div class="identity">CIMATEX <span>· SDA 02 · SESIÓN 3</span></div>
+  <div class="controls"><button id="prev" type="button" aria-label="Diapositiva anterior">←</button><span class="counter" id="counter">1 / 6</span><button id="next" type="button" aria-label="Diapositiva siguiente">→</button><button id="fullscreen" type="button">Pantalla completa</button></div>
+</nav>
+<div class="progress" aria-hidden="true"><span id="progressbar"></span></div>
+<main class="stage" id="stage">
+  <section class="slide active" aria-label="Diapositiva 1 de 6">
+    <div class="slide-head"><div class="eyebrow">Ciencias Aplicadas II · Sesión 3</div><div class="section-no">CIMATEX</div></div>
+    <h1 class="title">Del problema a una conclusión</h1>
+    <div class="content">
+      <p class="subtitle">El método científico nos ayuda a comprobar ideas con datos y a explicar qué podemos afirmar.</p>
+      <div class="phase-grid">
+        <div class="phase"><span class="phase-num">1</span><div><b>Observar</b><span>¿Qué ocurre o qué problema vemos?</span></div></div>
+        <div class="phase"><span class="phase-num">2</span><div><b>Preguntar</b><span>¿Qué queremos averiguar?</span></div></div>
+        <div class="phase"><span class="phase-num">3</span><div><b>Proponer una hipótesis</b><span>¿Qué creemos que pasará?</span></div></div>
+        <div class="phase"><span class="phase-num">4</span><div><b>Probar</b><span>¿Cómo lo comprobaríamos?</span></div></div>
+        <div class="phase"><span class="phase-num">5</span><div><b>Registrar datos</b><span>¿Qué ocurrió en cada prueba?</span></div></div>
+        <div class="phase"><span class="phase-num">6</span><div><b>Interpretar</b><span>¿Qué patrón muestran los datos?</span></div></div>
+        <div class="phase"><span class="phase-num">7</span><div><b>Concluir</b><span>¿Qué respuesta permiten los datos?</span></div></div>
+        <div class="phase"><span class="phase-num">8</span><div><b>Comunicar</b><span>¿Cómo contamos el proceso y sus límites?</span></div></div>
+      </div>
+      <div class="route"><strong>Hoy:</strong> modelamos estas etapas con un puente de papel. Después las aplicarás individualmente a otro caso en F03.</div>
+    </div>
+  </section>
+
+  <section class="slide" aria-label="Diapositiva 2 de 6">
+    <div class="slide-head"><div class="eyebrow">Ejemplo guiado · observar y preguntar</div><div class="section-no">PASOS 1–2</div></div>
+    <h2 class="title">¿Qué pliegue sostiene más clips?</h2>
+    <div class="content">
+      <div class="case-layout">
+        <div class="case-box">
+          <p class="case-title">Tres formas para un puente de papel</p>
+          <div class="bridge-row">
+            <div class="bridge-card"><b>A · Plano</b><svg viewBox="0 0 220 90" role="img" aria-label="Papel plano entre dos apoyos"><rect x="12" y="61" width="35" height="17" fill="#bbc7ce"/><rect x="173" y="61" width="35" height="17" fill="#bbc7ce"/><path d="M30 59 H190" stroke="#176b87" stroke-width="7"/></svg><small>Hoja lisa</small></div>
+            <div class="bridge-card"><b>B · En U</b><svg viewBox="0 0 220 90" role="img" aria-label="Papel doblado en forma de U"><rect x="12" y="61" width="35" height="17" fill="#bbc7ce"/><rect x="173" y="61" width="35" height="17" fill="#bbc7ce"/><path d="M30 58 H72 V42 H148 V58 H190" fill="none" stroke="#176b87" stroke-width="7" stroke-linejoin="round"/></svg><small>Un pliegue largo</small></div>
+            <div class="bridge-card"><b>C · Acordeón</b><svg viewBox="0 0 220 90" role="img" aria-label="Papel plegado en acordeón"><rect x="12" y="61" width="35" height="17" fill="#bbc7ce"/><rect x="173" y="61" width="35" height="17" fill="#bbc7ce"/><path d="M30 58 L52 39 L74 58 L96 39 L118 58 L140 39 L162 58 L190 58" fill="none" stroke="#176b87" stroke-width="7" stroke-linejoin="round"/></svg><small>Varios pliegues</small></div>
+          </div>
+        </div>
+        <div class="model-text">
+          <div class="model-row"><b>Observación</b><p>Las tres hojas tienen pliegues diferentes. Aún no sabemos cuál soporta más carga.</p></div>
+          <div class="model-row"><b>Pregunta que sí se puede comprobar</b><p>¿Qué forma de papel aguanta más clips antes de doblarse?</p></div>
+          <div class="model-row"><b>Pregunta demasiado vaga</b><p>¿Qué puente es mejor? Falta decir qué significa «mejor» y cómo lo mediríamos.</p></div>
+        </div>
+      </div>
+      <div class="question"><strong>Una pregunta investigable</strong> nombra lo que comparamos y el resultado que vamos a observar o medir.</div>
+    </div>
+  </section>
+
+  <section class="slide" aria-label="Diapositiva 3 de 6">
+    <div class="slide-head"><div class="eyebrow">Ejemplo guiado · hipótesis y prueba</div><div class="section-no">PASOS 3–4</div></div>
+    <h2 class="title">Preparamos una comparación justa</h2>
+    <div class="content">
+      <div class="test-grid">
+        <div class="model-text">
+          <div class="model-row"><b>Hipótesis · una predicción razonada</b><p>«Si el papel tiene forma de acordeón, sostendrá más clips que el papel plano porque se deformará menos».</p></div>
+          <div class="principle"><strong>Cambiamos una cosa</strong><span>La forma del pliegue: plano, U o acordeón.</span></div>
+          <div class="principle"><strong>Medimos el resultado</strong><span>Cuántos clips iguales aguanta cada puente hasta que se dobla.</span></div>
+        </div>
+        <div class="protocol">
+          <h3>Para que la comparación sea justa</h3>
+          <ol>
+            <li>Usamos el mismo tipo y tamaño de papel.</li>
+            <li>Dejamos la misma distancia entre los apoyos.</li>
+            <li>Añadimos los mismos clips, uno a uno, en el centro.</li>
+            <li>Repetimos cada forma tres veces y anotamos todos los resultados.</li>
+          </ol>
+          <div class="limit"><strong>Controlar variables</strong> significa mantener igual lo que no queremos comparar.</div>
+        </div>
+      </div>
+      <div class="question"><strong>Hipótesis ≠ conclusión:</strong> la hipótesis se escribe antes de ver los resultados. Después revisamos si los datos la apoyan.</div>
+    </div>
+  </section>
+
+  <section class="slide" aria-label="Diapositiva 4 de 6">
+    <div class="slide-head"><div class="eyebrow">Ejemplo guiado · datos</div><div class="section-no">PASO 5</div></div>
+    <h2 class="title">Anotamos las tres repeticiones</h2>
+    <div class="content">
+      <div class="data-wrap">
+        <div class="data-caption">Datos preparados para practicar el análisis · clips soportados antes de doblarse</div>
+        <table class="data-table">
+          <thead><tr><th>Forma del papel</th><th>Prueba 1</th><th>Prueba 2</th><th>Prueba 3</th></tr></thead>
+          <tbody>
+            <tr><td>A · Plano</td><td>2</td><td>3</td><td>2</td></tr>
+            <tr><td>B · En U</td><td>5</td><td>6</td><td>5</td></tr>
+            <tr class="highest"><td>C · Acordeón</td><td>8</td><td>7</td><td>8</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="read-grid" style="margin-top:2.5%">
+        <div class="read-card"><h3>Registrar</h3><p>Anotamos los resultados tal como salen, incluso si una repetición no coincide con las demás.</p></div>
+        <div class="read-card"><h3>¿Por qué repetir?</h3><p>Para comprobar si aparece un patrón y evitar decidir por un resultado aislado.</p></div>
+      </div>
+      <div class="data-note">El número de clips es una medida de este ejercicio. No equivale a un ensayo profesional de resistencia.</div>
+    </div>
+  </section>
+
+  <section class="slide" aria-label="Diapositiva 5 de 6">
+    <div class="slide-head"><div class="eyebrow">Ejemplo guiado · interpretar y concluir</div><div class="section-no">PASOS 6–8</div></div>
+    <h2 class="title">¿Qué podemos afirmar?</h2>
+    <div class="content">
+      <div class="read-grid">
+        <div class="read-card"><h3>Interpretamos el patrón</h3><p>El puente en acordeón soportó más clips en las tres repeticiones. El puente plano soportó menos.</p><div class="evidence"><b>Evidencia:</b> acordeón: 8, 7 y 8 clips. Plano: 2, 3 y 2.</div></div>
+        <div class="read-card"><h3>Conclusión modelo</h3><p>En estos datos, el pliegue en acordeón soportó más clips antes de doblarse. La hipótesis queda apoyada por los resultados.</p><div class="evidence"><b>Límite:</b> solo comparamos estos diseños, este papel y esta forma de colocar los clips.</div></div>
+      </div>
+      <div class="route"><strong>Comunicar:</strong> contamos la pregunta, la hipótesis, cómo se comparó, los datos y una conclusión que no diga más de lo que la prueba permite.</div>
+      <div class="question"><strong>Buena ciencia:</strong> si los resultados no apoyan nuestra hipótesis, cambiamos la explicación; no cambiamos ni escondemos los datos.</div>
+    </div>
+  </section>
+
+  <section class="slide" aria-label="Diapositiva 6 de 6">
+    <div class="slide-head"><div class="eyebrow">Ahora tú · trabajo individual</div><div class="section-no">F03</div></div>
+    <h2 class="title">Aplica los pasos a un caso distinto</h2>
+    <div class="content">
+      <p class="subtitle">En F03 trabajarás con un caso de papel diferente al puente que acabamos de analizar.</p>
+      <div class="transfer">
+        <div class="transfer-card"><h3>Ordena y pregunta</h3><p>Numera las fases del método y mejora una pregunta para que se pueda comprobar.</p></div>
+        <div class="transfer-card"><h3>Predice y compara</h3><p>Formula una hipótesis, localiza qué se cambia y qué dato se recoge; interpreta las repeticiones.</p></div>
+        <div class="transfer-card"><h3>Concluye y entrega</h3><p>Responde con datos, indica qué no se puede asegurar y completa el control final.</p></div>
+      </div>
+      <div class="closing"><strong>Producto de hoy:</strong> F03 completa por las dos caras, con tu propia pregunta, hipótesis, lectura de datos y conclusión.</div>
+    </div>
+  </section>
+</main>
+<script>
+(()=>{const slides=[...document.querySelectorAll('.slide')];const counter=document.getElementById('counter');const progress=document.getElementById('progressbar');const full=document.getElementById('fullscreen');let current=0;function show(index){current=Math.max(0,Math.min(slides.length-1,index));slides.forEach((slide,i)=>slide.classList.toggle('active',i===current));counter.textContent=`${current+1} / ${slides.length}`;progress.style.width=`${(current+1)/slides.length*100}%`;document.title=`P03 · ${current+1}/${slides.length} · CIMATEX`;}document.getElementById('prev').addEventListener('click',()=>show(current-1));document.getElementById('next').addEventListener('click',()=>show(current+1));document.addEventListener('keydown',event=>{if(['ArrowRight',' ','PageDown'].includes(event.key)){event.preventDefault();show(current+1)}else if(['ArrowLeft','PageUp'].includes(event.key)){event.preventDefault();show(current-1)}else if(event.key==='Home'){show(0)}else if(event.key==='End'){show(slides.length-1)}});full.addEventListener('click',async()=>{if(!document.fullscreenElement){await document.documentElement.requestFullscreen?.()}else{await document.exitFullscreen?.()}});document.addEventListener('fullscreenchange',()=>{full.textContent=document.fullscreenElement?'Salir de pantalla completa':'Pantalla completa'});})();
+</script>
+</body>
+</html>

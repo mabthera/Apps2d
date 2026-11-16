@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>F01 · El encargo CIMATEX · SDA 02</title>
+  <style>
+    :root{--navy:#0f172a;--blue:#075985;--teal:#0f766e;--ink:#172033;--muted:#526176;--line:#aebdca;--pale:#f5f8fa;--pale-blue:#f4f9fc;--white:#fff;--sans:Arial,Helvetica,sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0;background:#e9edf1;color:var(--ink);font-family:var(--sans);line-height:1.35}
+    .toolbar{position:sticky;top:0;z-index:3;background:var(--navy);color:white;display:flex;justify-content:center;align-items:center;gap:16px;padding:10px;font-size:14px}
+    .toolbar button{border:0;border-radius:4px;padding:9px 16px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
+    .page{width:210mm;height:297mm;margin:18px auto;background:white;padding:10mm 12mm;box-shadow:0 6px 22px #17203324;overflow:hidden;position:relative;break-after:page;page-break-after:always}
+    .page:last-child{break-after:auto;page-break-after:auto}
+    .topline{height:12mm;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid var(--navy);padding-bottom:2mm}
+    .brand{display:flex;gap:3mm;align-items:center}
+    .sigil{width:9mm;height:9mm;border:1px solid #cbd5e1;background:#eef1f4;color:var(--navy);border-radius:50%;display:grid;place-items:center;font-size:7.5pt;font-weight:800}
+    .brandtext{font-size:8.5pt;line-height:1.2;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+    .brandtext strong{display:block;color:var(--navy);font-size:9pt;letter-spacing:.1em}
+    .code{color:var(--blue);font-size:18pt;font-weight:800;letter-spacing:.03em}
+    .title-row{display:flex;justify-content:space-between;align-items:end;gap:4mm;margin:3.5mm 0 2.5mm}
+    h1{margin:0;color:var(--navy);font-size:20pt;line-height:1.05;letter-spacing:-.03em}
+    .session{font-size:8pt;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+    .identity{display:grid;grid-template-columns:2fr .7fr 1fr;gap:4mm;margin:2mm 0 3mm}
+    .field{border-bottom:1px solid var(--line);height:8mm;display:flex;align-items:end;padding-bottom:1mm;color:#526176;font-size:7.5pt;text-transform:uppercase;letter-spacing:.07em}
+    .brief{background:#fff;color:#334155;border:1px solid #cbd5e1;border-left:1.5mm solid var(--blue);padding:3mm 4mm;margin:2.5mm 0 3mm;font-size:9.5pt}
+    .brief strong{color:var(--navy)}
+    .brief p{margin:1mm 0 0;color:#334155}
+    .brief .gloss{font-size:8.5pt;color:#526176}
+    .section{margin:2.5mm 0 3mm;break-inside:avoid}
+    .section-head{display:flex;align-items:center;gap:2mm;margin-bottom:1.5mm}
+    .num{width:6mm;height:6mm;border-radius:50%;border:1px solid #cbd5e1;background:#eef1f4;color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:8pt;flex:none}
+    h2{font-size:10.5pt;letter-spacing:.02em;color:var(--navy);margin:0}
+    h3{font-size:8.5pt;color:var(--teal);margin:0 0 1mm;text-transform:uppercase;letter-spacing:.05em}
+    .prompt{font-size:9pt;color:#334155;margin:1mm 0}
+    .answer-line{height:8mm;border-bottom:1px solid #bac7d2;margin:0 0 1mm}
+    .answer-box{border:1px solid var(--line);border-radius:1.5mm;padding:2.2mm 2.5mm;background:#fff}
+    .write-lines{height:14mm;background:repeating-linear-gradient(to bottom,transparent 0,transparent 6mm,#cbd5e1 6mm,#cbd5e1 6.2mm)}
+    .write-lines.small{height:10mm}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:3mm}
+    .choices{display:grid;grid-template-columns:1fr 1fr;gap:1.6mm 4mm;margin:1.5mm 0}
+    .choice{display:flex;align-items:flex-start;gap:1.7mm;font-size:8.7pt;color:#334155}
+    .box{width:3.7mm;height:3.7mm;border:1px solid #64748b;flex:none;margin-top:.3mm;background:#fff}
+    .fact-box{border:1px solid var(--line);border-radius:1.5mm;padding:2.5mm;background:#fff;min-height:32mm}
+    .fact-box p{font-size:8pt;color:#526176;margin:0 0 1mm}
+    .mini-lines{height:18mm;background:repeating-linear-gradient(to bottom,transparent 0,transparent 5.5mm,#cbd5e1 5.5mm,#cbd5e1 5.7mm)}
+    table{width:100%;border-collapse:collapse;font-size:8pt;table-layout:fixed}
+    th{background:#f0f3f6;color:var(--navy);text-align:left;padding:2mm;font-weight:700;border:1px solid var(--line)}
+    td{border:1px solid var(--line);padding:1.8mm;vertical-align:top;height:14mm}
+    .example td{background:#f8fafb;color:#334155;height:auto;font-size:7.7pt}
+    .quiz{border:1px solid var(--line);border-radius:1.5mm;padding:2mm 2.5mm;margin:1.7mm 0;background:#fff;break-inside:avoid}
+    .quiz-title{font-weight:700;color:var(--navy);font-size:8.5pt;margin-bottom:1mm}
+    .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:1mm 4mm}
+    .quiz-option{font-size:8pt;color:#334155;display:flex;gap:1.5mm;align-items:flex-start}
+    .letter{font-weight:700;color:var(--blue);min-width:4mm}
+    .question-template{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:2mm;align-items:end;margin-top:2mm}
+    .template-field{border-bottom:1px solid #64748b;min-height:9mm;padding-bottom:1mm;text-align:center;font-size:7.5pt;color:#526176}
+    .exit{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin-top:2mm}
+    .exit-card{border:1px solid var(--line);padding:2mm 2.5mm;border-radius:1.5mm;min-height:22mm;font-size:8.5pt;color:#334155;background:#fff}
+    .footer{position:absolute;bottom:6mm;left:12mm;right:12mm;border-top:1px solid #d6dee7;padding-top:1.5mm;display:flex;justify-content:space-between;font-size:7.5pt;color:#64748b;letter-spacing:.02em}
+    @page{size:A4 portrait;margin:0}
+    @media print{
+      html,body{width:210mm;margin:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .toolbar{display:none!important}
+      .page{width:210mm;height:297mm;margin:0;padding:10mm 12mm;box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar"><span>F01 · El encargo CIMATEX · 2 caras A4 · imprimir a doble cara</span><button onclick="window.print()">Imprimir ficha</button><a href="guia.html" style="color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:8px 12px">Cómo hacerla</a></div>
+  <main>
+    <section class="page" aria-label="F01, anverso: comprender el correo">
+      <header class="topline">
+        <div class="brand"><div class="sigil">CX</div><div class="brandtext"><strong>CIMATEX</strong>Laboratorio de materiales · Ciencias Aplicadas II</div></div>
+        <div class="code">F01</div>
+      </header>
+      <div class="title-row"><h1>El encargo CIMATEX</h1><div class="session">SDA 02 · Sesión 1 · Anverso</div></div>
+      <div class="identity"><div class="field">Apellidos y nombre</div><div class="field">Grupo</div><div class="field">Fecha</div></div>
+
+      <div class="brief">
+        <strong>Lee el correo del cliente en el interior de la portada.</strong>
+        <p>Tu tarea es entender qué necesita, qué pide al equipo y qué información todavía falta. La recomendación se hará más adelante, después de investigar y comparar materiales.</p>
+        <p class="gloss"><strong>Palabras útiles:</strong> una <em>característica</em> es algo que podemos observar o medir; una <em>prueba</em> sirve para comparar materiales; un <em>requisito</em> es una condición que el producto debe cumplir; la <em>carcasa</em> es la parte exterior que protege el aparato.</p>
+      </div>
+
+      <section class="section">
+        <div class="section-head"><span class="num">1</span><h2>Identifico el correo</h2></div>
+        <div class="two-col">
+          <div><div class="prompt"><strong>¿Quién envía el mensaje?</strong></div><div class="answer-line"></div></div>
+          <div><div class="prompt"><strong>¿A quién va dirigido?</strong></div><div class="answer-line"></div></div>
+        </div>
+        <div class="prompt"><strong>¿Qué dice el asunto y qué producto quiere fabricar el cliente?</strong></div><div class="answer-line"></div><div class="answer-line"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">2</span><h2>¿Qué pide el cliente al equipo?</h2></div>
+        <p class="prompt">Marca todas las tareas que aparecen en el correo.</p>
+        <div class="choices">
+          <div class="choice"><span class="box"></span><span>Comparar varios materiales.</span></div>
+          <div class="choice"><span class="box"></span><span>Recomendar un material y explicar por qué.</span></div>
+          <div class="choice"><span class="box"></span><span>Apoyarse en pruebas o datos fiables.</span></div>
+          <div class="choice"><span class="box"></span><span>Indicar qué información falta y qué habría que comprobar.</span></div>
+        </div>
+        <div class="prompt"><strong>Resume con tus palabras qué espera recibir el cliente.</strong></div>
+        <div class="answer-box"><div class="write-lines"></div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">3</span><h2>Distingo lo que sabemos de lo que falta</h2></div>
+        <p class="prompt">El correo dice que estas condiciones aún no están decididas. Marca todas las que faltan por concretar.</p>
+        <div class="choices">
+          <div class="choice"><span class="box"></span><span>Cuánto puede pesar la carcasa.</span></div>
+          <div class="choice"><span class="box"></span><span>Qué golpes debe soportar.</span></div>
+          <div class="choice"><span class="box"></span><span>Cuánto calor debe aguantar.</span></div>
+          <div class="choice"><span class="box"></span><span>Cuánto puede costar el material.</span></div>
+          <div class="choice"><span class="box"></span><span>Qué condiciones ambientales debe cumplir.</span></div>
+          <div class="choice"><span class="box"></span><span>Otra condición: ________________________</span></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-head"><span class="num">4</span><h2>Escribo hechos y preguntas</h2></div>
+        <div class="two-col">
+          <div class="fact-box"><h3>Dos cosas que el cliente sí dice</h3><p>Escribe información que aparece claramente en el correo.</p><div class="mini-lines"></div></div>
+          <div class="fact-box"><h3>Dos cosas que necesitamos aclarar</h3><p>Escribe preguntas que harías antes de elegir el material.</p><div class="mini-lines"></div></div>
+        </div>
+      </section>
+      <footer class="footer"><span>FP Básica · IES de Teis · Curso 2026–2027</span><span>F01 · Anverso · Comprender el encargo</span></footer>
+    </section>
+
+    <section class="page" aria-label="F01, reverso: analizar y comprobar">
+      <header class="topline">
+        <div class="brand"><div class="sigil">CX</div><div class="brandtext"><strong>CIMATEX</strong>Laboratorio de materiales · Ciencias Aplicadas II</div></div>
+        <div class="code">F01</div>
+      </header>
+      <div class="title-row"><h1>Analizo y propongo</h1><div class="session">SDA 02 · Sesión 1 · Reverso</div></div>
+
+      <section class="section">
+        <div class="section-head"><span class="num">5</span><h2>Relaciono una necesidad con una prueba</h2></div>
+        <p class="prompt">La primera fila es un ejemplo de pregunta, no una condición confirmada por el cliente. Completa las otras filas con tus ideas.</p>
+        <table>
+          <thead><tr><th style="width:34%">Pregunta o condición posible</th><th style="width:29%">Característica del material</th><th style="width:37%">¿Qué prueba o dato ayudaría?</th></tr></thead>
+          <tbody>
+            <tr class="example"><td>¿Debe aguantar golpes?</td><td>Resistencia a los golpes</td><td>Comparar resultados de pruebas de impacto y anotar cómo se hicieron.</td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">6</span><h2>Preparo una pregunta para investigar</h2></div>
+        <p class="prompt">Completa una pregunta que podamos responder haciendo una prueba o una medición.</p>
+        <div class="question-template">
+          <div class="template-field">¿Qué materiales…?</div><div class="template-field">…se comportan mejor en qué característica…?</div><div class="template-field">…según qué prueba o dato?</div>
+        </div>
+        <div class="answer-box" style="margin-top:2mm"><div class="write-lines small"></div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">7</span><h2>Compruebo que he entendido el mensaje</h2></div>
+        <p class="prompt">Marca una respuesta en cada pregunta (rodea A, B o C).</p>
+        <div class="quiz"><div class="quiz-title">1. ¿Qué producto quiere fabricar el cliente?</div><div class="quiz-options"><div class="quiz-option"><span class="letter">A</span><span>La carcasa de una linterna de trabajo.</span></div><div class="quiz-option"><span class="letter">B</span><span>Una mesa para el laboratorio.</span></div><div class="quiz-option"><span class="letter">C</span><span>Un envase para guardar herramientas.</span></div></div></div>
+        <div class="quiz"><div class="quiz-title">2. ¿Qué pide al equipo de CIMATEX?</div><div class="quiz-options"><div class="quiz-option"><span class="letter">A</span><span>Elegir sin hacer comparaciones.</span></div><div class="quiz-option"><span class="letter">B</span><span>Comparar materiales y justificar una recomendación.</span></div><div class="quiz-option"><span class="letter">C</span><span>Diseñar una linterna completa.</span></div></div></div>
+        <div class="quiz"><div class="quiz-title">3. ¿Qué sabemos sobre el peso, el coste y los golpes?</div><div class="quiz-options"><div class="quiz-option"><span class="letter">A</span><span>El cliente ya ha dado todos los valores.</span></div><div class="quiz-option"><span class="letter">B</span><span>Son condiciones que todavía hay que aclarar.</span></div><div class="quiz-option"><span class="letter">C</span><span>No importan para elegir materiales.</span></div></div></div>
+        <div class="quiz"><div class="quiz-title">4. ¿En qué se debe apoyar la recomendación?</div><div class="quiz-options"><div class="quiz-option"><span class="letter">A</span><span>En una preferencia personal.</span></div><div class="quiz-option"><span class="letter">B</span><span>En pruebas o datos y en una explicación.</span></div><div class="quiz-option"><span class="letter">C</span><span>En el color del material.</span></div></div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="num">8</span><h2>Salida de hoy</h2></div>
+        <div class="exit"><div class="exit-card"><strong>Ahora entiendo que el cliente…</strong><div class="write-lines small"></div></div><div class="exit-card"><strong>Antes de recomendar, nos falta…</strong><div class="write-lines small"></div></div></div>
+      </section>
+      <footer class="footer"><span>Entrega esta hoja por las dos caras e incorpórala al dossier</span><span>F01 · Reverso · Analizar y comprobar</span></footer>
+    </section>
+  </main>
+</body>
+</html>
+
