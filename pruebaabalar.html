@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#163e29">
+  <meta http-equiv="Content-Security-Policy" content="connect-src https://boxabalar.edu.xunta.gal">
   <title>pruebaabalar · Encuesta ficticia</title>
   <style>
     :root {
@@ -157,7 +158,6 @@
           method: 'POST',
           mode: 'no-cors',
           credentials: 'omit',
-          redirect: 'error',
           body: datos,
         });
         estado.dataset.tipo = 'enviado';
