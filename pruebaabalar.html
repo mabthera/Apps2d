@@ -87,11 +87,23 @@
 
     button:hover { background: #0e5636; }
 
-    #aviso {
-      margin: 0.65rem 0 0;
-      color: #476657;
-      font-size: 0.9rem;
+    button:disabled { opacity: 0.65; cursor: default; }
+
+    #estado {
+      margin: 0;
       line-height: 1.45;
+    }
+
+    #estado:not(:empty) {
+      margin-top: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: 0.65rem;
+      background: #e8f2e8;
+    }
+
+    #estado[data-tipo="error"] {
+      color: #762617;
+      background: #fff1e8;
     }
   </style>
 </head>
@@ -102,10 +114,9 @@
       <p>Usa un alias inventado y escribe una actividad de ejemplo.</p>
     </header>
     <form
+      id="encuesta"
       action="https://boxabalar.edu.xunta.gal/ocs/v2.php/apps/forms/api/v3/forms/9185/submissions?format=json"
       method="post"
-      target="_blank"
-      rel="noopener"
     >
       <input type="hidden" name="shareHash" value="fxe7emotNGkTJkiicpzrsnWE">
       <div>
@@ -117,11 +128,56 @@
         <input type="text" id="actividad" name="answers[85414][]" placeholder="Ejemplo: Huerto escolar" autocomplete="off" maxlength="140" pattern=".*\S.*" required>
       </div>
       <div>
-        <button type="submit" aria-describedby="aviso">Enviar respuesta</button>
-        <p id="aviso">BoxAbalar abre el resultado del envío en otra pestaña.</p>
+        <button type="submit" disabled>Enviar respuesta</button>
+        <p id="estado" role="status"></p>
+        <noscript><p>Activa JavaScript para enviar tu respuesta desde esta página.</p></noscript>
       </div>
     </form>
   </main>
+  <script>
+    const formulario = document.getElementById('encuesta');
+    const boton = formulario.querySelector('button');
+    const campos = formulario.querySelectorAll('input[type="text"]');
+    const estado = document.getElementById('estado');
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      if (boton.disabled) return;
+
+      const datos = new URLSearchParams(new FormData(formulario));
+      boton.disabled = true;
+      for (const campo of campos) campo.readOnly = true;
+      estado.dataset.tipo = 'pendiente';
+      estado.textContent = 'Enviando…';
+
+      try {
+        // La respuesta de BoxAbalar es opaca. El navegador puede enviar el POST,
+        // pero esta página no puede leer el código de confirmación del servidor.
+        await fetch(formulario.action, {
+          method: 'POST',
+          mode: 'no-cors',
+          credentials: 'omit',
+          redirect: 'error',
+          body: datos,
+        });
+        estado.dataset.tipo = 'enviado';
+        estado.textContent = 'Solicitud enviada a BoxAbalar. El guardado se verifica allí.';
+      } catch {
+        boton.disabled = false;
+        estado.dataset.tipo = 'error';
+        estado.textContent = 'No se pudo comprobar el envío. Consulta con el docente antes de repetirlo.';
+      } finally {
+        for (const campo of campos) campo.readOnly = false;
+      }
+    });
+
+    formulario.addEventListener('input', () => {
+      boton.disabled = false;
+      estado.textContent = '';
+    });
+
+    boton.disabled = false;
+  </script>
 </body>
 </html>
 
