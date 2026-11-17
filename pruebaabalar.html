@@ -48,6 +48,28 @@
 
     header p { margin: 0; color: #e0f3e4; line-height: 1.5; }
 
+    #aviso-red {
+      margin: 1.25rem clamp(1.5rem, 5vw, 2.5rem) 0;
+      padding: 1rem 1.1rem;
+      border: 1px solid #b8cf9c;
+      border-radius: 0.75rem;
+      background: #f1f7e8;
+      color: #27452e;
+      line-height: 1.5;
+    }
+
+    #aviso-red[hidden] { display: none; }
+
+    #aviso-red h2 { margin: 0 0 0.4rem; font-size: 1rem; }
+
+    #aviso-red p { margin: 0 0 0.75rem; }
+
+    #aviso-red button {
+      min-height: 2.5rem;
+      padding: 0.5rem 0.85rem;
+      font-size: 0.95rem;
+    }
+
     form {
       display: grid;
       gap: 1.35rem;
@@ -114,6 +136,11 @@
       <h1>Encuesta ficticia</h1>
       <p>Usa un alias inventado y escribe una actividad de ejemplo.</p>
     </header>
+    <aside id="aviso-red" role="note" aria-labelledby="aviso-red-titulo" hidden>
+      <h2 id="aviso-red-titulo">Aviso antes del primer envío</h2>
+      <p>Al enviar, tu navegador puede mostrar un permiso de acceso a la red local. Lo pide porque, desde esta red, BoxAbalar se alcanza mediante una dirección interna de la Xunta. Si decides permitir la conexión, la respuesta se enviará directamente a BoxAbalar. Si la bloqueas, no se enviará. El permiso lo gestiona el navegador para esta página y puedes cambiarlo en sus ajustes.</p>
+      <button type="button" id="cerrar-aviso">Entendido</button>
+    </aside>
     <form
       id="encuesta"
       action="https://boxabalar.edu.xunta.gal/ocs/v2.php/apps/forms/api/v3/forms/9185/submissions?format=json"
@@ -140,6 +167,20 @@
     const boton = formulario.querySelector('button');
     const campos = formulario.querySelectorAll('input[type="text"]');
     const estado = document.getElementById('estado');
+    const aviso = document.getElementById('aviso-red');
+    const cerrarAviso = document.getElementById('cerrar-aviso');
+    const claveAviso = 'pruebaabalar-aviso-red-v1';
+
+    try {
+      aviso.hidden = localStorage.getItem(claveAviso) === 'visto';
+    } catch {
+      aviso.hidden = false;
+    }
+
+    cerrarAviso.addEventListener('click', () => {
+      aviso.hidden = true;
+      try { localStorage.setItem(claveAviso, 'visto'); } catch { /* el aviso se oculta solo en esta página */ }
+    });
 
     formulario.addEventListener('submit', async (evento) => {
       evento.preventDefault();
