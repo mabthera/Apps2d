@@ -34,13 +34,13 @@
 (()=>{
 const $=id=>document.getElementById(id),E0=100,g=9.80665;
 const materials={
-aluminum:{name:'Aluminio (aleación didáctica)',mean:16,color:'#1565c0',spread:.055,outlierRate:.08},
+aluminum:{name:'Aluminio (aleación didáctica)',mean:16,color:'#1565c0',spread:.055,outlierRate:.12},
 steel:{name:'Acero estructural',mean:22,color:'#388e3c',spread:.028,outlierRate:.04},
-rubber:{name:'Caucho (compuesto didáctico)',mean:32,color:'#f57c00',spread:.12,outlierRate:.16},
-pe:{name:'Polietileno de alta densidad (PEAD)',mean:13,color:'#8b6bb1',spread:.075,outlierRate:.11},
-glass:{name:'Vidrio templado',mean:4,color:'#d32f2f',spread:.15,outlierRate:.2},
-pc:{name:'Policarbonato',mean:27,color:'#008c95',spread:.045,outlierRate:.06},
-abs:{name:'ABS (acrilonitrilo butadieno estireno)',mean:20,color:'#b05a87',spread:.065,outlierRate:.09}};
+rubber:{name:'Caucho (compuesto didáctico)',mean:32,color:'#f57c00',spread:.12,outlierRate:.24},
+pe:{name:'Polietileno de alta densidad (PEAD)',mean:13,color:'#8b6bb1',spread:.075,outlierRate:.20},
+glass:{name:'Vidrio templado',mean:4,color:'#d32f2f',spread:.15,outlierRate:.28},
+pc:{name:'Policarbonato',mean:27,color:'#008c95',spread:.045,outlierRate:.08},
+abs:{name:'ABS (acrilonitrilo butadieno estireno)',mean:20,color:'#b05a87',spread:.065,outlierRate:.16}};
 let testLog=[],series=[],animating=false,lastResult=null,animationToken=0;
 function normalish(){return(Math.random()+Math.random()+Math.random()+Math.random()-2)*1.6}
 function material(){return materials[$('material').value]}
