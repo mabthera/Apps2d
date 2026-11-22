@@ -49,7 +49,7 @@ La asignación vigente suma **18 criterios de evaluación y 14 contenidos**. La 
 
 ### Bloque C. Investigamos materiales con ensayos virtuales
 
-> **Distribución del bloque (sesiones 11–17):** 2 sesiones para cribar siete materiales en flexión (seis intentos por material); 2 para analizar con 25 probetas cada uno los dos candidatos finalistas; 1 para recibir la nueva petición CIMATEX y diseñar el estudio Charpy; 1 para cribar materiales en el simulador Charpy; y 1 para repetir el estudio con el material elegido y cerrar los cálculos y la recomendación. Los ensayos son simulados.
+> **Distribución del bloque (sesiones 11–17):** 2 sesiones de cribado de siete materiales en flexión (seis intentos por material); 2 para analizar con 25 probetas los dos candidatos; 1 de cribado Charpy de siete materiales y selección de dos candidatos; y 2 para estudiar cada candidato Charpy con 25 probetas, completar cálculos y gráficos y cerrar una recomendación basada en flexión e impacto. Los ensayos son simulados. Las sesiones 15–17 se realizan de forma autónoma después de la explicación docente inicial del péndulo Charpy.
 
 | Sesión | Desarrollo y evidencia | Materiales para preparar o llevar al aula |
 |---:|---|---|
@@ -62,9 +62,9 @@ La asignación vigente suma **18 criterios de evaluación y 14 contenidos**. La 
 
 | Sesión | Desarrollo y evidencia | Materiales para preparar o llevar al aula |
 |---:|---|---|
-| 15 | CIMATEX plantea una segunda petición: necesita un material resistente al impacto. Cada estudiante diseña, con apoyo mínimo, un protocolo para una prueba Charpy simulada: qué materiales comparará, qué condiciones mantendrá, qué variable registrará y cómo justificará la elección. | Segunda petición del cliente; **simulador_charpy.html**; plantilla abierta de diseño de ensayo. |
-| 16 | Cribado Charpy. Configura la aplicación, ensaya los siete materiales con condiciones comunes, registra la energía absorbida y selecciona el candidato más prometedor, citando los resultados y las limitaciones de la comparación simulada. | **simulador_charpy.html** con siete materiales; registro individual de cribado y protocolo de la sesión 15. |
-| 17 | Estudio completo Charpy con el candidato elegido: genera una serie amplia de probetas según la aplicación, conserva los datos originales, calcula media y desviación, analiza posibles valores atípicos, representa la serie y redacta una recomendación técnica con apoyo mínimo. | **simulador_charpy.html**; hoja individual de registro y análisis; calculadora/hoja de cálculo. |
+| 15 | Trabajo autónomo con la nueva petición de CIMATEX: tras la explicación docente de cómo funciona el péndulo Charpy, cada estudiante registra un ensayo inicial de los siete materiales en el simulador. Compara energía absorbida, observación de deformación/rotura y resultados previos de flexión; selecciona dos candidatos para estudios repetidos. Completa el test de la cara posterior, incluido el contraste entre caucho y acero estructural. | **F15** y su guía; **simulador_charpy.html** con siete materiales; resultados F11/12 y ficha de cribado. |
+| 16 | Estudio detallado del primer candidato: genera 25 probetas Charpy, anota los datos originales una sola vez, calcula media inicial y desviaciones individuales, justifica inclusiones/exclusiones, calcula media corregida y desviación media definitiva y dibuja el gráfico de barras con exclusiones rojas y línea de media. | **F16** y su guía; **simulador_charpy.html** en repetición de 25 probetas; calculadora. |
+| 17 | Estudia el segundo candidato con el mismo procedimiento completo de 25 probetas. Compara los resultados Charpy con los de flexión, decide si recomienda un material o una combinación de materiales para la carcasa y justifica funciones, resistencia, deformación y fiabilidad. Propone una prueba del conjunto si la combinación no se ha ensayado. Completa el test final de la semana. | **F17** y su guía; **simulador_charpy.html**; fichas F13/14 y F15/F16; calculadora. |
 
 ### Bloque E. Aplicamos química y energía a los cambios de los materiales
 
