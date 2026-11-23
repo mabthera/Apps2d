@@ -25,6 +25,12 @@ La asignación vigente suma **18 criterios de evaluación y 14 contenidos**. La 
 - **Dossier individual:** incluye pregunta, hipótesis, variables, procedimiento, seguridad, datos propios o simulados claramente identificados, cálculos, gráfico, interpretación, limitaciones y conclusión.
 - **Evaluación:** se mantiene el reparto indicado en la programación: 50 % dossier y 50 % prueba escrita. La observación de responsabilidad, inclusión, cuidado del material y ayuda respetuosa sirve de seguimiento formativo, sin peso separado.
 
+## Aplicaciones de laboratorio para el alumnado
+
+- [Abrir el simulador de flexión](https://mabthera.github.io/Apps2d/simulador_flexion.html).
+- [Abrir el simulador de impacto Charpy](https://mabthera.github.io/Apps2d/simulador_charpy.html).
+- [Abrir el índice de fichas y guías](https://mabthera.github.io/Apps2d/GuiaSD2/).
+
 ## 4. Guion de las 36 sesiones
 
 ### Bloque A. Entramos en CIMATEX y aprendemos a investigar
